@@ -48,6 +48,21 @@ void sleep_ms(unsigned int ms)
 #define AD9850_DATA    GPIO_Pin_7
 #define AD9850_RESET   GPIO_Pin_4
 
+void AD9850_pulse(uint16_t GPIO_Pin)
+{
+    GPIO_SetBits(AD9850_PORT, GPIO_Pin);
+    GPIO_ResetBits(AD9850_PORT, GPIO_Pin);
+}
+
+void AD9850_tfr_byte(uint8_t data)
+{
+    for(uint8_t i = 0; i < 8; i++, data >>= 1)
+    {
+        GPIO_WriteBit(AD9850_PORT, AD9850_DATA, data & 0x01);
+        AD9850_pulse(AD9850_W_CLK);
+    }
+}
+
 void AD9850_init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct_AD9850;
@@ -56,38 +71,34 @@ void AD9850_init(void)
     GPIO_InitStruct_AD9850.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_Init(AD9850_PORT, &GPIO_InitStruct_AD9850);
 
-    GPIO_SetBits(AD9850_PORT, AD9850_RESET);
-    GPIO_ResetBits(AD9850_PORT, AD9850_RESET);
-
-    GPIO_SetBits(AD9850_PORT, AD9850_W_CLK);
-    GPIO_ResetBits(AD9850_PORT, AD9850_W_CLK);
+    AD9850_pulse(AD9850_RESET);
+    AD9850_pulse(AD9850_W_CLK);
     // this pulse enables serial mode - Datasheet page 12 figure 10
-    GPIO_SetBits(AD9850_PORT, AD9850_FQ_UD);
-    GPIO_ResetBits(AD9850_PORT, AD9850_FQ_UD);
-}
-
-void AD9850_tfr_byte(uint8_t data)
-{
-    for(uint8_t i = 0; i < 8; i++, data >>= 1)
-    {
-        GPIO_WriteBit(AD9850_PORT, AD9850_DATA, data & 0x01);
-        GPIO_SetBits(AD9850_PORT, AD9850_W_CLK);
-        GPIO_ResetBits(AD9850_PORT, AD9850_W_CLK);
-    }
+    AD9850_pulse(AD9850_FQ_UD);
 }
 
 void AD9850_set_frequency(uint32_t frequency)
 {
-    uint32_t reg = (uint64_t)frequency * 0x100000000uL / AD9850_CLOCK;
+    uint32_t reg = ((uint64_t)frequency << 32) / AD9850_CLOCK;
     for(uint8_t i = 0; i < 4; i++, reg >>= 8)
     {
         AD9850_tfr_byte(reg & 0xFF);
     }
     AD9850_tfr_byte(0x00);
-    GPIO_SetBits(AD9850_PORT, AD9850_FQ_UD);
-    GPIO_ResetBits(AD9850_PORT, AD9850_FQ_UD);
+    AD9850_pulse(AD9850_FQ_UD);
 }
 
+void AD9850_sleep(void)
+{
+    for(uint8_t i = 0; i < 4; i++)
+    {
+        AD9850_tfr_byte(0x00);
+    }
+    AD9850_tfr_byte(1<<2);
+    AD9850_pulse(AD9850_FQ_UD);
+}
+
+#define DELAY 100
 
 int main(void) {
     DBG_INIT();
@@ -109,13 +120,84 @@ int main(void) {
     GPIO_Init(LED_PORT, &GPIO_InitStruct_LED);
 
     AD9850_init();
-    AD9850_set_frequency(10000000);
+
 
     for(;;) {
-        sleep_ms(500);
-        GPIO_ResetBits(LED_PORT, LED_PIN);
-        sleep_ms(500);
-        GPIO_SetBits(LED_PORT, LED_PIN);
+        // S
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(3 * DELAY);
+
+        // K
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(3 * DELAY);
+
+        // Y
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(3 * DELAY);
+
+        // N
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(DELAY);
+
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(3 * DELAY);
+
+        // E
+        AD9850_set_frequency(10000000);
+        sleep_ms(DELAY);
+        AD9850_sleep();
+        sleep_ms(3 * DELAY);
+
+        // T
+        AD9850_set_frequency(10000000);
+        sleep_ms(3 * DELAY);
+        AD9850_sleep();
+        sleep_ms(7 * DELAY);
     }
 
     RCC_APB2PeriphClockCmd( RCC_APB2Periph_AFIO  |   \
