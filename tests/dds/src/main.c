@@ -9,7 +9,7 @@
 */
 
 #include "stm32f10x_conf.h"
-#include "ad9850.h"
+#include "ad9850iq.h"
 
 #ifdef DEBUG
 #include <stdio.h>
@@ -48,17 +48,17 @@ int main(void) {
                             RCC_APB2Periph_GPIOF |   \
                             RCC_APB2Periph_GPIOG, ENABLE);
 
-    ad9850_start();
+    ad9850iq_start();
 
 
     for(;;) {
-        ad9850_set_frequency(10000000);
+        ad9850iq_set_frequency(10000000);
         sleep_ms(SIGNAL_DELAY);
-        ad9850_sleep();
+        ad9850iq_sleep();
         sleep_ms(SIGNAL_DELAY);
     }
 
-    ad9850_stop();
+    ad9850iq_stop();
 
     RCC_APB2PeriphClockCmd( RCC_APB2Periph_AFIO  |   \
                             RCC_APB2Periph_GPIOA |   \
