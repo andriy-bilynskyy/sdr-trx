@@ -1,4 +1,29 @@
-EESchema Schematic File Version 2
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 30 0
 EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 2
+Title "SDR-TRX"
+Date "2020-04-20"
+Rev "A"
+Comp "EM-DEV"
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Sheet
+S 8700 2950 950  550 
+U 5E9E88B8
+F0 "DCO" 50
+F1 "dco.sch" 50
+F2 "DCO-SCL" B L 8700 3050 50 
+F3 "DCO-SDA" B L 8700 3150 50 
+F4 "DCO-000" O R 9650 3050 50 
+F5 "DCO-090" O R 9650 3150 50 
+F6 "DCO-180" O R 9650 3300 50 
+F7 "DCO-270" O R 9650 3400 50 
+F8 "DCO-CLK" O L 8700 3400 50 
+$EndSheet
 $EndSCHEMATC
