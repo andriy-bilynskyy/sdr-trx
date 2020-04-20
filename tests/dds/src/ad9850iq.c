@@ -22,6 +22,12 @@
 #define AD9850_PHASE_OFFSET         3
 #define AD9850_PHASE_00             (0 << AD9850_PHASE_OFFSET)
 #define AD9850_PHASE_90             (8 << AD9850_PHASE_OFFSET)
+#ifdef AD9851_EXT_EN
+#define AD9851_6XMUL_EN_BIT 0
+#define AD9850_INT_CLK      (AD9850IQ_CLK_HZ * 6)
+#else
+#define AD9850_INT_CLK      (AD9850IQ_CLK_HZ)
+#endif
 
 
 static bool ad9850iq_started = false;
@@ -97,7 +103,7 @@ void ad9850iq_wakeup(void) {
 }
 
 void ad9850iq_set_frequency(uint32_t frequency_hz) {
-    if(ad9850iq_started && frequency_hz < AD9850IQ_CLK_HZ / 2) {
+    if(ad9850iq_started && frequency_hz < AD9850_INT_CLK / 2) {
         ad9850iq_frequency_hz = frequency_hz;
         ad9850iq_update(false);
     }
@@ -118,15 +124,27 @@ static void ad9850iq_tfr_byte(uint8_t data_i, uint8_t data_q) {
 }
 
 static void ad9850iq_update(bool sleep) {
-    uint32_t reg = ((uint64_t)ad9850iq_frequency_hz << 32) / AD9850IQ_CLK_HZ;
+    uint32_t reg = ((uint64_t)ad9850iq_frequency_hz << 32) / AD9850_INT_CLK;
     for(uint8_t i = 0; i < 4; i++, reg >>= 8) {
         ad9850iq_tfr_byte(reg & 0xFF, reg & 0xFF);
     }
     if(sleep) {
+#ifdef AD9851_EXT_EN
+        ad9850iq_tfr_byte(((uint8_t)1 << AD9851_6XMUL_EN_BIT) |
+                          ((uint8_t)1 << AD9851_6XMUL_EN_BIT) | AD9850_PHASE_00,
+                          ((uint8_t)1 << AD9851_6XMUL_EN_BIT) |
+                          ((uint8_t)1 << AD9851_6XMUL_EN_BIT) | AD9850_PHASE_90);
+#else
         ad9850iq_tfr_byte(((uint8_t)1 << AD9850_SLEEP_EN_BIT) | AD9850_PHASE_00,
                           ((uint8_t)1 << AD9850_SLEEP_EN_BIT) | AD9850_PHASE_90);
+#endif
     } else {
+#ifdef AD9851_EXT_EN
+        ad9850iq_tfr_byte(((uint8_t)1 << AD9851_6XMUL_EN_BIT) | AD9850_PHASE_00,
+                          ((uint8_t)1 << AD9851_6XMUL_EN_BIT) | AD9850_PHASE_90);
+#else
         ad9850iq_tfr_byte(AD9850_PHASE_00, AD9850_PHASE_90);
+#endif
     }
     ad9850iq_pulse(AD9850IQ_FQ_UD);
 }

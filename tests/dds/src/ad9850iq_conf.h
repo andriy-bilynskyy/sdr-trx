@@ -23,4 +23,6 @@
 #define AD9850IQ_FQ_UD    GPIO_Pin_6
 #define AD9850IQ_RESET    GPIO_Pin_4
 
+//#define AD9851_EXT_EN
+
 #endif

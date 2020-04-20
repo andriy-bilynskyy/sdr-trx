@@ -18,7 +18,12 @@
 
 #define AD9850_SLEEP_EN_BIT 2
 #define AD9850_PHASE_OFFSET 3
-
+#ifdef AD9851_EXT_EN
+#define AD9851_6XMUL_EN_BIT 0
+#define AD9850_INT_CLK      (AD9850_CLK_HZ * 6)
+#else
+#define AD9850_INT_CLK      (AD9850_CLK_HZ)
+#endif
 
 static bool ad9850_started = false;
 static uint32_t ad9850_frequency_hz = 0;
@@ -91,7 +96,7 @@ void ad9850_wakeup(void) {
 }
 
 void ad9850_set_frequency(uint32_t frequency_hz) {
-    if(ad9850_started && frequency_hz < AD9850_CLK_HZ / 2) {
+    if(ad9850_started && frequency_hz < AD9850_INT_CLK / 2) {
         ad9850_frequency_hz = frequency_hz;
         ad9850_update(false);
     }
@@ -118,15 +123,26 @@ static void ad9850_tfr_byte(uint8_t data) {
 }
 
 static void ad9850_update(bool sleep) {
-    uint32_t reg = ((uint64_t)ad9850_frequency_hz << 32) / AD9850_CLK_HZ;
+    uint32_t reg = ((uint64_t)ad9850_frequency_hz << 32) / AD9850_INT_CLK;
     for(uint8_t i = 0; i < 4; i++, reg >>= 8) {
         ad9850_tfr_byte(reg & 0xFF);
     }
     if(sleep) {
+#ifdef AD9851_EXT_EN
+        ad9850_tfr_byte(((uint8_t)1 << AD9851_6XMUL_EN_BIT) |
+                        ((uint8_t)1 << AD9850_SLEEP_EN_BIT) |
+                        ((uint8_t)ad9850_phase << AD9850_PHASE_OFFSET));
+#else
         ad9850_tfr_byte(((uint8_t)1 << AD9850_SLEEP_EN_BIT) |
                         ((uint8_t)ad9850_phase << AD9850_PHASE_OFFSET));
+#endif
     } else {
+#ifdef AD9851_EXT_EN
+        ad9850_tfr_byte(((uint8_t)1 << AD9851_6XMUL_EN_BIT) |
+                        ((uint8_t)ad9850_phase << AD9850_PHASE_OFFSET));
+#else
         ad9850_tfr_byte(((uint8_t)ad9850_phase << AD9850_PHASE_OFFSET));
+#endif
     }
     ad9850_pulse(AD9850_FQ_UD);
 }
