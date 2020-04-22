@@ -35,21 +35,8 @@ F 3 "" H 7300 3600 50  0001 C CNN
 	1    7300 3600
 	1    0    0    -1  
 $EndComp
-Text GLabel 5850 1800 0    50   Input ~ 0
+Text GLabel 6250 1800 0    50   Input ~ 0
 +5.0V-TX
-$Comp
-L Device:L L?
-U 1 1 5E9FD50F
-P 6100 1800
-AR Path="/5E9E88B8/5E9FD50F" Ref="L?"  Part="1" 
-AR Path="/5E9F4ACB/5E9FD50F" Ref="L?"  Part="1" 
-F 0 "L?" V 6200 1850 50  0000 L CNN
-F 1 "2.2uH" V 6200 1800 50  0000 R CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6100 1800 50  0001 C CNN
-F 3 "~" H 6100 1800 50  0001 C CNN
-	1    6100 1800
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	6600 2250 6600 2200
 Connection ~ 6600 2200
@@ -60,7 +47,7 @@ P 6850 2000
 AR Path="/5E9E88B8/5E9FD517" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5E9FD517" Ref="C?"  Part="1" 
 F 0 "C?" H 6965 2046 50  0000 L CNN
-F 1 "0.1uF" H 6965 1955 50  0000 L CNN
+F 1 "10nF" H 6965 1955 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6888 1850 50  0001 C CNN
 F 3 "~" H 6850 2000 50  0001 C CNN
 	1    6850 2000
@@ -73,7 +60,7 @@ P 6350 2000
 AR Path="/5E9E88B8/5E9FD51D" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5E9FD51D" Ref="C?"  Part="1" 
 F 0 "C?" H 6465 2046 50  0000 L CNN
-F 1 "1.0uF" H 6465 1955 50  0000 L CNN
+F 1 "0.1uF" H 6465 1955 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6388 1850 50  0001 C CNN
 F 3 "~" H 6350 2000 50  0001 C CNN
 	1    6350 2000
@@ -113,21 +100,8 @@ Text HLabel 9500 3050 2    50   Input ~ 0
 F90
 Text HLabel 9500 2950 2    50   Input ~ 0
 F00
-Text GLabel 8000 4850 2    50   Input ~ 0
+Text GLabel 7600 4850 2    50   Input ~ 0
 +5.0V-ATX
-$Comp
-L Device:L L?
-U 1 1 5EA54FE1
-P 7750 4850
-AR Path="/5E9E88B8/5EA54FE1" Ref="L?"  Part="1" 
-AR Path="/5E9F4ACB/5EA54FE1" Ref="L?"  Part="1" 
-F 0 "L?" V 7850 4900 50  0000 L CNN
-F 1 "2.2uH" V 7850 4850 50  0000 R CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7750 4850 50  0001 C CNN
-F 3 "~" H 7750 4850 50  0001 C CNN
-	1    7750 4850
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	7250 5300 7250 5250
 Connection ~ 7250 5250
@@ -157,19 +131,6 @@ F 3 "~" H 7500 5050 50  0001 C CNN
 	1    7500 5050
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5EA54FF5
-P 7250 5300
-AR Path="/5E9E88B8/5EA54FF5" Ref="#PWR?"  Part="1" 
-AR Path="/5E9F4ACB/5EA54FF5" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 7250 5050 50  0001 C CNN
-F 1 "GND" H 7255 5127 50  0000 C CNN
-F 2 "" H 7250 5300 50  0001 C CNN
-F 3 "" H 7250 5300 50  0001 C CNN
-	1    7250 5300
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	7250 5250 7500 5250
 Wire Wire Line
@@ -187,8 +148,6 @@ Wire Wire Line
 Wire Wire Line
 	7600 4850 7500 4850
 Connection ~ 7500 4850
-Wire Wire Line
-	7900 4850 8000 4850
 Wire Wire Line
 	6550 4000 6600 4000
 Wire Wire Line
@@ -289,8 +248,6 @@ Wire Wire Line
 	6800 5300 6600 5300
 Wire Wire Line
 	6850 3050 6850 4000
-Wire Wire Line
-	5850 1800 5950 1800
 Wire Wire Line
 	6250 1800 6350 1800
 Connection ~ 6350 1800
@@ -706,21 +663,8 @@ Wire Wire Line
 	3800 4250 3800 3850
 Wire Wire Line
 	3800 3850 4150 3850
-Text GLabel 4900 2700 2    50   Input ~ 0
+Text GLabel 4500 2700 2    50   Input ~ 0
 +5.0V-ATX
-$Comp
-L Device:L L?
-U 1 1 5EE99AC2
-P 4650 2700
-AR Path="/5E9E88B8/5EE99AC2" Ref="L?"  Part="1" 
-AR Path="/5E9F4ACB/5EE99AC2" Ref="L?"  Part="1" 
-F 0 "L?" V 4750 2750 50  0000 L CNN
-F 1 "2.2uH" V 4750 2700 50  0000 R CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4650 2700 50  0001 C CNN
-F 3 "~" H 4650 2700 50  0001 C CNN
-	1    4650 2700
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	4150 3150 4150 3100
 Connection ~ 4150 3100
@@ -750,19 +694,6 @@ F 3 "~" H 4400 2900 50  0001 C CNN
 	1    4400 2900
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5EE99AD6
-P 4150 3150
-AR Path="/5E9E88B8/5EE99AD6" Ref="#PWR?"  Part="1" 
-AR Path="/5E9F4ACB/5EE99AD6" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 4150 2900 50  0001 C CNN
-F 1 "GND" H 4155 2977 50  0000 C CNN
-F 2 "" H 4150 3150 50  0001 C CNN
-F 3 "" H 4150 3150 50  0001 C CNN
-	1    4150 3150
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4150 3100 4400 3100
 Wire Wire Line
@@ -781,27 +712,12 @@ Wire Wire Line
 	4500 2700 4400 2700
 Connection ~ 4400 2700
 Wire Wire Line
-	4800 2700 4900 2700
-Wire Wire Line
 	3900 2700 3650 2700
 Connection ~ 3900 2700
 Wire Wire Line
 	3650 3150 3650 2700
-Text GLabel 4650 1250 2    50   Input ~ 0
+Text GLabel 4250 1250 2    50   Input ~ 0
 +5.0V-ATX
-$Comp
-L Device:L L?
-U 1 1 5EEFE3F4
-P 4400 1250
-AR Path="/5E9E88B8/5EEFE3F4" Ref="L?"  Part="1" 
-AR Path="/5E9F4ACB/5EEFE3F4" Ref="L?"  Part="1" 
-F 0 "L?" V 4500 1300 50  0000 L CNN
-F 1 "2.2uH" V 4500 1250 50  0000 R CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4400 1250 50  0001 C CNN
-F 3 "~" H 4400 1250 50  0001 C CNN
-	1    4400 1250
-	0    -1   -1   0   
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5EEFE3FC
@@ -809,7 +725,7 @@ P 3650 1450
 AR Path="/5E9E88B8/5EEFE3FC" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5EEFE3FC" Ref="C?"  Part="1" 
 F 0 "C?" H 3765 1496 50  0000 L CNN
-F 1 "0.1uF" H 3765 1405 50  0000 L CNN
+F 1 "10nF" H 3765 1405 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 3688 1300 50  0001 C CNN
 F 3 "~" H 3650 1450 50  0001 C CNN
 	1    3650 1450
@@ -822,7 +738,7 @@ P 4150 1450
 AR Path="/5E9E88B8/5EEFE402" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5EEFE402" Ref="C?"  Part="1" 
 F 0 "C?" H 4265 1496 50  0000 L CNN
-F 1 "1.0uF" H 4265 1405 50  0000 L CNN
+F 1 "0.1uF" H 4265 1405 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4188 1300 50  0001 C CNN
 F 3 "~" H 4150 1450 50  0001 C CNN
 	1    4150 1450
@@ -837,8 +753,6 @@ Wire Wire Line
 Wire Wire Line
 	4250 1250 4150 1250
 Connection ~ 4150 1250
-Wire Wire Line
-	4550 1250 4650 1250
 Connection ~ 3650 1250
 $Comp
 L Device:R R?
@@ -856,14 +770,14 @@ $EndComp
 $Comp
 L Device:C C?
 U 1 1 5EF1253C
-P 2150 1900
+P 1650 1900
 AR Path="/5E9E88B8/5EF1253C" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5EF1253C" Ref="C?"  Part="1" 
-F 0 "C?" H 2265 1946 50  0000 L CNN
-F 1 "1.0uF" H 2265 1855 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2188 1750 50  0001 C CNN
-F 3 "~" H 2150 1900 50  0001 C CNN
-	1    2150 1900
+F 0 "C?" H 1765 1946 50  0000 L CNN
+F 1 "1.0uF" H 1765 1855 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 1688 1750 50  0001 C CNN
+F 3 "~" H 1650 1900 50  0001 C CNN
+	1    1650 1900
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -882,14 +796,14 @@ $EndComp
 $Comp
 L Device:C C?
 U 1 1 5EF1528E
-P 2650 1900
+P 2150 1900
 AR Path="/5E9E88B8/5EF1528E" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5EF1528E" Ref="C?"  Part="1" 
-F 0 "C?" H 2765 1946 50  0000 L CNN
-F 1 "0.1uF" H 2765 1855 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2688 1750 50  0001 C CNN
-F 3 "~" H 2650 1900 50  0001 C CNN
-	1    2650 1900
+F 0 "C?" H 2265 1946 50  0000 L CNN
+F 1 "0.1uF" H 2265 1855 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2188 1750 50  0001 C CNN
+F 3 "~" H 2150 1900 50  0001 C CNN
+	1    2150 1900
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -897,55 +811,31 @@ Wire Wire Line
 Wire Wire Line
 	3100 1250 3650 1250
 Wire Wire Line
-	3100 1650 3100 1700
+	1650 1700 1650 1750
 Wire Wire Line
-	3100 1700 2650 1700
+	2150 1750 2150 1700
+Connection ~ 2150 1700
 Wire Wire Line
-	2150 1700 2150 1750
-Connection ~ 3100 1700
+	2150 1700 1650 1700
 Wire Wire Line
-	3100 1700 3100 1750
+	1650 2050 1650 2100
 Wire Wire Line
-	2650 1750 2650 1700
-Connection ~ 2650 1700
-Wire Wire Line
-	2650 1700 2150 1700
-Wire Wire Line
-	2150 2050 2150 2100
-Wire Wire Line
-	2150 2100 2650 2100
+	1650 2100 2150 2100
 Wire Wire Line
 	4150 2100 4150 1600
 Wire Wire Line
 	3100 2050 3100 2100
-Connection ~ 3100 2100
 Wire Wire Line
 	3100 2100 3650 2100
 Wire Wire Line
-	2650 2050 2650 2100
-Connection ~ 2650 2100
-Wire Wire Line
-	2650 2100 3100 2100
-$Comp
-L power:GND #PWR?
-U 1 1 5EEFE408
-P 4150 2100
-AR Path="/5E9E88B8/5EEFE408" Ref="#PWR?"  Part="1" 
-AR Path="/5E9F4ACB/5EEFE408" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 4150 1850 50  0001 C CNN
-F 1 "GND" H 4155 1927 50  0000 C CNN
-F 2 "" H 4150 2100 50  0001 C CNN
-F 3 "" H 4150 2100 50  0001 C CNN
-	1    4150 2100
-	1    0    0    -1  
-$EndComp
-Connection ~ 4150 2100
+	2150 2050 2150 2100
+Connection ~ 2150 2100
 Wire Wire Line
 	3650 1600 3650 2100
 Connection ~ 3650 2100
 Wire Wire Line
 	3650 2100 4150 2100
-Text Label 2150 1700 0    50   ~ 0
+Text Label 1650 1700 0    50   ~ 0
 BIAS
 NoConn ~ 8550 2450
 $Comp
@@ -1018,53 +908,53 @@ Wire Wire Line
 	2100 5350 2850 5350
 $Comp
 L sdr-trx:CX2047LANL TR?
-U 1 1 5EA1D2F1
+U 1 1 5EAAC7DF
 P 8750 2450
-F 0 "TR?" H 8750 2750 50  0000 C CNN
-F 1 "CX2047LANL" H 8700 2150 50  0000 C CNN
-F 2 "" H 8750 2450 50  0001 C CNN
+F 0 "TR?" H 8750 2800 50  0000 C CNN
+F 1 "CX2047LANL" H 8650 2150 50  0000 C CNN
+F 2 "sdr-trx:CX2047LANL" H 8750 2100 50  0001 C CNN
 F 3 "https://productfinder.pulseeng.com/doc_type/WEB301/doc_num/CX2047LANL-01/doc_part/CX2047LANL.pdf" H 8750 2450 50  0001 C CNN
 	1    8750 2450
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	3100 1650 3100 1700
 $Comp
-L sdr-trx:AD8604 U?
-U 1 1 5EA4FE21
-P 4700 4100
-F 0 "U?" H 4750 4250 50  0000 L CNN
-F 1 "AD8604" H 4750 3950 50  0000 L CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4650 4200 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 4750 4300 50  0001 C CNN
-	1    4700 4100
+L Device:C C?
+U 1 1 5EAC9C08
+P 2650 1900
+AR Path="/5E9E88B8/5EAC9C08" Ref="C?"  Part="1" 
+AR Path="/5E9F4ACB/5EAC9C08" Ref="C?"  Part="1" 
+F 0 "C?" H 2765 1946 50  0000 L CNN
+F 1 "10nF" H 2765 1855 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2688 1750 50  0001 C CNN
+F 3 "~" H 2650 1900 50  0001 C CNN
+	1    2650 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	2150 2100 2650 2100
+Connection ~ 3100 2100
+Wire Wire Line
+	2150 1700 2650 1700
+Connection ~ 3100 1700
+Wire Wire Line
+	3100 1700 3100 1750
+Wire Wire Line
+	2650 1750 2650 1700
+Connection ~ 2650 1700
+Wire Wire Line
+	2650 1700 3100 1700
+Wire Wire Line
+	2650 2050 2650 2100
+Connection ~ 2650 2100
+Wire Wire Line
+	2650 2100 3100 2100
 $Comp
 L sdr-trx:AD8604 U?
-U 4 1 5EA51027
-P 4700 5400
-F 0 "U?" H 4700 5550 50  0000 L CNN
-F 1 "AD8604" H 4700 5676 50  0001 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4650 5500 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 4750 5600 50  0001 C CNN
-	4    4700 5400
-	1    0    0    -1  
-$EndComp
-$Comp
-L sdr-trx:AD8604 U?
-U 1 1 5EA5E4BE
-P 6250 4000
-F 0 "U?" H 6300 4150 50  0000 L CNN
-F 1 "AD8604" H 6300 3850 50  0000 L CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 4100 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 4200 50  0001 C CNN
-	1    6250 4000
-	1    0    0    -1  
-$EndComp
-$Comp
-L sdr-trx:AD8604 U?
-U 2 1 5EA3EF93
+U 2 1 5EB199A4
 P 3750 3450
-F 0 "U?" H 3800 3600 50  0000 L CNN
+F 0 "U?" H 3700 3650 50  0000 L CNN
 F 1 "AD8604" H 3750 3726 50  0001 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3700 3550 50  0001 C CNN
 F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 3800 3650 50  0001 C CNN
@@ -1073,18 +963,40 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 $EndComp
 $Comp
 L sdr-trx:AD8604 U?
-U 2 1 5EA5FD4E
-P 6250 5300
-F 0 "U?" H 6300 5450 50  0000 L CNN
-F 1 "AD8604" H 6250 5576 50  0001 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 5400 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 5500 50  0001 C CNN
-	2    6250 5300
+U 3 1 5EB1D8A3
+P 3750 4750
+F 0 "U?" H 3700 4950 50  0000 L CNN
+F 1 "AD8604" H 3750 5026 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3700 4850 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 3800 4950 50  0001 C CNN
+	3    3750 4750
 	1    0    0    -1  
 $EndComp
 $Comp
 L sdr-trx:AD8604 U?
-U 5 1 5EA455BA
+U 1 1 5EB1FE73
+P 4700 4100
+F 0 "U?" H 4700 4350 50  0000 L CNN
+F 1 "AD8604" H 4700 4250 50  0000 L CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4650 4200 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 4750 4300 50  0001 C CNN
+	1    4700 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:AD8604 U?
+U 4 1 5EB22919
+P 4700 5400
+F 0 "U?" H 4650 5600 50  0000 L CNN
+F 1 "AD8604" H 4700 5676 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4650 5500 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 4750 5600 50  0001 C CNN
+	4    4700 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:AD8604 U?
+U 5 1 5EB3231F
 P 3750 3450
 F 0 "U?" H 3708 3496 50  0001 L CNN
 F 1 "AD8604" H 3708 3405 50  0001 L CNN
@@ -1095,7 +1007,51 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 $EndComp
 $Comp
 L sdr-trx:AD8604 U?
-U 5 1 5EA62EC4
+U 4 1 5EB3F5FD
+P 6250 3350
+F 0 "U?" H 6200 3550 50  0000 L CNN
+F 1 "AD8604" H 6250 3626 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 3450 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 3550 50  0001 C CNN
+	4    6250 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:AD8604 U?
+U 1 1 5EB437BC
+P 6250 4000
+F 0 "U?" H 6200 4300 50  0000 L CNN
+F 1 "AD8604" H 6200 4200 50  0000 L CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 4100 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 4200 50  0001 C CNN
+	1    6250 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:AD8604 U?
+U 3 1 5EB4526D
+P 6250 4650
+F 0 "U?" H 6200 4850 50  0000 L CNN
+F 1 "AD8604" H 6250 4926 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 4750 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 4850 50  0001 C CNN
+	3    6250 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:AD8604 U?
+U 2 1 5EB46B8F
+P 6250 5300
+F 0 "U?" H 6200 5500 50  0000 L CNN
+F 1 "AD8604" H 6250 5576 50  0001 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 5400 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 5500 50  0001 C CNN
+	2    6250 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:AD8604 U?
+U 5 1 5EB5A726
 P 6250 5300
 F 0 "U?" H 6208 5346 50  0001 L CNN
 F 1 "AD8604" H 6208 5255 50  0001 L CNN
@@ -1105,36 +1061,37 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 	1    0    0    -1  
 $EndComp
 $Comp
-L sdr-trx:AD8604 U?
-U 3 1 5EA4E81F
-P 3750 4750
-F 0 "U?" H 3750 4900 50  0000 L CNN
-F 1 "AD8604" H 3750 5026 50  0001 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3700 4850 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 3800 4950 50  0001 C CNN
-	3    3750 4750
+L power:GNDA #PWR?
+U 1 1 5EB6147C
+P 4150 2100
+F 0 "#PWR?" H 4150 1850 50  0001 C CNN
+F 1 "GNDA" H 4155 1927 50  0000 C CNN
+F 2 "" H 4150 2100 50  0001 C CNN
+F 3 "" H 4150 2100 50  0001 C CNN
+	1    4150 2100
+	1    0    0    -1  
+$EndComp
+Connection ~ 4150 2100
+$Comp
+L power:GNDA #PWR?
+U 1 1 5EB63E92
+P 4150 3150
+F 0 "#PWR?" H 4150 2900 50  0001 C CNN
+F 1 "GNDA" H 4155 2977 50  0000 C CNN
+F 2 "" H 4150 3150 50  0001 C CNN
+F 3 "" H 4150 3150 50  0001 C CNN
+	1    4150 3150
 	1    0    0    -1  
 $EndComp
 $Comp
-L sdr-trx:AD8604 U?
-U 3 1 5EA665D7
-P 6250 4650
-F 0 "U?" H 6250 4800 50  0000 L CNN
-F 1 "AD8604" H 6250 4926 50  0001 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 4750 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 4850 50  0001 C CNN
-	3    6250 4650
-	1    0    0    -1  
-$EndComp
-$Comp
-L sdr-trx:AD8604 U?
-U 4 1 5EA6790A
-P 6250 3350
-F 0 "U?" H 6250 3500 50  0000 L CNN
-F 1 "AD8604" H 6250 3626 50  0001 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 3450 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 3550 50  0001 C CNN
-	4    6250 3350
+L power:GNDA #PWR?
+U 1 1 5EB659FD
+P 7250 5300
+F 0 "#PWR?" H 7250 5050 50  0001 C CNN
+F 1 "GNDA" H 7255 5127 50  0000 C CNN
+F 2 "" H 7250 5300 50  0001 C CNN
+F 3 "" H 7250 5300 50  0001 C CNN
+	1    7250 5300
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
