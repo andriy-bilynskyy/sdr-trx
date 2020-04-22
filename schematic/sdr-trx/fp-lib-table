@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name sdr-trx)(type KiCad)(uri ${KIPRJMOD}/sdr-trx.pretty)(options "")(descr ""))
+)
