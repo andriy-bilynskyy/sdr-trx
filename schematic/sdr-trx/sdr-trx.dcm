@@ -1,0 +1,27 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP AD8604
+D Precision CMOS, Single-Supply, Rail-to-Rail, Input/Output Wideband Quad Operational Amplifiers
+K quad opamp
+F https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf
+$ENDCMP
+#
+$CMP ASTX-H11
+D HCMOS output SMD TCXO
+K Crystal Clock Oscillator
+F https://abracon.com/Oscillators/ASTX-H11.pdf
+$ENDCMP
+#
+$CMP CX2047LANL
+D Balun Transformer 1:4CT Impedance 0.5-300MHz
+K RF Transformer
+F https://productfinder.pulseeng.com/doc_type/WEB301/doc_num/CX2047LANL-01/doc_part/CX2047LANL.pdf
+$ENDCMP
+#
+$CMP PO74G74A
+D Dual D Flip-flop, Set & Reset, Series Noise Cancellation GHz Logic
+K TTL DFF
+F http://www.potatosemi.com/potatosemiweb/datasheet/PO74G74A.pdf
+$ENDCMP
+#
+#End Doc Library
