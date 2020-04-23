@@ -30,6 +30,12 @@ K opamp operational amplifier single
 F https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6228-6229.pdf
 $ENDCMP
 #
+$CMP LTC6655CHMS8-2.5
+D 0.25ppm Noise, Low Drift Precision References, 2.5V output, MSOP-8
+K voltage reference vref
+F https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6655-6655LN.pdf
+$ENDCMP
+#
 $CMP PO74G74A
 D Dual D Flip-flop, Set & Reset, Series Noise Cancellation GHz Logic
 K TTL DFF
