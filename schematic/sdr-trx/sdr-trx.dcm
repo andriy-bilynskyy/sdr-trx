@@ -1,5 +1,11 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP AD8601
+D Precision CMOS, Single-Supply, Rail-to-Rail, Input/Output Wideband Single Operational Amplifiers
+K single opamp
+F https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf
+$ENDCMP
+#
 $CMP AD8604
 D Precision CMOS, Single-Supply, Rail-to-Rail, Input/Output Wideband Quad Operational Amplifiers
 K quad opamp
