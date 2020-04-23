@@ -18,6 +18,12 @@ K RF Transformer
 F https://productfinder.pulseeng.com/doc_type/WEB301/doc_num/CX2047LANL-01/doc_part/CX2047LANL.pdf
 $ENDCMP
 #
+$CMP LTC6228XS8
+D 0.88nV/√Hz 730MHz, 500V/µs, Low Distortion Rail-to-Rail Output OpAmps with Shutdown, SO-8
+K opamp operational amplifier single
+F https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6228-6229.pdf
+$ENDCMP
+#
 $CMP PO74G74A
 D Dual D Flip-flop, Set & Reset, Series Noise Cancellation GHz Logic
 K TTL DFF
