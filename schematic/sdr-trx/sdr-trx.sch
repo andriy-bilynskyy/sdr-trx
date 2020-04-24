@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 4
+Sheet 1 5
 Title "SDR-TRX"
 Date "2020-04-20"
 Rev "A"
@@ -74,4 +74,12 @@ Wire Wire Line
 	9750 3150 9750 2600
 Wire Wire Line
 	9800 3050 9800 2500
+$Sheet
+S 6750 3800 750  200 
+U 5EA333CB
+F0 "Preamplifier" 50
+F1 "preamp.sch" 50
+F2 "IN" I L 6750 3900 50 
+F3 "OUT" O R 7500 3900 50 
+$EndSheet
 $EndSCHEMATC

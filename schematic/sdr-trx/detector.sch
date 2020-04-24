@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 4
+Sheet 4 5
 Title "Tayloe Detector"
 Date "2020-04-20"
 Rev "A"
@@ -1602,44 +1602,22 @@ Wire Wire Line
 Wire Wire Line
 	5700 6750 6250 6750
 Connection ~ 7850 1650
-Text GLabel 10500 4350 2    50   Input ~ 0
+Text GLabel 9950 3450 2    50   Input ~ 0
 +5.0V-ARX
 $Comp
 L Device:C C?
-U 1 1 5EDB9EC1
+U 1 1 5EDB9EC7
 P 9200 3650
-AR Path="/5E9E88B8/5EDB9EC1" Ref="C?"  Part="1" 
-AR Path="/5E9F4ACB/5EDB9EC1" Ref="C?"  Part="1" 
-AR Path="/5EA188E4/5EDB9EC1" Ref="C?"  Part="1" 
+AR Path="/5E9E88B8/5EDB9EC7" Ref="C?"  Part="1" 
+AR Path="/5E9F4ACB/5EDB9EC7" Ref="C?"  Part="1" 
+AR Path="/5EA188E4/5EDB9EC7" Ref="C?"  Part="1" 
 F 0 "C?" H 9315 3696 50  0000 L CNN
-F 1 "0.1uF" H 9315 3605 50  0000 L CNN
+F 1 "1.0uF" H 9315 3605 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 9238 3500 50  0001 C CNN
 F 3 "~" H 9200 3650 50  0001 C CNN
 	1    9200 3650
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:C C?
-U 1 1 5EDB9EC7
-P 9700 3650
-AR Path="/5E9E88B8/5EDB9EC7" Ref="C?"  Part="1" 
-AR Path="/5E9F4ACB/5EDB9EC7" Ref="C?"  Part="1" 
-AR Path="/5EA188E4/5EDB9EC7" Ref="C?"  Part="1" 
-F 0 "C?" H 9815 3696 50  0000 L CNN
-F 1 "1.0uF" H 9815 3605 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 9738 3500 50  0001 C CNN
-F 3 "~" H 9700 3650 50  0001 C CNN
-	1    9700 3650
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	9200 3500 9200 3450
-Wire Wire Line
-	9200 3450 9700 3450
-Wire Wire Line
-	9700 3500 9700 3450
-Connection ~ 9700 3450
-Connection ~ 9200 3450
 $Comp
 L Device:R R?
 U 1 1 5EDB9ED3
@@ -1895,13 +1873,7 @@ F 3 "" H 7300 5100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7300 5100 7300 5050
-Wire Wire Line
-	9700 3800 9700 4400
-Wire Wire Line
-	9200 3800 9200 4400
 Connection ~ 9200 4400
-Wire Wire Line
-	9200 4400 9700 4400
 Wire Wire Line
 	8300 4250 8300 4400
 $Comp
@@ -1947,8 +1919,6 @@ $EndComp
 Wire Wire Line
 	8750 3500 8750 3450
 Connection ~ 8750 3450
-Wire Wire Line
-	8750 3450 9200 3450
 Wire Wire Line
 	8750 3800 8750 4400
 Connection ~ 8750 4400
@@ -2154,29 +2124,19 @@ Text Label 9350 1350 0    50   ~ 0
 OFFS
 Wire Wire Line
 	9200 4450 9200 4400
-$Comp
-L Device:L 2.2uH
-U 1 1 5F069436
-P 10100 5400
-F 0 "2.2uH" V 10200 5400 50  0000 R CNN
-F 1 "L" V 10200 5450 50  0000 L CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 10100 5400 50  0001 C CNN
-F 3 "~" H 10100 5400 50  0001 C CNN
-	1    10100 5400
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	9950 5400 9850 5400
 Connection ~ 9850 5400
 Wire Wire Line
-	10250 5400 10400 5400
+	9950 3450 9850 3450
 Wire Wire Line
-	10400 5400 10400 4350
+	8750 3450 9200 3450
 Wire Wire Line
-	9700 3450 10400 3450
+	9200 3500 9200 3450
+Connection ~ 9200 3450
 Wire Wire Line
-	10500 4350 10400 4350
-Connection ~ 10400 4350
+	9200 3800 9200 4400
 Wire Wire Line
-	10400 4350 10400 3450
+	9200 3450 9850 3450
+Wire Wire Line
+	9850 5400 9850 3450
+Connection ~ 9850 3450
 $EndSCHEMATC
