@@ -100,8 +100,6 @@ Text HLabel 9500 3050 2    50   Input ~ 0
 F90
 Text HLabel 9500 2950 2    50   Input ~ 0
 F00
-Text GLabel 7600 4850 2    50   Input ~ 0
-+5.0V-ATX
 Wire Wire Line
 	7250 5300 7250 5250
 Connection ~ 7250 5250
@@ -166,17 +164,6 @@ Wire Wire Line
 	5900 4950 6600 4950
 Wire Wire Line
 	5900 4950 5900 5200
-$Comp
-L power:GNDA #PWR?
-U 1 1 5EA8485E
-P 6150 5650
-F 0 "#PWR?" H 6150 5400 50  0001 C CNN
-F 1 "GNDA" H 6155 5477 50  0000 C CNN
-F 2 "" H 6150 5650 50  0001 C CNN
-F 3 "" H 6150 5650 50  0001 C CNN
-	1    6150 5650
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	6550 4650 6600 4650
 Wire Wire Line
@@ -632,17 +619,6 @@ Wire Wire Line
 Wire Wire Line
 	3650 3800 3650 3750
 $Comp
-L power:GNDA #PWR?
-U 1 1 5EE7400B
-P 3650 3800
-F 0 "#PWR?" H 3650 3550 50  0001 C CNN
-F 1 "GNDA" H 3655 3627 50  0000 C CNN
-F 2 "" H 3650 3800 50  0001 C CNN
-F 3 "" H 3650 3800 50  0001 C CNN
-	1    3650 3800
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:R R?
 U 1 1 5EE86C87
 P 3350 4000
@@ -663,8 +639,6 @@ Wire Wire Line
 	3800 4250 3800 3850
 Wire Wire Line
 	3800 3850 4150 3850
-Text GLabel 4500 2700 2    50   Input ~ 0
-+5.0V-ATX
 Wire Wire Line
 	4150 3150 4150 3100
 Connection ~ 4150 3100
@@ -716,8 +690,6 @@ Wire Wire Line
 Connection ~ 3900 2700
 Wire Wire Line
 	3650 3150 3650 2700
-Text GLabel 4250 1250 2    50   Input ~ 0
-+5.0V-ATX
 $Comp
 L Device:C C?
 U 1 1 5EEFE3FC
@@ -872,17 +844,6 @@ Wire Wire Line
 	8550 2250 8250 2250
 Wire Wire Line
 	8250 2650 8550 2650
-$Comp
-L power:GNDA #PWR?
-U 1 1 5EFFC949
-P 9050 2650
-F 0 "#PWR?" H 9050 2400 50  0001 C CNN
-F 1 "GNDA" H 9055 2477 50  0000 C CNN
-F 2 "" H 9050 2650 50  0001 C CNN
-F 3 "" H 9050 2650 50  0001 C CNN
-	1    9050 2650
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	8950 2650 9050 2650
 Wire Wire Line
@@ -1061,37 +1022,79 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GNDA #PWR?
-U 1 1 5EB6147C
-P 4150 2100
-F 0 "#PWR?" H 4150 1850 50  0001 C CNN
-F 1 "GNDA" H 4155 1927 50  0000 C CNN
-F 2 "" H 4150 2100 50  0001 C CNN
-F 3 "" H 4150 2100 50  0001 C CNN
-	1    4150 2100
+L power:GND #PWR?
+U 1 1 5EA99CAE
+P 3100 2150
+F 0 "#PWR?" H 3100 1900 50  0001 C CNN
+F 1 "GND" H 3105 1977 50  0000 C CNN
+F 2 "" H 3100 2150 50  0001 C CNN
+F 3 "" H 3100 2150 50  0001 C CNN
+	1    3100 2150
 	1    0    0    -1  
 $EndComp
-Connection ~ 4150 2100
+Wire Wire Line
+	3100 2150 3100 2100
 $Comp
-L power:GNDA #PWR?
-U 1 1 5EB63E92
+L power:GND #PWR?
+U 1 1 5EAAA0F9
+P 3650 3800
+F 0 "#PWR?" H 3650 3550 50  0001 C CNN
+F 1 "GND" H 3655 3627 50  0000 C CNN
+F 2 "" H 3650 3800 50  0001 C CNN
+F 3 "" H 3650 3800 50  0001 C CNN
+	1    3650 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EAACE44
+P 6150 5650
+F 0 "#PWR?" H 6150 5400 50  0001 C CNN
+F 1 "GND" H 6155 5477 50  0000 C CNN
+F 2 "" H 6150 5650 50  0001 C CNN
+F 3 "" H 6150 5650 50  0001 C CNN
+	1    6150 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EAAFEE2
 P 4150 3150
 F 0 "#PWR?" H 4150 2900 50  0001 C CNN
-F 1 "GNDA" H 4155 2977 50  0000 C CNN
+F 1 "GND" H 4155 2977 50  0000 C CNN
 F 2 "" H 4150 3150 50  0001 C CNN
 F 3 "" H 4150 3150 50  0001 C CNN
 	1    4150 3150
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GNDA #PWR?
-U 1 1 5EB659FD
+L power:GND #PWR?
+U 1 1 5EAB2AEC
 P 7250 5300
 F 0 "#PWR?" H 7250 5050 50  0001 C CNN
-F 1 "GNDA" H 7255 5127 50  0000 C CNN
+F 1 "GND" H 7255 5127 50  0000 C CNN
 F 2 "" H 7250 5300 50  0001 C CNN
 F 3 "" H 7250 5300 50  0001 C CNN
 	1    7250 5300
 	1    0    0    -1  
 $EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EAB6314
+P 9050 2650
+AR Path="/5E9E88B8/5EAB6314" Ref="#PWR?"  Part="1" 
+AR Path="/5E9F4ACB/5EAB6314" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 9050 2400 50  0001 C CNN
+F 1 "GND" H 9055 2477 50  0000 C CNN
+F 2 "" H 9050 2650 50  0001 C CNN
+F 3 "" H 9050 2650 50  0001 C CNN
+	1    9050 2650
+	1    0    0    -1  
+$EndComp
+Text GLabel 4250 1250 2    50   Input ~ 0
++5.0V-TX
+Text GLabel 4500 2700 2    50   Input ~ 0
++5.0V-TX
+Text GLabel 7600 4850 2    50   Input ~ 0
++5.0V-TX
 $EndSCHEMATC

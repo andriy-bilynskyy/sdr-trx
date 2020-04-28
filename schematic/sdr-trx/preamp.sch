@@ -25,17 +25,6 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/hmc589a
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GNDA #PWR?
-U 1 1 5EA34927
-P 5200 4250
-F 0 "#PWR?" H 5200 4000 50  0001 C CNN
-F 1 "GNDA" H 5205 4077 50  0000 C CNN
-F 2 "" H 5200 4250 50  0001 C CNN
-F 3 "" H 5200 4250 50  0001 C CNN
-	1    5200 4250
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:C C?
 U 1 1 5EA39D16
 P 4450 3800
@@ -166,17 +155,6 @@ Wire Wire Line
 Connection ~ 5300 2900
 Wire Wire Line
 	5300 2900 4900 2900
-$Comp
-L power:GNDA #PWR?
-U 1 1 5EA42EC6
-P 4900 3350
-F 0 "#PWR?" H 4900 3100 50  0001 C CNN
-F 1 "GNDA" H 4905 3177 50  0000 C CNN
-F 2 "" H 4900 3350 50  0001 C CNN
-F 3 "" H 4900 3350 50  0001 C CNN
-	1    4900 3350
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4450 3250 4450 3300
 Wire Wire Line
@@ -214,9 +192,35 @@ F 4 "*" H 4200 2900 50  0000 C CNN "Optional"
 	0    -1   -1   0   
 $EndComp
 Text GLabel 3950 2900 0    50   Input ~ 0
-+5.0V-ATX
++5.0V-TX
 Wire Wire Line
 	3950 2900 4050 2900
 Text Notes 3450 2550 0    50   ~ 0
 * Limit gain to 17dB to reach max IC output power 20dBm, P>0.3W
+$Comp
+L power:GND #PWR?
+U 1 1 5EACF610
+P 5200 4250
+AR Path="/5E9F4ACB/5EACF610" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/5EACF610" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 5200 4000 50  0001 C CNN
+F 1 "GND" H 5205 4077 50  0000 C CNN
+F 2 "" H 5200 4250 50  0001 C CNN
+F 3 "" H 5200 4250 50  0001 C CNN
+	1    5200 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EACFE76
+P 4900 3350
+AR Path="/5E9F4ACB/5EACFE76" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/5EACFE76" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 4900 3100 50  0001 C CNN
+F 1 "GND" H 4905 3177 50  0000 C CNN
+F 2 "" H 4900 3350 50  0001 C CNN
+F 3 "" H 4900 3350 50  0001 C CNN
+	1    4900 3350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
