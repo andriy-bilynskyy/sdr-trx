@@ -1,0 +1,58 @@
+* Filename:  BFU520W_GP_SPICE.PRM
+* BFU520W SPICE MODEL
+* NXP  SEMICONDUCTORS		version 1.0
+* Date: November 2013
+*
+* PACKAGE: SOT323 DIE MODEL: BFU520D
+* 1: COLLECTOR; 2: BASE; 3: EMITTER
+.SUBCKT BFU520W 1 2 3
+Q1 6 5 7 7 BFU520D
+* SOT23 parasitic model
+Lc_wire		9 6 360p
+Lb_wire		4 5 800p 
+Le_wire		7 8 950p
+Lc_lead		1 9 90p
+Lb_lead		2 4 0.001p
+Le_lead		3 8 0.001p
+Ccb		4 9 65f
+Cbasepad	5 6 215f
+Cbe		4 8 45f
+Cce		8 9 45f
+Cemitterpad	6 7 235f
+*
+.MODEL  BFU520D   NPN
++IS		71.49E-18 
++BF		133.81
++NF		1.00
++VAF		183.69
++IKF		252.72E-3
++ISE		89.40E-15
++NE		2.50
++BR		512.49E-3
++NR		1.00
++VAR		2.40
++IKR		31.59E-3
++ISC		71.49E-18
++NC		1.10
++RB		1.17
++IRB		26.78E-3
++RBM		0.67
++RE		0.59
++RC		0.89
++CJE		506.04E-15
++VJE		950.00E-3
++MJE		335.33E-3
++CJC		74.16E-15
++VJC		720.00E-3	
++MJC		318.44E-3	
++XCJC		0.50
++FC		850.00E-3	
++TF		10.04E-12
++XTF		10.00	
++VTF		1.00	
++ITF		42.55E-3	
++PTF		0.00
++TR		0.00
++KF		109.67e-12
++AF		2.00
+.ENDS
