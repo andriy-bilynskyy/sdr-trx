@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 6
+Sheet 5 7
 Title "Preamplifier"
 Date "2020-04-20"
 Rev "A"
@@ -184,7 +184,7 @@ AR Path="/5E9E88B8/5EA52F92" Ref="R?"  Part="1"
 AR Path="/5E9F4ACB/5EA52F92" Ref="R?"  Part="1" 
 AR Path="/5EA333CB/5EA52F92" Ref="R?"  Part="1" 
 F 0 "R?" V 4300 2950 50  0000 L CNN
-F 1 "10R" V 4300 2850 50  0000 R CNN
+F 1 "22R" V 4300 2850 50  0000 R CNN
 F 2 "Resistor_SMD:R_1210_3225Metric_Pad1.42x2.65mm_HandSolder" V 4130 2900 50  0001 C CNN
 F 3 "~" H 4200 2900 50  0001 C CNN
 F 4 "*" H 4200 2900 50  0000 C CNN "Optional"
@@ -196,7 +196,7 @@ Text GLabel 3950 2900 0    50   Input ~ 0
 Wire Wire Line
 	3950 2900 4050 2900
 Text Notes 3450 2550 0    50   ~ 0
-* Limit gain to 17dB to reach max IC output power 20dBm, P>0.3W
+* Limit gain to 14dB to reach max IC output power 20dBm, PR>0.3W
 $Comp
 L power:GND #PWR?
 U 1 1 5EACF610

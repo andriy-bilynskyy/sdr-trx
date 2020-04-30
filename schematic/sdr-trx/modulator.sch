@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 6
+Sheet 3 7
 Title "Modulator"
 Date "2020-04-20"
 Rev "A"
@@ -468,7 +468,7 @@ P 7800 2000
 AR Path="/5E9E88B8/5ED787F2" Ref="R?"  Part="1" 
 AR Path="/5E9F4ACB/5ED787F2" Ref="R?"  Part="1" 
 F 0 "R?" H 7700 2050 50  0000 R CNN
-F 1 "10K" H 7700 1950 50  0000 R CNN
+F 1 "100K" H 7700 1950 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 7730 2000 50  0001 C CNN
 F 3 "~" H 7800 2000 50  0001 C CNN
 	1    7800 2000
