@@ -1,0 +1,38 @@
+Version 4
+SymbolType BLOCK
+LINE Normal -16 -32 -80 -32
+LINE Normal -16 0 -80 0
+LINE Normal -16 32 -80 32
+LINE Normal 16 -32 80 -32
+LINE Normal 16 -16 16 -32
+LINE Normal 16 32 80 32
+LINE Normal 16 16 16 32
+LINE Normal 0 32 0 -32
+RECTANGLE Normal 64 48 -64 -48 2
+CIRCLE Normal -12 -22 -17 -27
+CIRCLE Normal 17 -6 12 -11
+CIRCLE Normal -11 10 -16 5
+ARC Normal -23 -32 -7 -16 -16 -18 -16 -32
+ARC Normal -23 -16 -7 0 -16 -2 -16 -16
+ARC Normal -23 0 -7 16 -16 14 -16 0
+ARC Normal -23 16 -7 32 -16 30 -16 16
+ARC Normal 23 -16 7 0 16 -16 16 -2
+ARC Normal 23 0 7 16 16 0 16 14
+WINDOW 0 1 -48 Bottom 2
+WINDOW 3 1 48 Top 2
+SYMATTR Value CX2047LANL
+PIN -80 -32 NONE 8
+PINATTR PinName SEC+
+PINATTR SpiceOrder 1
+PIN -80 0 NONE 8
+PINATTR PinName SECCT
+PINATTR SpiceOrder 2
+PIN -80 32 NONE 8
+PINATTR PinName SEC-
+PINATTR SpiceOrder 3
+PIN 80 -32 NONE 8
+PINATTR PinName PRI+
+PINATTR SpiceOrder 4
+PIN 80 32 NONE 8
+PINATTR PinName PRI-
+PINATTR SpiceOrder 5
