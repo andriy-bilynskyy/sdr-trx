@@ -30,6 +30,12 @@ K RF GAIN BLOCK
 F https://www.analog.com/media/en/technical-documentation/data-sheets/hmc589a.pdf
 $ENDCMP
 #
+$CMP LT6238
+D Quad Operational Amplifiers, SSOP-16
+K quad opamp
+F https://www.analog.com/media/en/technical-documentation/data-sheets/623637fb.pdf
+$ENDCMP
+#
 $CMP LTC6228XS8
 D 0.88nV/√Hz 730MHz, 500V/µs, Low Distortion Rail-to-Rail Output OpAmps with Shutdown, SO-8
 K opamp operational amplifier single
