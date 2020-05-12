@@ -1,0 +1,26 @@
+*PD85004_rev1_0
+*1/27/2009
+*STMicroelectronics 
+*port 1 = GATE , 2 = Drain , 3 = Source
+*
+.SUBCKT  PD85004 10 20 30
+LGATE 10  11     1N
+RGATE 11  12     .5
+CG    10  30     .1P
+CRSS  12  17     .489P
+CISS  12  14     15.7P
+LS    14  30     0.046N
+CS    14  30     .2P
+R     17  13     100K
+LD    17  20     0.9N
+CD    20  30     .1P
+MOS   13  12  14  14     mos_85004  L=.5UM W= 20mM 
+JFET  17  14  13         jf_85004		  
+DBODY 14  17             d_85004		    
+
+.MODEL mos_85004 nmos (vto=3 KP=1.54E-5 LAMBDA=1 RD=0.6 RS=0.6)
+.MODEL jf_85004  njf  (VTO=-6 BETA=.6 LAMBDA=.1)
+.MODEL d_85004  d    (CJO=30p RS=0.25 VJ=1.1 M=0.35 BV=75)
+
+.ENDS
+
