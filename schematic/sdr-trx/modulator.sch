@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 7
+Sheet 3 8
 Title "Modulator"
 Date "2020-04-20"
 Rev "A"
@@ -1098,8 +1098,8 @@ AR Path="/5EA188E4/5F093E58" Ref="Q?"  Part="1"
 AR Path="/5E9F4ACB/5F093E58" Ref="Q?"  Part="1" 
 F 0 "Q?" H 8905 3546 50  0000 L CNN
 F 1 "BSS138P" H 8905 3455 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 8900 3600 50  0001 C CNN
-F 3 "~" H 8700 3500 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8900 3600 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/BSS138P.pdf" H 8700 3500 50  0001 C CNN
 	1    8700 3500
 	-1   0    0    -1  
 $EndComp

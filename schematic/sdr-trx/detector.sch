@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 7
+Sheet 4 8
 Title "Tayloe Detector"
 Date "2020-04-20"
 Rev "A"
@@ -1728,8 +1728,8 @@ U 1 1 5EF77976
 P 9750 2400
 F 0 "Q?" H 9955 2446 50  0000 L CNN
 F 1 "BSS138P" H 9955 2355 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 9950 2500 50  0001 C CNN
-F 3 "~" H 9750 2400 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9950 2500 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/BSS138P.pdf" H 9750 2400 50  0001 C CNN
 	1    9750 2400
 	-1   0    0    -1  
 $EndComp

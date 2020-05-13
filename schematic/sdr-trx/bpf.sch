@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 7
+Sheet 7 8
 Title "BPF"
 Date "2020-04-20"
 Rev "A"
@@ -1905,40 +1905,8 @@ Wire Wire Line
 	1700 1500 1700 3600
 Wire Wire Line
 	1700 3600 1850 3600
-$Comp
-L Device:C C?
-U 1 1 5F0349D4
-P 1100 1400
-AR Path="/5E9E88B8/5F0349D4" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5F0349D4" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5F0349D4" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5F0349D4" Ref="C?"  Part="1" 
-F 0 "C?" V 1250 1400 50  0000 C CNN
-F 1 "0.1uF" V 950 1400 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 1138 1250 50  0001 C CNN
-F 3 "~" H 1100 1400 50  0001 C CNN
-	1    1100 1400
-	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:C C?
-U 1 1 5F0355B7
-P 1100 950
-AR Path="/5E9E88B8/5F0355B7" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5F0355B7" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5F0355B7" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5F0355B7" Ref="C?"  Part="1" 
-F 0 "C?" V 1250 950 50  0000 C CNN
-F 1 "0.1uF" V 950 950 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 1138 800 50  0001 C CNN
-F 3 "~" H 1100 950 50  0001 C CNN
-	1    1100 950 
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	1700 1500 1700 950 
-Wire Wire Line
-	1700 950  1250 950 
 Connection ~ 1700 1500
 Wire Wire Line
 	1850 1800 1300 1800
@@ -1968,12 +1936,6 @@ Text Label 1300 4200 0    50   ~ 0
 B2RX#
 Text Label 1300 4300 0    50   ~ 0
 B2TX#
-Wire Wire Line
-	900  1400 950  1400
-Wire Wire Line
-	1250 1400 1750 1400
-Wire Wire Line
-	950  950  900  950 
 Wire Wire Line
 	7350 2750 7300 2750
 Connection ~ 7300 2750
@@ -2096,44 +2058,10 @@ Text HLabel 10300 1400 2    50   Input ~ 0
 RX-IN
 Text HLabel 10300 950  2    50   Output ~ 0
 TX-OUT
-$Comp
-L Device:C C?
-U 1 1 5F4C7E75
-P 8500 1400
-AR Path="/5E9E88B8/5F4C7E75" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5F4C7E75" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5F4C7E75" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5F4C7E75" Ref="C?"  Part="1" 
-F 0 "C?" V 8650 1400 50  0000 C CNN
-F 1 "0.1uF" V 8350 1400 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8538 1250 50  0001 C CNN
-F 3 "~" H 8500 1400 50  0001 C CNN
-	1    8500 1400
-	0    1    -1   0   
-$EndComp
-$Comp
-L Device:C C?
-U 1 1 5F4C7E7B
-P 8500 950
-AR Path="/5E9E88B8/5F4C7E7B" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5F4C7E7B" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5F4C7E7B" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5F4C7E7B" Ref="C?"  Part="1" 
-F 0 "C?" V 8650 950 50  0000 C CNN
-F 1 "0.1uF" V 8350 950 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8538 800 50  0001 C CNN
-F 3 "~" H 8500 950 50  0001 C CNN
-	1    8500 950 
-	0    1    -1   0   
-$EndComp
-Wire Wire Line
-	7900 950  8350 950 
 Text Label 8300 950  2    50   ~ 0
 BIAS3
 Text Label 8300 1400 2    50   ~ 0
 BIAS4
-Wire Wire Line
-	7850 1400 8350 1400
 Connection ~ 7850 1400
 Wire Wire Line
 	7900 1500 7900 950 
@@ -2310,31 +2238,20 @@ $EndComp
 $Comp
 L Device:C C?
 U 1 1 5F4CF332
-P 9850 2550
+P 9350 4250
 AR Path="/5E9E88B8/5F4CF332" Ref="C?"  Part="1" 
 AR Path="/5E9F4ACB/5F4CF332" Ref="C?"  Part="1" 
 AR Path="/5EA188E4/5F4CF332" Ref="C?"  Part="1" 
 AR Path="/5EAAFBD4/5F4CF332" Ref="C?"  Part="1" 
-F 0 "C?" H 9965 2596 50  0000 L CNN
-F 1 "0.1uF" H 9965 2505 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 9888 2400 50  0001 C CNN
-F 3 "~" H 9850 2550 50  0001 C CNN
-	1    9850 2550
+F 0 "C?" H 9465 4296 50  0000 L CNN
+F 1 "0.1uF" H 9465 4205 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 9388 4100 50  0001 C CNN
+F 3 "~" H 9350 4250 50  0001 C CNN
+	1    9350 4250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9400 2700 9400 2750
-Wire Wire Line
-	9400 2750 9850 2750
-Wire Wire Line
-	9850 2750 9850 2700
-Wire Wire Line
-	9850 2350 9850 2400
-Wire Wire Line
 	9400 2400 9400 2350
-Connection ~ 9400 2350
-Wire Wire Line
-	9400 2350 9850 2350
 $Comp
 L power:GND #PWR?
 U 1 1 5F54A49D
@@ -2349,18 +2266,8 @@ F 3 "" H 9400 2800 50  0001 C CNN
 	1    9400 2800
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	9400 2800 9400 2750
-Connection ~ 9400 2750
-Text GLabel 9950 2350 2    50   Input ~ 0
+Text GLabel 9650 2350 2    50   Input ~ 0
 +3.3V
-Wire Wire Line
-	9950 2350 9850 2350
-Connection ~ 9850 2350
-Wire Wire Line
-	8650 950  10300 950 
-Wire Wire Line
-	8650 1400 10300 1400
 $Comp
 L Device:C C?
 U 1 1 5F925E11
@@ -2896,8 +2803,8 @@ AR Path="/5E9F4ACB/5F41E9C0" Ref="Q?"  Part="1"
 AR Path="/5EAAFBD4/5F41E9C0" Ref="Q?"  Part="1" 
 F 0 "Q?" H 9050 5100 50  0000 R CNN
 F 1 "BSS138P" H 9050 5000 50  0000 R CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 9300 5000 50  0001 C CNN
-F 3 "~" H 9100 4900 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9300 5000 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/BSS138P.pdf" H 9100 4900 50  0001 C CNN
 	1    9100 4900
 	-1   0    0    -1  
 $EndComp
@@ -2907,6 +2814,7 @@ U 1 1 5F41E9C6
 P 9000 5350
 AR Path="/5E9F4ACB/5F41E9C6" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5F41E9C6" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/5F41E9C6" Ref="#PWR?"  Part="1" 
 F 0 "#PWR?" H 9000 5100 50  0001 C CNN
 F 1 "GND" H 9005 5177 50  0000 C CNN
 F 2 "" H 9000 5350 50  0001 C CNN
@@ -3015,18 +2923,52 @@ $EndComp
 Wire Wire Line
 	9000 4600 9000 4650
 Connection ~ 9000 4650
-Text GLabel 9150 4250 2    50   Input ~ 0
+Text GLabel 9450 4050 2    50   Input ~ 0
 +3.3V
-Wire Wire Line
-	9000 4300 9000 4250
-Wire Wire Line
-	9150 4250 9000 4250
 Wire Wire Line
 	8950 2450 8950 2350
 Wire Wire Line
 	8950 2350 9400 2350
 Wire Wire Line
 	8950 3500 8950 3450
+Wire Wire Line
+	900  950  1700 950 
+Wire Wire Line
+	900  1400 1750 1400
+$Comp
+L power:GND #PWR?
+U 1 1 5ED1E8CD
+P 9350 4450
+AR Path="/5E9F4ACB/5ED1E8CD" Ref="#PWR?"  Part="1" 
+AR Path="/5EA188E4/5ED1E8CD" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/5ED1E8CD" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 9350 4200 50  0001 C CNN
+F 1 "GND" H 9355 4277 50  0000 C CNN
+F 2 "" H 9350 4450 50  0001 C CNN
+F 3 "" H 9350 4450 50  0001 C CNN
+	1    9350 4450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9350 4450 9350 4400
+Wire Wire Line
+	9450 4050 9350 4050
+Wire Wire Line
+	9350 4100 9350 4050
+Connection ~ 9350 4050
+Wire Wire Line
+	9350 4050 9000 4050
+Wire Wire Line
+	9000 4050 9000 4300
+Wire Wire Line
+	9400 2700 9400 2800
+Wire Wire Line
+	9650 2350 9400 2350
+Connection ~ 9400 2350
+Wire Wire Line
+	7900 950  10300 950 
+Wire Wire Line
+	7850 1400 10300 1400
 Wire Bus Line
 	10250 4300 10250 4750
 $EndSCHEMATC

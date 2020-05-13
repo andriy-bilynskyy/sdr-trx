@@ -1,5 +1,11 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP AD5243BRMZ
+D Dual, 256-Position, I2C-Compatible Digital Potentiometer
+K digital potentiometer
+F https://www.analog.com/media/en/technical-documentation/data-sheets/AD5243_5248.pdf
+$ENDCMP
+#
 $CMP AD8601
 D Precision CMOS, Single-Supply, Rail-to-Rail, Input/Output Wideband Single Operational Amplifiers
 K single opamp

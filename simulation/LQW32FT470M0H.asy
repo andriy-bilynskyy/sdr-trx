@@ -1,0 +1,16 @@
+Version 4
+SymbolType BLOCK
+ARC Normal -48 16 -16 -16 -16 0 -48 0
+ARC Normal -16 16 16 -16 16 0 -16 0
+ARC Normal 16 16 48 -16 48 0 16 0
+WINDOW 0 0 -16 Bottom 2
+WINDOW 3 0 16 Top 2
+SYMATTR Prefix X
+SYMATTR Value LQW32FT470M0H
+SYMATTR ModelFile LQW32FT470M0H.mod
+PIN -48 0 NONE 8
+PINATTR PinName port1
+PINATTR SpiceOrder 1
+PIN 48 0 NONE 8
+PINATTR PinName port2
+PINATTR SpiceOrder 2

@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 6 7
+Sheet 6 8
 Title "LNA"
 Date "2020-04-20"
 Rev "A"
@@ -19,8 +19,8 @@ U 1 1 5EA847C0
 P 7100 4150
 F 0 "Q?" H 7291 4196 50  0000 L CNN
 F 1 "BFU520W" H 7291 4105 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-323_SC-70_Handsoldering" H 7300 4250 50  0001 C CNN
-F 3 "~" H 7100 4150 50  0001 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 7300 4250 50  0001 C CNN
+F 3 "https://www.nxp.com/docs/en/data-sheet/BFU520W.pdf" H 7100 4150 50  0001 C CNN
 	1    7100 4150
 	1    0    0    -1  
 $EndComp
@@ -107,19 +107,6 @@ F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7038 3150 50  
 F 3 "~" H 7000 3300 50  0001 C CNN
 	1    7000 3300
 	0    -1   -1   0   
-$EndComp
-$Comp
-L Device:L L?
-U 1 1 5EAB8F95
-P 7200 2850
-AR Path="/5EA333CB/5EAB8F95" Ref="L?"  Part="1" 
-AR Path="/5EA436AA/5EAB8F95" Ref="L?"  Part="1" 
-F 0 "L?" H 7253 2896 50  0000 L CNN
-F 1 "MLZ2012N101LT000" H 7253 2805 50  0000 L CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7200 2850 50  0001 C CNN
-F 3 "~" H 7200 2850 50  0001 C CNN
-	1    7200 2850
-	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R?
@@ -466,6 +453,19 @@ F 1 "GND" H 5655 2777 50  0000 C CNN
 F 2 "" H 5650 2950 50  0001 C CNN
 F 3 "" H 5650 2950 50  0001 C CNN
 	1    5650 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:L L?
+U 1 1 5ED1C3BE
+P 7200 2850
+AR Path="/5EA333CB/5ED1C3BE" Ref="L?"  Part="1" 
+AR Path="/5EA436AA/5ED1C3BE" Ref="L?"  Part="1" 
+F 0 "L?" H 7253 2896 50  0000 L CNN
+F 1 "LQW32FT470M0HL" H 7253 2805 50  0000 L CNN
+F 2 "Inductor_SMD:L_1210_3225Metric_Pad1.42x2.65mm_HandSolder" H 7200 2850 50  0001 C CNN
+F 3 "~" H 7200 2850 50  0001 C CNN
+	1    7200 2850
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
