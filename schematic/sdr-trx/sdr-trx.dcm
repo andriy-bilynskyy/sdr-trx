@@ -60,4 +60,10 @@ K TTL DFF
 F http://www.potatosemi.com/potatosemiweb/datasheet/PO74G74A.pdf
 $ENDCMP
 #
+$CMP SN74CBT3305C
+D Dual 1 to 1 Analog Multiplexer
+K TTL Analog Multiplexer
+F https://www.ti.com/lit/ds/symlink/sn74cbt3305c.pdf
+$ENDCMP
+#
 #End Doc Library
