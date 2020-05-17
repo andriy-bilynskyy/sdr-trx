@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 5 8
+Sheet 5 9
 Title "Preamplifier"
 Date "2020-04-20"
 Rev "A"
@@ -223,7 +223,7 @@ AR Path="/5E9E88B8/5EC2DC41" Ref="C?"  Part="1"
 AR Path="/5EA333CB/5EC2DC41" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5EC2DC41" Ref="C?"  Part="1" 
 F 0 "C?" H 5950 2550 50  0000 L CNN
-F 1 "1nF" H 5950 2450 50  0000 L CNN
+F 1 "1.0nF" H 5950 2450 50  0000 L CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5888 2350 50  0001 C CNN
 F 3 "~" H 5850 2500 50  0001 C CNN
 	1    5850 2500

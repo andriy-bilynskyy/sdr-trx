@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 8
+Sheet 1 9
 Title "SDR-TRX"
 Date "2020-04-20"
 Rev "A"
@@ -142,4 +142,63 @@ F7 "TL" O R 9900 3600 50
 $EndSheet
 Wire Wire Line
 	8450 3750 9200 3750
+$Sheet
+S 9000 4150 900  550 
+U 5FE5C441
+F0 "LPF" 50
+F1 "lpf.sch" 50
+F2 "TXIN" I L 9000 4250 50 
+F3 "TXOUT" O L 9000 4500 50 
+F4 "BAND[0..2]" I R 9900 4250 50 
+F5 "TX-EN" I R 9900 4350 50 
+F6 "RXANT" O L 9000 4350 50 
+F7 "TXANT" I L 9000 4600 50 
+F8 "ANT" B R 9900 4600 50 
+$EndSheet
+Wire Wire Line
+	9900 3750 10000 3750
+Wire Wire Line
+	10000 3750 10000 4000
+Wire Wire Line
+	8900 4000 8900 4250
+Wire Wire Line
+	8900 4250 9000 4250
+Wire Wire Line
+	8900 4000 10000 4000
+Wire Wire Line
+	9000 4350 8850 4350
+Wire Wire Line
+	8850 4350 8850 3850
+Wire Wire Line
+	8850 3850 8450 3850
+$Comp
+L Connector:Conn_Coaxial J?
+U 1 1 5ECA0FE2
+P 10300 4600
+F 0 "J?" H 10200 4450 50  0000 R CNN
+F 1 "CON-SMA-EDGE" H 10200 4350 50  0000 R CNN
+F 2 "Connector_Coaxial:SMA_Samtec_SMA-J-P-X-ST-EM1_EdgeMount" H 10300 4600 50  0001 C CNN
+F 3 "https://media.digikey.com/pdf/Data%20Sheets/RF%20Solutions%20PDFs/CON-SMA-EDGE.pdf" H 10300 4600 50  0001 C CNN
+	1    10300 4600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10100 4600 9900 4600
+$Comp
+L power:GND #PWR?
+U 1 1 5ECA886D
+P 10300 4850
+AR Path="/5E9F4ACB/5ECA886D" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/5ECA886D" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/5ECA886D" Ref="#PWR?"  Part="1" 
+AR Path="/5FE5C441/5ECA886D" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 10300 4600 50  0001 C CNN
+F 1 "GND" H 10305 4677 50  0000 C CNN
+F 2 "" H 10300 4850 50  0001 C CNN
+F 3 "" H 10300 4850 50  0001 C CNN
+	1    10300 4850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10300 4850 10300 4800
 $EndSCHEMATC
