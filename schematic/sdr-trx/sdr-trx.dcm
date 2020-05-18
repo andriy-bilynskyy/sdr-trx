@@ -30,6 +30,12 @@ K RF Transformer
 F https://productfinder.pulseeng.com/doc_type/WEB301/doc_num/CX2047LANL-01/doc_part/CX2047LANL.pdf
 $ENDCMP
 #
+$CMP DirectionalCoupler-Bin
+D Cross-connected transformers on binocular core
+K transformer coil magnet
+F ~
+$ENDCMP
+#
 $CMP HMC589AST89E
 D InGaP HBT GAIN BLOCK MMIC AMPLIFIER, DC - 4 GHz
 K RF GAIN BLOCK

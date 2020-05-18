@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 9 9
+Sheet 9 10
 Title "LPF"
 Date "2020-04-20"
 Rev "A"
@@ -13,22 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L Device:C C?
-U 1 1 5FE7977F
-P 4550 1400
-AR Path="/5E9E88B8/5FE7977F" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FE7977F" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FE7977F" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FE7977F" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FE7977F" Ref="C?"  Part="1" 
-F 0 "C?" V 4700 1400 50  0000 C CNN
-F 1 "0.1uF" V 4400 1400 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4588 1250 50  0001 C CNN
-F 3 "~" H 4550 1400 50  0001 C CNN
-	1    4550 1400
-	0    -1   -1   0   
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5FE79785
@@ -78,8 +62,6 @@ F 3 "~" H 5150 1150 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4800 1450 4800 1400
-Wire Wire Line
-	4800 1400 4700 1400
 Wire Wire Line
 	4800 1750 4800 1800
 $Comp
@@ -263,24 +245,6 @@ Wire Wire Line
 Connection ~ 6750 1400
 Wire Wire Line
 	6750 1750 6750 1800
-$Comp
-L Device:C C?
-U 1 1 5FE797A9
-P 7000 1400
-AR Path="/5E9E88B8/5FE797A9" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FE797A9" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FE797A9" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FE797A9" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FE797A9" Ref="C?"  Part="1" 
-F 0 "C?" V 7150 1450 50  0000 L CNN
-F 1 "0.1uF" V 7150 1400 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7038 1250 50  0001 C CNN
-F 3 "~" H 7000 1400 50  0001 C CNN
-	1    7000 1400
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	6850 1400 6750 1400
 Wire Wire Line
 	6100 1800 6750 1800
 Wire Wire Line
@@ -288,22 +252,6 @@ Wire Wire Line
 Connection ~ 5800 1800
 Wire Wire Line
 	5800 1800 6100 1800
-$Comp
-L Device:C C?
-U 1 1 5FEA0EA3
-P 4550 2500
-AR Path="/5E9E88B8/5FEA0EA3" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FEA0EA3" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FEA0EA3" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FEA0EA3" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FEA0EA3" Ref="C?"  Part="1" 
-F 0 "C?" V 4700 2500 50  0000 C CNN
-F 1 "0.1uF" V 4400 2500 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4588 2350 50  0001 C CNN
-F 3 "~" H 4550 2500 50  0001 C CNN
-	1    4550 2500
-	0    -1   -1   0   
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5FEA0EA9
@@ -353,8 +301,6 @@ F 3 "~" H 5150 2250 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4800 2550 4800 2500
-Wire Wire Line
-	4800 2500 4700 2500
 Wire Wire Line
 	4800 2850 4800 2900
 $Comp
@@ -538,24 +484,6 @@ Wire Wire Line
 Connection ~ 6750 2500
 Wire Wire Line
 	6750 2850 6750 2900
-$Comp
-L Device:C C?
-U 1 1 5FEA0F0E
-P 7000 2500
-AR Path="/5E9E88B8/5FEA0F0E" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FEA0F0E" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FEA0F0E" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FEA0F0E" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FEA0F0E" Ref="C?"  Part="1" 
-F 0 "C?" V 7150 2550 50  0000 L CNN
-F 1 "0.1uF" V 7150 2500 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7038 2350 50  0001 C CNN
-F 3 "~" H 7000 2500 50  0001 C CNN
-	1    7000 2500
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	6850 2500 6750 2500
 Wire Wire Line
 	6100 2900 6750 2900
 Wire Wire Line
@@ -563,22 +491,6 @@ Wire Wire Line
 Connection ~ 5800 2900
 Wire Wire Line
 	5800 2900 6100 2900
-$Comp
-L Device:C C?
-U 1 1 5FEAF1B8
-P 4550 3600
-AR Path="/5E9E88B8/5FEAF1B8" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FEAF1B8" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FEAF1B8" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FEAF1B8" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FEAF1B8" Ref="C?"  Part="1" 
-F 0 "C?" V 4700 3600 50  0000 C CNN
-F 1 "0.1uF" V 4400 3600 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4588 3450 50  0001 C CNN
-F 3 "~" H 4550 3600 50  0001 C CNN
-	1    4550 3600
-	0    -1   -1   0   
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5FEAF1BE
@@ -628,8 +540,6 @@ F 3 "~" H 5150 3350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4800 3650 4800 3600
-Wire Wire Line
-	4800 3600 4700 3600
 Wire Wire Line
 	4800 3950 4800 4000
 $Comp
@@ -813,24 +723,6 @@ Wire Wire Line
 Connection ~ 6750 3600
 Wire Wire Line
 	6750 3950 6750 4000
-$Comp
-L Device:C C?
-U 1 1 5FEAF223
-P 7000 3600
-AR Path="/5E9E88B8/5FEAF223" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FEAF223" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FEAF223" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FEAF223" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FEAF223" Ref="C?"  Part="1" 
-F 0 "C?" V 7150 3650 50  0000 L CNN
-F 1 "0.1uF" V 7150 3600 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7038 3450 50  0001 C CNN
-F 3 "~" H 7000 3600 50  0001 C CNN
-	1    7000 3600
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	6850 3600 6750 3600
 Wire Wire Line
 	6100 4000 6750 4000
 Wire Wire Line
@@ -838,22 +730,6 @@ Wire Wire Line
 Connection ~ 5800 4000
 Wire Wire Line
 	5800 4000 6100 4000
-$Comp
-L Device:C C?
-U 1 1 5FEBF096
-P 4550 4700
-AR Path="/5E9E88B8/5FEBF096" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FEBF096" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FEBF096" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FEBF096" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FEBF096" Ref="C?"  Part="1" 
-F 0 "C?" V 4700 4700 50  0000 C CNN
-F 1 "0.1uF" V 4400 4700 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4588 4550 50  0001 C CNN
-F 3 "~" H 4550 4700 50  0001 C CNN
-	1    4550 4700
-	0    -1   -1   0   
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5FEBF09C
@@ -903,8 +779,6 @@ F 3 "~" H 5150 4450 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4800 4750 4800 4700
-Wire Wire Line
-	4800 4700 4700 4700
 Wire Wire Line
 	4800 5050 4800 5100
 $Comp
@@ -1088,24 +962,6 @@ Wire Wire Line
 Connection ~ 6750 4700
 Wire Wire Line
 	6750 5050 6750 5100
-$Comp
-L Device:C C?
-U 1 1 5FEBF101
-P 7000 4700
-AR Path="/5E9E88B8/5FEBF101" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FEBF101" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FEBF101" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FEBF101" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FEBF101" Ref="C?"  Part="1" 
-F 0 "C?" V 7150 4750 50  0000 L CNN
-F 1 "0.1uF" V 7150 4700 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7038 4550 50  0001 C CNN
-F 3 "~" H 7000 4700 50  0001 C CNN
-	1    7000 4700
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	6850 4700 6750 4700
 Wire Wire Line
 	6100 5100 6750 5100
 Wire Wire Line
@@ -1113,22 +969,6 @@ Wire Wire Line
 Connection ~ 5800 5100
 Wire Wire Line
 	5800 5100 6100 5100
-$Comp
-L Device:C C?
-U 1 1 5FF7045F
-P 4550 5800
-AR Path="/5E9E88B8/5FF7045F" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FF7045F" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FF7045F" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FF7045F" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FF7045F" Ref="C?"  Part="1" 
-F 0 "C?" V 4700 5800 50  0000 C CNN
-F 1 "0.1uF" V 4400 5800 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4588 5650 50  0001 C CNN
-F 3 "~" H 4550 5800 50  0001 C CNN
-	1    4550 5800
-	0    -1   -1   0   
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5FF70465
@@ -1178,8 +1018,6 @@ F 3 "~" H 5150 5550 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4800 5850 4800 5800
-Wire Wire Line
-	4800 5800 4700 5800
 Wire Wire Line
 	4800 6150 4800 6200
 $Comp
@@ -1363,24 +1201,6 @@ Wire Wire Line
 Connection ~ 6750 5800
 Wire Wire Line
 	6750 6150 6750 6200
-$Comp
-L Device:C C?
-U 1 1 5FF704CA
-P 7000 5800
-AR Path="/5E9E88B8/5FF704CA" Ref="C?"  Part="1" 
-AR Path="/5EA333CB/5FF704CA" Ref="C?"  Part="1" 
-AR Path="/5EA436AA/5FF704CA" Ref="C?"  Part="1" 
-AR Path="/5EAAFBD4/5FF704CA" Ref="C?"  Part="1" 
-AR Path="/5FE5C441/5FF704CA" Ref="C?"  Part="1" 
-F 0 "C?" V 7150 5850 50  0000 L CNN
-F 1 "0.1uF" V 7150 5800 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7038 5650 50  0001 C CNN
-F 3 "~" H 7000 5800 50  0001 C CNN
-	1    7000 5800
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	6850 5800 6750 5800
 Wire Wire Line
 	6100 6200 6750 6200
 Wire Wire Line
@@ -1391,13 +1211,7 @@ Wire Wire Line
 Wire Wire Line
 	4350 1600 4350 2500
 Wire Wire Line
-	4350 2500 4400 2500
-Wire Wire Line
 	4300 1800 4300 3600
-Wire Wire Line
-	4300 3600 4400 3600
-Wire Wire Line
-	4400 4700 4250 4700
 Wire Wire Line
 	4250 4700 4250 2000
 Wire Wire Line
@@ -1406,8 +1220,6 @@ Wire Wire Line
 	4300 1800 4150 1800
 Wire Wire Line
 	4350 1600 4150 1600
-Wire Wire Line
-	4150 1400 4400 1400
 $Comp
 L Relay:G6K-2 K?
 U 1 1 6002B9DA
@@ -1480,8 +1292,6 @@ Wire Wire Line
 	2600 1600 2700 1600
 Wire Wire Line
 	2600 2000 2700 2000
-Wire Wire Line
-	4400 5800 4200 5800
 Wire Wire Line
 	4200 5800 4200 2600
 Wire Wire Line
@@ -1642,19 +1452,9 @@ Text GLabel 9250 750  2    50   Input ~ 0
 Wire Wire Line
 	7300 1600 7300 2500
 Wire Wire Line
-	7300 2500 7150 2500
-Wire Wire Line
 	7350 1800 7350 3600
 Wire Wire Line
-	7350 3600 7150 3600
-Wire Wire Line
-	7150 4700 7400 4700
-Wire Wire Line
 	7400 4700 7400 2000
-Wire Wire Line
-	7150 1400 7500 1400
-Wire Wire Line
-	7150 5800 7450 5800
 Wire Wire Line
 	9850 2100 10500 2100
 $Comp
@@ -1844,10 +1644,8 @@ Wire Wire Line
 Wire Wire Line
 	8500 3850 8400 3850
 Wire Wire Line
-	8400 3850 8400 4850
-Wire Wire Line
-	8400 4850 10500 4850
-Text HLabel 10500 4850 2    50   Input ~ 0
+	8400 3850 8400 4750
+Text HLabel 10500 4750 2    50   Input ~ 0
 TXANT
 Text HLabel 10500 3750 2    50   BiDi ~ 0
 ANT
@@ -1941,6 +1739,46 @@ Wire Wire Line
 Wire Wire Line
 	8350 4250 8350 5100
 Connection ~ 8350 4250
+$Comp
+L Device:C C?
+U 1 1 5EC81FA4
+P 8800 4750
+AR Path="/5E9E88B8/5EC81FA4" Ref="C?"  Part="1" 
+AR Path="/5EA333CB/5EC81FA4" Ref="C?"  Part="1" 
+AR Path="/5EA436AA/5EC81FA4" Ref="C?"  Part="1" 
+AR Path="/5EAAFBD4/5EC81FA4" Ref="C?"  Part="1" 
+AR Path="/5FE5C441/5EC81FA4" Ref="C?"  Part="1" 
+F 0 "C?" V 8950 4800 50  0000 L CNN
+F 1 "0.1uF" V 8950 4750 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8838 4600 50  0001 C CNN
+F 3 "~" H 8800 4750 50  0001 C CNN
+	1    8800 4750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8650 4750 8400 4750
+Wire Wire Line
+	8950 4750 10500 4750
+Wire Wire Line
+	4150 1400 4800 1400
+Wire Wire Line
+	4350 2500 4800 2500
+Wire Wire Line
+	4300 3600 4800 3600
+Wire Wire Line
+	4250 4700 4800 4700
+Wire Wire Line
+	4200 5800 4800 5800
+Wire Wire Line
+	6750 5800 7450 5800
+Wire Wire Line
+	6750 4700 7400 4700
+Wire Wire Line
+	6750 3600 7350 3600
+Wire Wire Line
+	6750 2500 7300 2500
+Wire Wire Line
+	6750 1400 7500 1400
 Wire Bus Line
 	1450 3200 1450 3650
 $EndSCHEMATC

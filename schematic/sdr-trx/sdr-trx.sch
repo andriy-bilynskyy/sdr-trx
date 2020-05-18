@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 9
+Sheet 1 10
 Title "SDR-TRX"
 Date "2020-04-20"
 Rev "A"
@@ -192,6 +192,7 @@ AR Path="/5E9F4ACB/5ECA886D" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5ECA886D" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5ECA886D" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5ECA886D" Ref="#PWR?"  Part="1" 
+AR Path="/5ECA886D" Ref="#PWR?"  Part="1" 
 F 0 "#PWR?" H 10300 4600 50  0001 C CNN
 F 1 "GND" H 10305 4677 50  0000 C CNN
 F 2 "" H 10300 4850 50  0001 C CNN
@@ -201,4 +202,26 @@ F 3 "" H 10300 4850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	10300 4850 10300 4800
+$Sheet
+S 8100 4850 650  300 
+U 5EC50630
+F0 "SWR meter" 50
+F1 "swr-meter.sch" 50
+F2 "IN" I R 8750 4950 50 
+F3 "OUT" O R 8750 5050 50 
+F4 "FWD" O L 8100 4950 50 
+F5 "REV" O L 8100 5050 50 
+$EndSheet
+Wire Wire Line
+	9000 4600 8900 4600
+Wire Wire Line
+	8900 4600 8900 5050
+Wire Wire Line
+	8850 4950 8850 4500
+Wire Wire Line
+	8850 4500 9000 4500
+Wire Wire Line
+	8750 4950 8850 4950
+Wire Wire Line
+	8750 5050 8900 5050
 $EndSCHEMATC
