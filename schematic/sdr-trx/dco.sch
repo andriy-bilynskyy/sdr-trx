@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 10
+Sheet 2 11
 Title "DCO"
 Date "2020-04-20"
 Rev "A"
@@ -573,4 +573,6 @@ Wire Wire Line
 Wire Wire Line
 	4450 2450 4200 2450
 Connection ~ 4200 2450
+Text Notes 4350 3450 0    50   ~ 0
+addr = 0x60
 $EndSCHEMATC

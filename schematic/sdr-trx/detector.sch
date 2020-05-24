@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 10
+Sheet 4 11
 Title "Tayloe Detector"
 Date "2020-04-20"
 Rev "A"
@@ -20,9 +20,9 @@ P 8350 1850
 AR Path="/5E9F4ACB/5EB9C5CC" Ref="U?"  Part="1" 
 AR Path="/5EA188E4/5EB9C5CC" Ref="U?"  Part="1" 
 F 0 "U?" H 8300 2450 50  0000 R CNN
-F 1 "SN74CBT3253" H 8250 1250 50  0000 R CNN
+F 1 "SN74CBT3253C" H 8250 1250 50  0000 R CNN
 F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 8350 1850 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74cbt3253" H 8350 1850 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/sn74cbt3253c.pdf" H 8350 1850 50  0001 C CNN
 	1    8350 1850
 	-1   0    0    -1  
 $EndComp

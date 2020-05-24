@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 8 10
+Sheet 8 11
 Title "Power Amplifier"
 Date "2020-04-20"
 Rev "A"
@@ -1338,108 +1338,95 @@ Wire Wire Line
 	4250 6450 4250 6050
 Wire Wire Line
 	4250 6050 4100 6050
-Wire Wire Line
-	4100 6150 4550 6150
-Wire Wire Line
-	4100 6550 4550 6550
-Text Label 4550 6550 2    50   ~ 0
+Text Label 5300 6550 2    50   ~ 0
 BIASL
-Text Label 4550 6150 2    50   ~ 0
-BIASH
 $Comp
 L Device:C C?
 U 1 1 5EFC0F80
-P 4950 5700
+P 4950 5550
 AR Path="/5E9E88B8/5EFC0F80" Ref="C?"  Part="1" 
 AR Path="/5EA333CB/5EFC0F80" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5EFC0F80" Ref="C?"  Part="1" 
 AR Path="/5EC388F5/5EFC0F80" Ref="C?"  Part="1" 
-F 0 "C?" H 5050 5750 50  0000 L CNN
-F 1 "0.1uF" H 5050 5650 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4988 5550 50  0001 C CNN
-F 3 "~" H 4950 5700 50  0001 C CNN
-	1    4950 5700
+F 0 "C?" H 5050 5600 50  0000 L CNN
+F 1 "0.1uF" H 5050 5500 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4988 5400 50  0001 C CNN
+F 3 "~" H 4950 5550 50  0001 C CNN
+	1    4950 5550
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C C?
 U 1 1 5EFC1ECB
-P 4500 5700
+P 4500 5550
 AR Path="/5E9E88B8/5EFC1ECB" Ref="C?"  Part="1" 
 AR Path="/5EA333CB/5EFC1ECB" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5EFC1ECB" Ref="C?"  Part="1" 
 AR Path="/5EC388F5/5EFC1ECB" Ref="C?"  Part="1" 
-F 0 "C?" H 4600 5750 50  0000 L CNN
-F 1 "10nF" H 4600 5650 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4538 5550 50  0001 C CNN
-F 3 "~" H 4500 5700 50  0001 C CNN
-	1    4500 5700
+F 0 "C?" H 4600 5600 50  0000 L CNN
+F 1 "10nF" H 4600 5500 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4538 5400 50  0001 C CNN
+F 3 "~" H 4500 5550 50  0001 C CNN
+	1    4500 5550
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C C?
 U 1 1 5EFC3669
-P 5400 5700
+P 5400 5550
 AR Path="/5E9E88B8/5EFC3669" Ref="C?"  Part="1" 
 AR Path="/5EA333CB/5EFC3669" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5EFC3669" Ref="C?"  Part="1" 
 AR Path="/5EC388F5/5EFC3669" Ref="C?"  Part="1" 
-F 0 "C?" H 5500 5750 50  0000 L CNN
-F 1 "1.0uF" H 5500 5650 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5438 5550 50  0001 C CNN
-F 3 "~" H 5400 5700 50  0001 C CNN
-	1    5400 5700
+F 0 "C?" H 5500 5600 50  0000 L CNN
+F 1 "1.0uF" H 5500 5500 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5438 5400 50  0001 C CNN
+F 3 "~" H 5400 5550 50  0001 C CNN
+	1    5400 5550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4500 5850 4500 5900
+	4500 5700 4500 5750
 Wire Wire Line
-	4500 5900 4950 5900
+	4500 5750 4950 5750
 Wire Wire Line
-	5400 5900 5400 5850
+	5400 5750 5400 5700
 Wire Wire Line
-	4950 5850 4950 5900
-Connection ~ 4950 5900
+	4950 5700 4950 5750
+Connection ~ 4950 5750
 Wire Wire Line
-	4950 5900 5400 5900
+	4950 5750 5400 5750
 Wire Wire Line
-	5400 5550 5400 5500
+	5400 5400 5400 5350
 Wire Wire Line
-	5400 5500 4950 5500
-Wire Wire Line
-	4250 5500 4250 6050
+	5400 5350 4950 5350
 Connection ~ 4250 6050
 Wire Wire Line
-	4500 5550 4500 5500
-Connection ~ 4500 5500
+	4500 5400 4500 5350
+Connection ~ 4500 5350
 Wire Wire Line
-	4500 5500 4250 5500
+	4950 5400 4950 5350
+Connection ~ 4950 5350
 Wire Wire Line
-	4950 5550 4950 5500
-Connection ~ 4950 5500
-Wire Wire Line
-	4950 5500 4500 5500
+	4950 5350 4500 5350
 $Comp
 L power:GND #PWR?
 U 1 1 5EFF6EEA
-P 4950 5950
+P 4950 5800
 AR Path="/5EA436AA/5EFF6EEA" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5EFF6EEA" Ref="#PWR?"  Part="1" 
 AR Path="/5EC388F5/5EFF6EEA" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 4950 5700 50  0001 C CNN
-F 1 "GND" H 4955 5777 50  0000 C CNN
-F 2 "" H 4950 5950 50  0001 C CNN
-F 3 "" H 4950 5950 50  0001 C CNN
-	1    4950 5950
+F 0 "#PWR?" H 4950 5550 50  0001 C CNN
+F 1 "GND" H 4955 5627 50  0000 C CNN
+F 2 "" H 4950 5800 50  0001 C CNN
+F 3 "" H 4950 5800 50  0001 C CNN
+	1    4950 5800
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4950 5950 4950 5900
-Text GLabel 4200 5500 0    50   Input ~ 0
+	4950 5800 4950 5750
+Text GLabel 4200 5350 0    50   Input ~ 0
 +5.0V
-Wire Wire Line
-	4200 5500 4250 5500
-Connection ~ 4250 5500
 Text Notes 7950 1900 0    50   ~ 0
 BN43-202\npri. 2+2 turns\nsec. 6 turns\nenameled wire 0.4mm
 $Comp
@@ -1486,8 +1473,6 @@ Wire Wire Line
 	9250 5200 10250 5200
 Wire Wire Line
 	7950 5300 7950 5050
-Wire Wire Line
-	7950 5050 8850 5050
 Text HLabel 10250 5050 2    50   Output ~ 0
 TH
 Text HLabel 10250 5200 2    50   Output ~ 0
@@ -1502,8 +1487,8 @@ AR Path="/5E9E88B8/5EC9E971" Ref="C?"  Part="1"
 AR Path="/5EA333CB/5EC9E971" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5EC9E971" Ref="C?"  Part="1" 
 AR Path="/5EC388F5/5EC9E971" Ref="C?"  Part="1" 
-F 0 "C?" V 7700 5400 50  0000 C CNN
-F 1 "0.1uF" V 7400 5400 50  0000 C CNN
+F 0 "C?" V 7400 5400 50  0000 C CNN
+F 1 "0.1uF" V 7700 5400 50  0000 C CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 7588 5250 50  0001 C CNN
 F 3 "~" H 7550 5400 50  0001 C CNN
 	1    7550 5400
@@ -1522,14 +1507,13 @@ AR Path="/5E9E88B8/5ECC3C3A" Ref="C?"  Part="1"
 AR Path="/5EA333CB/5ECC3C3A" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5ECC3C3A" Ref="C?"  Part="1" 
 AR Path="/5EC388F5/5ECC3C3A" Ref="C?"  Part="1" 
-F 0 "C?" V 9000 5400 50  0000 C CNN
-F 1 "0.1uF" V 8700 5400 50  0000 C CNN
+F 0 "C?" V 8700 5400 50  0000 C CNN
+F 1 "0.1uF" V 9000 5400 50  0000 C CNN
 F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8888 5250 50  0001 C CNN
 F 3 "~" H 8850 5400 50  0001 C CNN
 	1    8850 5400
 	1    0    0    -1  
 $EndComp
-Connection ~ 8850 5050
 Connection ~ 8850 5700
 Wire Wire Line
 	8850 5700 7950 5700
@@ -1543,13 +1527,9 @@ Wire Wire Line
 Wire Wire Line
 	9250 5300 9250 5200
 Wire Wire Line
-	8850 5250 8850 5050
-Wire Wire Line
 	9250 5600 9250 5700
 Wire Wire Line
 	8850 5550 8850 5700
-Wire Wire Line
-	8850 5050 10250 5050
 $Bitmap
 Pos 9800 1450
 Scale 1.000000
@@ -1978,4 +1958,76 @@ AE 96 27 DD B8 F8 F4 FB F8 82 3B 55 05 1F 0F 42 B8 5C AA F4 2F 72 51 AA 59 F9 2F
 AE 42 60 82 
 EndData
 $EndBitmap
+Text Notes 2500 6300 0    50   ~ 0
+addr = 0x2F
+Text Label 5300 6150 2    50   ~ 0
+BIASH
+Wire Wire Line
+	4200 5350 4250 5350
+Connection ~ 4250 5350
+Wire Wire Line
+	4250 5350 4500 5350
+Wire Wire Line
+	4250 5350 4250 6050
+$Comp
+L Device:C C?
+U 1 1 5ECB9805
+P 4450 6750
+AR Path="/5E9E88B8/5ECB9805" Ref="C?"  Part="1" 
+AR Path="/5EA333CB/5ECB9805" Ref="C?"  Part="1" 
+AR Path="/5EA436AA/5ECB9805" Ref="C?"  Part="1" 
+AR Path="/5EC388F5/5ECB9805" Ref="C?"  Part="1" 
+F 0 "C?" H 4350 6700 50  0000 R CNN
+F 1 "0.1uF" H 4350 6800 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4488 6600 50  0001 C CNN
+F 3 "~" H 4450 6750 50  0001 C CNN
+	1    4450 6750
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5ECC0502
+P 4900 6750
+AR Path="/5E9E88B8/5ECC0502" Ref="C?"  Part="1" 
+AR Path="/5EA333CB/5ECC0502" Ref="C?"  Part="1" 
+AR Path="/5EA436AA/5ECC0502" Ref="C?"  Part="1" 
+AR Path="/5EC388F5/5ECC0502" Ref="C?"  Part="1" 
+F 0 "C?" H 4800 6700 50  0000 R CNN
+F 1 "0.1uF" H 4800 6800 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4938 6600 50  0001 C CNN
+F 3 "~" H 4900 6750 50  0001 C CNN
+	1    4900 6750
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4100 6150 4900 6150
+Wire Wire Line
+	4100 6550 4450 6550
+Wire Wire Line
+	4200 6950 4450 6950
+Wire Wire Line
+	4900 6950 4900 6900
+Connection ~ 4200 6950
+Wire Wire Line
+	4450 6900 4450 6950
+Connection ~ 4450 6950
+Wire Wire Line
+	4450 6950 4900 6950
+Wire Wire Line
+	4450 6600 4450 6550
+Connection ~ 4450 6550
+Wire Wire Line
+	4450 6550 5300 6550
+Wire Wire Line
+	4900 6600 4900 6150
+Connection ~ 4900 6150
+Wire Wire Line
+	4900 6150 5300 6150
+Wire Wire Line
+	7950 5050 10250 5050
+Wire Wire Line
+	9250 5200 8850 5200
+Wire Wire Line
+	8850 5200 8850 5250
+Connection ~ 9250 5200
 $EndSCHEMATC

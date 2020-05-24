@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 9 10
+Sheet 9 11
 Title "LPF"
 Date "2020-04-20"
 Rev "A"
@@ -1341,8 +1341,6 @@ Wire Wire Line
 	2650 1200 2650 1450
 Text Label 2650 1450 1    50   ~ 0
 B1IREL
-Text GLabel 2400 750  0    50   Input ~ 0
-+12V
 Wire Wire Line
 	7400 2000 7500 2000
 Wire Wire Line
@@ -1447,8 +1445,6 @@ Text Label 9900 2000 1    50   ~ 0
 B2OREL
 Text Label 9050 1500 1    50   ~ 0
 B10REL
-Text GLabel 9250 750  2    50   Input ~ 0
-+12V
 Wire Wire Line
 	7300 1600 7300 2500
 Wire Wire Line
@@ -1657,67 +1653,67 @@ NoConn ~ 8500 4050
 $Comp
 L Device:C C?
 U 1 1 5F0D4560
-P 2350 6150
+P 2200 6300
 AR Path="/5E9E88B8/5F0D4560" Ref="C?"  Part="1" 
 AR Path="/5EA333CB/5F0D4560" Ref="C?"  Part="1" 
 AR Path="/5EA436AA/5F0D4560" Ref="C?"  Part="1" 
 AR Path="/5EC388F5/5F0D4560" Ref="C?"  Part="1" 
 AR Path="/5FE5C441/5F0D4560" Ref="C?"  Part="1" 
-F 0 "C?" H 2450 6200 50  0000 L CNN
-F 1 "1.0uF" H 2450 6100 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2388 6000 50  0001 C CNN
-F 3 "~" H 2350 6150 50  0001 C CNN
-	1    2350 6150
+F 0 "C?" H 2300 6350 50  0000 L CNN
+F 1 "1.0uF" H 2300 6250 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2238 6150 50  0001 C CNN
+F 3 "~" H 2200 6300 50  0001 C CNN
+	1    2200 6300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2350 6000 2350 5950
+	2200 6150 2200 6100
 $Comp
 L Device:CP1 C?
 U 1 1 5F0D4569
-P 2800 6150
-F 0 "C?" H 2915 6196 50  0000 L CNN
-F 1 "47uF 16V" H 2915 6105 50  0000 L CNN
-F 2 "Capacitor_SMD:CP_Elec_6.3x5.8" H 2800 6150 50  0001 C CNN
-F 3 "~" H 2800 6150 50  0001 C CNN
-	1    2800 6150
+P 2650 6300
+F 0 "C?" H 2765 6346 50  0000 L CNN
+F 1 "47uF 16V" H 2765 6255 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_6.3x5.8" H 2650 6300 50  0001 C CNN
+F 3 "~" H 2650 6300 50  0001 C CNN
+	1    2650 6300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2800 5950 2800 6000
+	2650 6100 2650 6150
 Wire Wire Line
-	2350 5950 2800 5950
+	2200 6100 2650 6100
 Wire Wire Line
-	2800 6350 2800 6300
+	2650 6500 2650 6450
 Wire Wire Line
-	2350 6300 2350 6350
+	2200 6450 2200 6500
 Wire Wire Line
-	2350 6350 2600 6350
-Text GLabel 3000 5950 2    50   Input ~ 0
-+12V
+	2200 6500 2450 6500
+Text GLabel 2850 6100 2    50   Input ~ 0
++12V-TX
 Wire Wire Line
-	2800 5950 3000 5950
-Connection ~ 2800 5950
+	2650 6100 2850 6100
+Connection ~ 2650 6100
 $Comp
 L power:GND #PWR?
 U 1 1 5F0F1269
-P 2600 6400
+P 2450 6550
 AR Path="/5E9F4ACB/5F0F1269" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5F0F1269" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5F0F1269" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5F0F1269" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 2600 6150 50  0001 C CNN
-F 1 "GND" H 2605 6227 50  0000 C CNN
-F 2 "" H 2600 6400 50  0001 C CNN
-F 3 "" H 2600 6400 50  0001 C CNN
-	1    2600 6400
+F 0 "#PWR?" H 2450 6300 50  0001 C CNN
+F 1 "GND" H 2455 6377 50  0000 C CNN
+F 2 "" H 2450 6550 50  0001 C CNN
+F 3 "" H 2450 6550 50  0001 C CNN
+	1    2450 6550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2600 6400 2600 6350
-Connection ~ 2600 6350
+	2450 6550 2450 6500
+Connection ~ 2450 6500
 Wire Wire Line
-	2600 6350 2800 6350
+	2450 6500 2650 6500
 $Comp
 L Device:C C?
 U 1 1 5F149CDC
@@ -1779,6 +1775,74 @@ Wire Wire Line
 	6750 2500 7300 2500
 Wire Wire Line
 	6750 1400 7500 1400
+Text GLabel 9250 750  2    50   Input ~ 0
++12V-TX
+Text GLabel 2400 750  0    50   Input ~ 0
++12V-TX
+$Comp
+L Device:C C?
+U 1 1 5F70CAA1
+P 950 6300
+AR Path="/5E9E88B8/5F70CAA1" Ref="C?"  Part="1" 
+AR Path="/5EA333CB/5F70CAA1" Ref="C?"  Part="1" 
+AR Path="/5EA436AA/5F70CAA1" Ref="C?"  Part="1" 
+AR Path="/5EC388F5/5F70CAA1" Ref="C?"  Part="1" 
+AR Path="/5FE5C441/5F70CAA1" Ref="C?"  Part="1" 
+F 0 "C?" H 1050 6350 50  0000 L CNN
+F 1 "1.0uF" H 1050 6250 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 988 6150 50  0001 C CNN
+F 3 "~" H 950 6300 50  0001 C CNN
+	1    950  6300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	950  6150 950  6100
+$Comp
+L Device:CP1 C?
+U 1 1 5F70CAA8
+P 1400 6300
+F 0 "C?" H 1515 6346 50  0000 L CNN
+F 1 "47uF 16V" H 1515 6255 50  0000 L CNN
+F 2 "Capacitor_SMD:CP_Elec_6.3x5.8" H 1400 6300 50  0001 C CNN
+F 3 "~" H 1400 6300 50  0001 C CNN
+	1    1400 6300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1400 6100 1400 6150
+Wire Wire Line
+	950  6100 1400 6100
+Wire Wire Line
+	1400 6500 1400 6450
+Wire Wire Line
+	950  6450 950  6500
+Wire Wire Line
+	950  6500 1200 6500
+Text GLabel 1600 6100 2    50   Input ~ 0
++12V
+Wire Wire Line
+	1400 6100 1600 6100
+Connection ~ 1400 6100
+$Comp
+L power:GND #PWR?
+U 1 1 5F70CAB6
+P 1200 6550
+AR Path="/5E9F4ACB/5F70CAB6" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/5F70CAB6" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/5F70CAB6" Ref="#PWR?"  Part="1" 
+AR Path="/5FE5C441/5F70CAB6" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 1200 6300 50  0001 C CNN
+F 1 "GND" H 1205 6377 50  0000 C CNN
+F 2 "" H 1200 6550 50  0001 C CNN
+F 3 "" H 1200 6550 50  0001 C CNN
+	1    1200 6550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1200 6550 1200 6500
+Connection ~ 1200 6500
+Wire Wire Line
+	1200 6500 1400 6500
 Wire Bus Line
 	1450 3200 1450 3650
 $EndSCHEMATC

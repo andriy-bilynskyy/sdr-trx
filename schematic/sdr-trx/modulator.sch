@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 3 10
+Sheet 3 11
 Title "Modulator"
 Date "2020-04-20"
 Rev "A"
@@ -18,9 +18,9 @@ L Analog_Switch:SN74CBT3253 U?
 U 1 1 5E9F4DCD
 P 7300 2950
 F 0 "U?" H 7250 3550 50  0000 R CNN
-F 1 "SN74CBT3253" H 7200 2350 50  0000 R CNN
+F 1 "SN74CBT3253C" H 7200 2350 50  0000 R CNN
 F 2 "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" H 7300 2950 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74cbt3253" H 7300 2950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/sn74cbt3253c.pdf" H 7300 2950 50  0001 C CNN
 	1    7300 2950
 	-1   0    0    -1  
 $EndComp

@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 10 10
+Sheet 10 11
 Title "SWR meter"
 Date "2020-04-20"
 Rev "A"
@@ -169,17 +169,6 @@ Wire Wire Line
 Text HLabel 3500 3450 0    50   Output ~ 0
 REV
 $Comp
-L sdr-trx:LTC5507 U?
-U 1 1 5ED20D7F
-P 5000 3750
-F 0 "U?" H 5000 4337 60  0000 C CNN
-F 1 "LTC5507" H 5000 4231 60  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 5000 3300 60  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD5243_5248.pdf" H 4400 3850 60  0001 C CNN
-	1    5000 3750
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:C C?
 U 1 1 5ED2A56C
 P 5800 3450
@@ -323,17 +312,6 @@ Wire Wire Line
 	5950 3450 6000 3450
 Wire Wire Line
 	6000 3050 6000 3450
-$Comp
-L sdr-trx:LTC5507 U?
-U 1 1 5ED640A6
-P 5050 5000
-F 0 "U?" H 5050 5587 60  0000 C CNN
-F 1 "LTC5507" H 5050 5481 60  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 5050 4550 60  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD5243_5248.pdf" H 4450 5100 60  0001 C CNN
-	1    5050 5000
-	1    0    0    -1  
-$EndComp
 $Comp
 L Device:C C?
 U 1 1 5ED640AC
@@ -1162,4 +1140,26 @@ BB 5B EF 1E C9 6E 17 12 74 1A 5F A0 08 00 6A 8A FC 31 0E 00 E0 A6 08 00 00 50 14
 0A 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
+$Comp
+L sdr-trx:LTC5507 U?
+U 1 1 5EC6C006
+P 5000 3750
+F 0 "U?" H 5000 4337 60  0000 C CNN
+F 1 "LTC5507" H 5000 4231 60  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 5000 3300 60  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/5507f.pdf" H 4400 3850 60  0001 C CNN
+	1    5000 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L sdr-trx:LTC5507 U?
+U 1 1 5EC6FDC6
+P 5050 5000
+F 0 "U?" H 5050 5587 60  0000 C CNN
+F 1 "LTC5507" H 5050 5481 60  0000 C CNN
+F 2 "Package_TO_SOT_SMD:SOT-23-6_Handsoldering" H 5050 4550 60  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/5507f.pdf" H 4450 5100 60  0001 C CNN
+	1    5050 5000
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

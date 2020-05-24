@@ -51,7 +51,7 @@ $ENDCMP
 $CMP LTC5507
 D 100kHz to 1GHz RF Power Detector
 K RF detector
-F https://www.analog.com/media/en/technical-documentation/data-sheets/AD5243_5248.pdf
+F https://www.analog.com/media/en/technical-documentation/data-sheets/5507f.pdf
 $ENDCMP
 #
 $CMP LTC6228XS8
@@ -76,6 +76,24 @@ $CMP SN74CBT3305C
 D Dual 1 to 1 Analog Multiplexer
 K TTL Analog Multiplexer
 F https://www.ti.com/lit/ds/symlink/sn74cbt3305c.pdf
+$ENDCMP
+#
+$CMP TCA0372BDW
+D Operational Amplifiers, Dual Power, 1.0 A Output Current
+K dual opamp
+F https://www.onsemi.com/pub/Collateral/TCA0372-D.PDF
+$ENDCMP
+#
+$CMP TDA2822D
+D Dual Low-Voltage Power Amplifier
+K audio amplifier
+F https://www.st.com/content/ccc/resource/technical/document/datasheet/0c/42/cf/e6/9c/58/4e/5b/CD00000133.pdf/files/CD00000133.pdf/jcr:content/translations/en.CD00000133.pdf
+$ENDCMP
+#
+$CMP WM8731
+D Portable Internet Audio CODEC with Headphone Driver and Programmable Sample Rates
+K audio codec
+F https://statics.cirrus.com/pubs/proDatasheet/WM8731_v4.9.pdf
 $ENDCMP
 #
 #End Doc Library
