@@ -66,6 +66,12 @@ K voltage reference vref
 F https://www.analog.com/media/en/technical-documentation/data-sheets/LTC6655-6655LN.pdf
 $ENDCMP
 #
+$CMP NHD-4.3-480272FT-CTXL-CTP
+D 4.3” EVE2 TFT Module (SPI) – Supports: Display Touch Audio
+K display LCD graphic
+F http://www.newhavendisplay.com/specs/NHD-4.3-480272FT-CTXL-CTP.pdf
+$ENDCMP
+#
 $CMP PO74G74A
 D Dual D Flip-flop, Set & Reset, Series Noise Cancellation GHz Logic
 K TTL DFF
