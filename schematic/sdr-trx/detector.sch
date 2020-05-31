@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 4 11
+Sheet 4 12
 Title "Tayloe Detector"
 Date "2020-04-20"
 Rev "A"
@@ -358,7 +358,7 @@ AR Path="/5E9E88B8/5EB01F5B" Ref="R?"  Part="1"
 AR Path="/5E9F4ACB/5EB01F5B" Ref="R?"  Part="1" 
 AR Path="/5EA188E4/5EB01F5B" Ref="R?"  Part="1" 
 F 0 "R?" V 1600 5850 50  0000 L CNN
-F 1 "10R" V 1800 5800 50  0000 L CNN
+F 1 "22R" V 1800 5800 50  0000 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 1630 5900 50  0001 C CNN
 F 3 "~" H 1700 5900 50  0001 C CNN
 	1    1700 5900
@@ -640,7 +640,7 @@ AR Path="/5E9E88B8/5EA9FAE2" Ref="R?"  Part="1"
 AR Path="/5E9F4ACB/5EA9FAE2" Ref="R?"  Part="1" 
 AR Path="/5EA188E4/5EA9FAE2" Ref="R?"  Part="1" 
 F 0 "R?" V 1600 2350 50  0000 L CNN
-F 1 "10R" V 1800 2300 50  0000 L CNN
+F 1 "22R" V 1800 2300 50  0000 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 1630 2400 50  0001 C CNN
 F 3 "~" H 1700 2400 50  0001 C CNN
 	1    1700 2400
