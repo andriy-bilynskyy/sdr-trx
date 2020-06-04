@@ -42,6 +42,18 @@ K RF GAIN BLOCK
 F https://www.analog.com/media/en/technical-documentation/data-sheets/hmc589a.pdf
 $ENDCMP
 #
+$CMP INA300
+D INA300 Overcurrent-Protection, Current-Sense Comparator
+K Li-ion protection
+F https://www.ti.com/lit/ds/symlink/ina300.pdf
+$ENDCMP
+#
+$CMP LFxxABPT
+D Very low drop voltage regulator with inhibit function, TO-252 (P-PAK)
+K Voltage Regulator 500mA Positive
+F https://www.st.com/content/ccc/resource/technical/document/datasheet/c4/0e/7e/2a/be/bc/4c/bd/CD00000546.pdf/files/CD00000546.pdf/jcr:content/translations/en.CD00000546.pdf
+$ENDCMP
+#
 $CMP LT6238
 D Quad Operational Amplifiers, SSOP-16
 K quad opamp
@@ -76,6 +88,48 @@ $CMP PO74G74A
 D Dual D Flip-flop, Set & Reset, Series Noise Cancellation GHz Logic
 K TTL DFF
 F http://www.potatosemi.com/potatosemiweb/datasheet/PO74G74A.pdf
+$ENDCMP
+#
+$CMP Q_DUAL_NMOS_SO8
+D Dual NMOS transistor, SO-8 case
+K dual transistor NMOS N-MOS N-MOSFET
+F ~
+$ENDCMP
+#
+$CMP Q_DUAL_PMOS_SO8
+D Dual PMOS transistor, SO-8 case
+K dual transistor PMOS P-MOS P-MOSFET
+F ~
+$ENDCMP
+#
+$CMP Q_PMOS_SO8
+D P-MOSFET transistor, SO-8 case
+K transistor PMOS P-MOS P-MOSFET
+F ~
+$ENDCMP
+#
+$CMP S-812CXXA
+D 16 V Input, 75 mA voltage regulator
+K Linear LDO
+F https://www.ablic.com/en/doc/datasheet/voltage_regulator/S812C_E.pdf
+$ENDCMP
+#
+$CMP S-8209A
+D Battery Protection IC with Cell-balance Function
+K Li-ion protection
+F https://www.ablic.com/en/doc/datasheet/battery_protection/S8209A_E.pdf
+$ENDCMP
+#
+$CMP S-8239A
+D Overcurrent Monitoring IC for Multi-Serial-Cell Pack
+K Li-ion protection
+F https://www.ablic.com/en/doc/datasheet/battery_protection/S8239A_E.pdf
+$ENDCMP
+#
+$CMP S-8269B
+D Overcurrent Monitoring IC for Multi-Serial-Cell Pack
+K Li-ion protection
+F https://www.ablic.com/en/doc/datasheet/battery_protection/S8269B_E.pdf
 $ENDCMP
 #
 $CMP SN74CBT3305C

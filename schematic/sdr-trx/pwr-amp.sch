@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 8 12
+Sheet 8 14
 Title "Power Amplifier"
 Date "2020-04-20"
 Rev "A"
@@ -1308,7 +1308,7 @@ Wire Wire Line
 	2900 6550 2500 6550
 Connection ~ 2500 6550
 Text GLabel 2000 6550 0    50   Input ~ 0
-+5.0V
++5.0V-TX
 Wire Wire Line
 	2000 6550 2050 6550
 Connection ~ 2050 6550
@@ -1426,7 +1426,7 @@ $EndComp
 Wire Wire Line
 	4950 5800 4950 5750
 Text GLabel 4200 5350 0    50   Input ~ 0
-+5.0V
++5.0V-TX
 Text Notes 7950 1900 0    50   ~ 0
 BN43-202\npri. 2+2 turns\nsec. 6 turns\nenameled wire 0.4mm
 $Comp

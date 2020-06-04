@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 9 12
+Sheet 9 14
 Title "LPF"
 Date "2020-04-20"
 Rev "A"
@@ -1465,7 +1465,7 @@ F 3 "https://www.diodes.com/assets/Datasheets/ULN2003V12.pdf" H 2650 3450 50  00
 	1    0    0    -1  
 $EndComp
 Text GLabel 3050 3250 2    50   Input ~ 0
-+12V
++12V-RF
 Wire Wire Line
 	2950 3250 3050 3250
 $Comp
@@ -1595,7 +1595,7 @@ Wire Wire Line
 	9150 750  9250 750 
 Connection ~ 9150 750 
 Text GLabel 8400 3350 0    50   Input ~ 0
-+12V
++12V-RF
 Text Label 3600 4050 2    50   ~ 0
 TXREL
 Wire Wire Line

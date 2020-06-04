@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 12 12
+Sheet 12 14
 Title "MCU"
 Date "2020-04-20"
 Rev "A"
@@ -2773,7 +2773,7 @@ Wire Wire Line
 	9950 1800 9950 2150
 Wire Wire Line
 	9950 2150 9600 2150
+Connection ~ 9600 2150
 Wire Bus Line
 	10500 3100 10500 3600
-Connection ~ 9600 2150
 $EndSCHEMATC

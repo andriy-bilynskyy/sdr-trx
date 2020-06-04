@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 12
+Sheet 1 14
 Title "SDR-TRX"
 Date "2020-04-20"
 Rev "A"
@@ -659,4 +659,119 @@ Wire Wire Line
 	3200 5550 3200 4350
 Wire Wire Line
 	3200 4350 3500 4350
+$Sheet
+S 2050 3650 900  600 
+U 5ED56EC4
+F0 "PSU" 50
+F1 "psu.sch" 50
+F2 "TX-PWR" I R 2950 3850 50 
+F3 "RX-PWR" I R 2950 3950 50 
+F4 "BL-PWR" I R 2950 4050 50 
+F5 "USB-PWR" I R 2950 4150 50 
+F6 "PWR-HOLD" I R 2950 3750 50 
+F7 "BAT-A" O L 2050 4050 50 
+F8 "VIN" I L 2050 3750 50 
+F9 "BAT-V" B L 2050 4150 50 
+$EndSheet
+$Sheet
+S 2050 4550 550  400 
+U 5FDAA718
+F0 "Battery" 50
+F1 "batt.sch" 50
+F2 "BAT-V" B L 2050 4650 50 
+F3 "~UNPLUG" I L 2050 4850 50 
+F4 "BAT-A" I L 2050 4750 50 
+$EndSheet
+Wire Wire Line
+	3500 3750 2950 3750
+Wire Wire Line
+	3500 3850 2950 3850
+Wire Wire Line
+	3500 3950 2950 3950
+Wire Wire Line
+	3500 4050 2950 4050
+Wire Wire Line
+	3500 4150 2950 4150
+$Comp
+L Connector:Barrel_Jack_Switch J?
+U 1 1 5F7A722D
+P 2650 3150
+F 0 "J?" H 2650 3350 50  0000 C CNN
+F 1 "PJ-036AH-SMT" H 2650 2950 50  0000 C CNN
+F 2 "Connector_BarrelJack:BarrelJack_CUI_PJ-036AH-SMT_Horizontal" H 2700 3110 50  0001 C CNN
+F 3 "https://www.cuidevices.com/product/resource/pj-036ah-smt-tr.pdf" H 2700 3110 50  0001 C CNN
+	1    2650 3150
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5F7A9655
+P 2300 3250
+AR Path="/5E9F4ACB/5F7A9655" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/5F7A9655" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/5F7A9655" Ref="#PWR?"  Part="1" 
+AR Path="/5FE5C441/5F7A9655" Ref="#PWR?"  Part="1" 
+AR Path="/5F7A9655" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 2300 3000 50  0001 C CNN
+F 1 "GND" H 2305 3077 50  0000 C CNN
+F 2 "" H 2300 3250 50  0001 C CNN
+F 3 "" H 2300 3250 50  0001 C CNN
+	1    2300 3250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1950 3050 1950 3750
+Wire Wire Line
+	1950 3750 2050 3750
+Wire Wire Line
+	2300 3250 2350 3250
+Wire Wire Line
+	1950 3050 2350 3050
+Wire Wire Line
+	2050 4150 1950 4150
+Wire Wire Line
+	1950 4150 1950 4650
+Wire Wire Line
+	1950 4650 2050 4650
+Wire Wire Line
+	2050 4750 1900 4750
+Wire Wire Line
+	1900 4750 1900 4050
+Wire Wire Line
+	1900 4050 2050 4050
+Wire Wire Line
+	2050 4850 1850 4850
+Wire Wire Line
+	1850 4850 1850 3150
+Wire Wire Line
+	1850 3150 2350 3150
+$Comp
+L Connector:TestPoint TP?
+U 1 1 603763D0
+P 2350 5900
+F 0 "TP?" H 2408 6018 50  0000 L CNN
+F 1 "5019" H 2408 5927 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Keystone_5019_Minature" H 2550 5900 50  0001 C CNN
+F 3 "http://www.keyelco.com/product-pdf.cfm?p=1357" H 2550 5900 50  0001 C CNN
+	1    2350 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60377BEA
+P 2350 5950
+AR Path="/5E9F4ACB/60377BEA" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/60377BEA" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/60377BEA" Ref="#PWR?"  Part="1" 
+AR Path="/5FE5C441/60377BEA" Ref="#PWR?"  Part="1" 
+AR Path="/60377BEA" Ref="#PWR?"  Part="1" 
+F 0 "#PWR?" H 2350 5700 50  0001 C CNN
+F 1 "GND" H 2355 5777 50  0000 C CNN
+F 2 "" H 2350 5950 50  0001 C CNN
+F 3 "" H 2350 5950 50  0001 C CNN
+	1    2350 5950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2350 5900 2350 5950
 $EndSCHEMATC

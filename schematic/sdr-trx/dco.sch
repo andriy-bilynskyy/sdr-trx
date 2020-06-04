@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 12
+Sheet 2 14
 Title "DCO"
 Date "2020-04-20"
 Rev "A"
@@ -105,7 +105,7 @@ Wire Wire Line
 Wire Wire Line
 	6450 2200 6450 2150
 Text GLabel 7050 1750 2    50   Input ~ 0
-+3.3V
++3.3V-RF
 Wire Wire Line
 	6950 1750 7050 1750
 Connection ~ 6950 1750
@@ -136,7 +136,7 @@ F 3 "" H 3200 2900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 1700 1750 0    50   Input ~ 0
-+3.3V
++3.3V-RF
 Wire Wire Line
 	2050 2200 2050 2150
 Connection ~ 2050 2150
@@ -189,7 +189,7 @@ Connection ~ 1800 1750
 Wire Wire Line
 	4850 3050 4750 3050
 Text GLabel 9350 1750 2    50   Input ~ 0
-+3.3V
++3.3V-RF
 Wire Wire Line
 	9000 2200 9000 2150
 Connection ~ 9000 2150

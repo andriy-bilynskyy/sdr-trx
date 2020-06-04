@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 7 12
+Sheet 7 14
 Title "BPF"
 Date "2020-04-20"
 Rev "A"
@@ -206,7 +206,7 @@ Wire Wire Line
 Wire Wire Line
 	8100 700  8100 650 
 Text GLabel 8600 650  2    50   Input ~ 0
-+5.0V
++5.0V-RF
 $Comp
 L Analog_Switch:SN74CBT3253 U?
 U 1 1 5EBAB34A
@@ -289,7 +289,7 @@ Connection ~ 7850 3150
 Wire Wire Line
 	7850 3200 7850 3150
 Text GLabel 8600 2750 2    50   Input ~ 0
-+5.0V
++5.0V-RF
 Wire Wire Line
 	8950 3500 9100 3500
 Wire Wire Line
@@ -378,7 +378,7 @@ Connection ~ 2950 1050
 Wire Wire Line
 	2950 1100 2950 1050
 Text GLabel 2200 650  0    50   Input ~ 0
-+5.0V
++5.0V-RF
 $Comp
 L Analog_Switch:SN74CBT3253 U?
 U 1 1 5EC45397
@@ -461,7 +461,7 @@ Connection ~ 2950 3150
 Wire Wire Line
 	2950 3200 2950 3150
 Text GLabel 2200 2750 0    50   Input ~ 0
-+5.0V
++5.0V-RF
 Wire Wire Line
 	1850 3500 1750 3500
 Wire Wire Line
@@ -716,7 +716,7 @@ F 3 "" H 10600 5300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 10650 4850 2    50   Input ~ 0
-+5.0V
++5.0V-RF
 $Comp
 L Device:R R?
 U 1 1 5FC2CBA6
@@ -818,7 +818,7 @@ F 3 "" H 10600 6050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 10650 5600 2    50   Input ~ 0
-+5.0V
++5.0V-RF
 $Comp
 L Device:R R?
 U 1 1 600BA3CB
@@ -920,7 +920,7 @@ F 3 "" H 8850 5300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 8900 4850 2    50   Input ~ 0
-+5.0V
++5.0V-RF
 $Comp
 L Device:R R?
 U 1 1 600EC42D
@@ -1022,7 +1022,7 @@ F 3 "" H 8850 6050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 8900 5600 2    50   Input ~ 0
-+5.0V
++5.0V-RF
 $Comp
 L Device:R R?
 U 1 1 60122416
