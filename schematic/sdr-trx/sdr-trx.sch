@@ -24,7 +24,6 @@ F4 "RF-000" O R 7300 3500 50
 F5 "RF-090" O R 7300 3600 50 
 F6 "RF-180" O R 7300 3750 50 
 F7 "RF-270" O R 7300 3850 50 
-F8 "CLK" O L 6350 3850 50 
 $EndSheet
 $Sheet
 S 6350 2700 950  450 
@@ -103,7 +102,6 @@ F6 "TX-EN" I R 8450 3500 50
 F7 "RX-EN" I R 8450 3600 50 
 F8 "BAND[0..2]" I R 8450 3400 50 
 $EndSheet
-NoConn ~ 6350 3850
 Wire Wire Line
 	7600 3750 7500 3750
 Wire Wire Line
@@ -172,10 +170,10 @@ Wire Wire Line
 Wire Wire Line
 	8850 3850 8450 3850
 $Comp
-L Connector:Conn_Coaxial J?
+L Connector:Conn_Coaxial J7
 U 1 1 5ECA0FE2
 P 10300 4600
-F 0 "J?" H 10200 4450 50  0000 R CNN
+F 0 "J7" H 10200 4450 50  0000 R CNN
 F 1 "CON-SMA-EDGE" H 10200 4350 50  0000 R CNN
 F 2 "Connector_Coaxial:SMA_Samtec_SMA-J-P-X-ST-EM1_EdgeMount" H 10300 4600 50  0001 C CNN
 F 3 "https://media.digikey.com/pdf/Data%20Sheets/RF%20Solutions%20PDFs/CON-SMA-EDGE.pdf" H 10300 4600 50  0001 C CNN
@@ -192,8 +190,8 @@ AR Path="/5E9F4ACB/5ECA886D" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5ECA886D" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5ECA886D" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5ECA886D" Ref="#PWR?"  Part="1" 
-AR Path="/5ECA886D" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 10300 4600 50  0001 C CNN
+AR Path="/5ECA886D" Ref="#PWR08"  Part="1" 
+F 0 "#PWR08" H 10300 4600 50  0001 C CNN
 F 1 "GND" H 10305 4677 50  0000 C CNN
 F 2 "" H 10300 4850 50  0001 C CNN
 F 3 "" H 10300 4850 50  0001 C CNN
@@ -265,10 +263,10 @@ Wire Wire Line
 Wire Wire Line
 	6000 4550 6350 4550
 $Comp
-L Connector:AudioJack3 J?
+L Connector:AudioJack3 J4
 U 1 1 5F741F65
 P 5250 4900
-F 0 "J?" H 5250 5100 50  0000 C CNN
+F 0 "J4" H 5250 5100 50  0000 C CNN
 F 1 "SJ-3524-SMT-TR-GR" H 5250 4650 50  0000 C CNN
 F 2 "Connector_Audio:Jack_3.5mm_CUI_SJ-3524-SMT_Horizontal" H 5250 4900 50  0001 C CNN
 F 3 "~" H 5250 4900 50  0001 C CNN
@@ -283,8 +281,8 @@ AR Path="/5E9F4ACB/5F749EDC" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5F749EDC" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5F749EDC" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5F749EDC" Ref="#PWR?"  Part="1" 
-AR Path="/5F749EDC" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 5500 4550 50  0001 C CNN
+AR Path="/5F749EDC" Ref="#PWR05"  Part="1" 
+F 0 "#PWR05" H 5500 4550 50  0001 C CNN
 F 1 "GND" H 5505 4627 50  0000 C CNN
 F 2 "" H 5500 4800 50  0001 C CNN
 F 3 "" H 5500 4800 50  0001 C CNN
@@ -301,10 +299,10 @@ Wire Wire Line
 	5500 5000 5450 5000
 Connection ~ 5500 5000
 $Comp
-L Connector:AudioJack3 J?
+L Connector:AudioJack3 J5
 U 1 1 5F74F4C9
 P 5250 5450
-F 0 "J?" H 5250 5650 50  0000 C CNN
+F 0 "J5" H 5250 5650 50  0000 C CNN
 F 1 "SJ-3524-SMT-TR-BE" H 5250 5200 50  0000 C CNN
 F 2 "Connector_Audio:Jack_3.5mm_CUI_SJ-3524-SMT_Horizontal" H 5250 5450 50  0001 C CNN
 F 3 "~" H 5250 5450 50  0001 C CNN
@@ -319,8 +317,8 @@ AR Path="/5E9F4ACB/5F74FADC" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5F74FADC" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5F74FADC" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5F74FADC" Ref="#PWR?"  Part="1" 
-AR Path="/5F74FADC" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 5500 5100 50  0001 C CNN
+AR Path="/5F74FADC" Ref="#PWR06"  Part="1" 
+F 0 "#PWR06" H 5500 5100 50  0001 C CNN
 F 1 "GND" H 5505 5177 50  0000 C CNN
 F 2 "" H 5500 5350 50  0001 C CNN
 F 3 "" H 5500 5350 50  0001 C CNN
@@ -348,10 +346,10 @@ Wire Wire Line
 Wire Wire Line
 	5900 5550 5450 5550
 $Comp
-L Connector:AudioJack3 J?
+L Connector:AudioJack3 J6
 U 1 1 5F75A234
 P 5250 6000
-F 0 "J?" H 5250 6200 50  0000 C CNN
+F 0 "J6" H 5250 6200 50  0000 C CNN
 F 1 "SJ-3524-SMT-TR-PI" H 5250 5750 50  0000 C CNN
 F 2 "Connector_Audio:Jack_3.5mm_CUI_SJ-3524-SMT_Horizontal" H 5250 6000 50  0001 C CNN
 F 3 "~" H 5250 6000 50  0001 C CNN
@@ -366,8 +364,8 @@ AR Path="/5E9F4ACB/5F75A713" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5F75A713" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5F75A713" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5F75A713" Ref="#PWR?"  Part="1" 
-AR Path="/5F75A713" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 5500 5650 50  0001 C CNN
+AR Path="/5F75A713" Ref="#PWR07"  Part="1" 
+F 0 "#PWR07" H 5500 5650 50  0001 C CNN
 F 1 "GND" H 5505 5727 50  0000 C CNN
 F 2 "" H 5500 5900 50  0001 C CNN
 F 3 "" H 5500 5900 50  0001 C CNN
@@ -572,10 +570,10 @@ Wire Wire Line
 Wire Wire Line
 	6050 5050 6050 6400
 $Comp
-L Connector:AudioJack3 J?
+L Connector:AudioJack3 J2
 U 1 1 60463177
 P 3700 5100
-F 0 "J?" H 3700 5300 50  0000 C CNN
+F 0 "J2" H 3700 5300 50  0000 C CNN
 F 1 "SJ-3524-SMT-TR" H 3700 4850 50  0000 C CNN
 F 2 "Connector_Audio:Jack_3.5mm_CUI_SJ-3524-SMT_Horizontal" H 3700 5100 50  0001 C CNN
 F 3 "~" H 3700 5100 50  0001 C CNN
@@ -602,8 +600,8 @@ AR Path="/5E9F4ACB/6048302D" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/6048302D" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/6048302D" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/6048302D" Ref="#PWR?"  Part="1" 
-AR Path="/6048302D" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 3450 4950 50  0001 C CNN
+AR Path="/6048302D" Ref="#PWR03"  Part="1" 
+F 0 "#PWR03" H 3450 4950 50  0001 C CNN
 F 1 "GND" H 3455 5027 50  0000 C CNN
 F 2 "" H 3450 5200 50  0001 C CNN
 F 3 "" H 3450 5200 50  0001 C CNN
@@ -632,8 +630,8 @@ AR Path="/5E9F4ACB/5F532DCF" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5F532DCF" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5F532DCF" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5F532DCF" Ref="#PWR?"  Part="1" 
-AR Path="/5F532DCF" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 3450 5500 50  0001 C CNN
+AR Path="/5F532DCF" Ref="#PWR04"  Part="1" 
+F 0 "#PWR04" H 3450 5500 50  0001 C CNN
 F 1 "GND" H 3455 5577 50  0000 C CNN
 F 2 "" H 3450 5750 50  0001 C CNN
 F 3 "" H 3450 5750 50  0001 C CNN
@@ -643,10 +641,10 @@ $EndComp
 Wire Wire Line
 	3450 5750 3500 5750
 $Comp
-L Connector:Barrel_Jack J?
+L Connector:Barrel_Jack J3
 U 1 1 5F53B762
 P 3800 5650
-F 0 "J?" H 3800 5850 50  0000 C CNN
+F 0 "J3" H 3800 5850 50  0000 C CNN
 F 1 "PJ1-022-SMT" H 3800 5450 50  0000 C CNN
 F 2 "sdr-trx:PJ1-022-SMT" H 3850 5610 50  0001 C CNN
 F 3 "https://www.cuidevices.com/product/resource/pj1-022-smt-tr.pdf" H 3850 5610 50  0001 C CNN
@@ -693,10 +691,10 @@ Wire Wire Line
 Wire Wire Line
 	3500 4150 2950 4150
 $Comp
-L Connector:Barrel_Jack_Switch J?
+L Connector:Barrel_Jack_Switch J1
 U 1 1 5F7A722D
 P 2650 3150
-F 0 "J?" H 2650 3350 50  0000 C CNN
+F 0 "J1" H 2650 3350 50  0000 C CNN
 F 1 "PJ-036AH-SMT" H 2650 2950 50  0000 C CNN
 F 2 "Connector_BarrelJack:BarrelJack_CUI_PJ-036AH-SMT_Horizontal" H 2700 3110 50  0001 C CNN
 F 3 "https://www.cuidevices.com/product/resource/pj-036ah-smt-tr.pdf" H 2700 3110 50  0001 C CNN
@@ -711,8 +709,8 @@ AR Path="/5E9F4ACB/5F7A9655" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/5F7A9655" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/5F7A9655" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/5F7A9655" Ref="#PWR?"  Part="1" 
-AR Path="/5F7A9655" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 2300 3000 50  0001 C CNN
+AR Path="/5F7A9655" Ref="#PWR01"  Part="1" 
+F 0 "#PWR01" H 2300 3000 50  0001 C CNN
 F 1 "GND" H 2305 3077 50  0000 C CNN
 F 2 "" H 2300 3250 50  0001 C CNN
 F 3 "" H 2300 3250 50  0001 C CNN
@@ -720,13 +718,7 @@ F 3 "" H 2300 3250 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	1950 3050 1950 3750
-Wire Wire Line
-	1950 3750 2050 3750
-Wire Wire Line
 	2300 3250 2350 3250
-Wire Wire Line
-	1950 3050 2350 3050
 Wire Wire Line
 	2050 4150 1950 4150
 Wire Wire Line
@@ -746,10 +738,10 @@ Wire Wire Line
 Wire Wire Line
 	1850 3150 2350 3150
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP1
 U 1 1 603763D0
 P 2350 5900
-F 0 "TP?" H 2408 6018 50  0000 L CNN
+F 0 "TP1" H 2408 6018 50  0000 L CNN
 F 1 "5019" H 2408 5927 50  0000 L CNN
 F 2 "TestPoint:TestPoint_Keystone_5019_Minature" H 2550 5900 50  0001 C CNN
 F 3 "http://www.keyelco.com/product-pdf.cfm?p=1357" H 2550 5900 50  0001 C CNN
@@ -764,8 +756,8 @@ AR Path="/5E9F4ACB/60377BEA" Ref="#PWR?"  Part="1"
 AR Path="/5EA333CB/60377BEA" Ref="#PWR?"  Part="1" 
 AR Path="/5EAAFBD4/60377BEA" Ref="#PWR?"  Part="1" 
 AR Path="/5FE5C441/60377BEA" Ref="#PWR?"  Part="1" 
-AR Path="/60377BEA" Ref="#PWR?"  Part="1" 
-F 0 "#PWR?" H 2350 5700 50  0001 C CNN
+AR Path="/60377BEA" Ref="#PWR02"  Part="1" 
+F 0 "#PWR02" H 2350 5700 50  0001 C CNN
 F 1 "GND" H 2355 5777 50  0000 C CNN
 F 2 "" H 2350 5950 50  0001 C CNN
 F 3 "" H 2350 5950 50  0001 C CNN
@@ -774,4 +766,58 @@ F 3 "" H 2350 5950 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2350 5900 2350 5950
+Wire Wire Line
+	1900 3750 1900 3050
+Wire Wire Line
+	1900 3050 2350 3050
+Wire Wire Line
+	1900 3750 2050 3750
+Wire Wire Line
+	3500 3550 1950 3550
+Wire Wire Line
+	1950 3550 1950 4150
+Connection ~ 1950 4150
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5F5B72C3
+P 1900 3000
+F 0 "#FLG0101" H 1900 3075 50  0001 C CNN
+F 1 "PWR_FLAG" H 1900 3173 50  0000 C CNN
+F 2 "" H 1900 3000 50  0001 C CNN
+F 3 "~" H 1900 3000 50  0001 C CNN
+	1    1900 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1900 3050 1900 3000
+Connection ~ 1900 3050
+$Comp
+L power:GND #PWR?
+U 1 1 5F5D43D2
+P 1350 3050
+AR Path="/5E9F4ACB/5F5D43D2" Ref="#PWR?"  Part="1" 
+AR Path="/5EA333CB/5F5D43D2" Ref="#PWR?"  Part="1" 
+AR Path="/5EAAFBD4/5F5D43D2" Ref="#PWR?"  Part="1" 
+AR Path="/5FE5C441/5F5D43D2" Ref="#PWR?"  Part="1" 
+AR Path="/5F5D43D2" Ref="#PWR0175"  Part="1" 
+F 0 "#PWR0175" H 1350 2800 50  0001 C CNN
+F 1 "GND" H 1355 2877 50  0000 C CNN
+F 2 "" H 1350 3050 50  0001 C CNN
+F 3 "" H 1350 3050 50  0001 C CNN
+	1    1350 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG0102
+U 1 1 5F5D49C7
+P 1350 3000
+F 0 "#FLG0102" H 1350 3075 50  0001 C CNN
+F 1 "PWR_FLAG" H 1350 3173 50  0000 C CNN
+F 2 "" H 1350 3000 50  0001 C CNN
+F 3 "~" H 1350 3000 50  0001 C CNN
+	1    1350 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1350 3000 1350 3050
 $EndSCHEMATC
