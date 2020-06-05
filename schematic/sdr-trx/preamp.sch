@@ -109,7 +109,7 @@ AR Path="/5EA436AA/5EC2DBD6" Ref="L?"  Part="1"
 F 0 "L1" V 5400 3100 50  0000 C CNN
 F 1 "MLZ2012N101LT000" V 5200 3100 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5300 3100 50  0001 C CNN
-F 3 "~" H 5300 3100 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_commercial_decoupling_mlz2012_en.pdf" H 5300 3100 50  0001 C CNN
 	1    5300 3100
 	0    -1   -1   0   
 $EndComp
@@ -291,8 +291,8 @@ L power:GND #PWR?
 U 1 1 5EC2DC65
 P 6950 4750
 AR Path="/5EA436AA/5EC2DC65" Ref="#PWR?"  Part="1" 
-AR Path="/5EA333CB/5EC2DC65" Ref="#PWR044"  Part="1" 
-F 0 "#PWR044" H 6950 4500 50  0001 C CNN
+AR Path="/5EA333CB/5EC2DC65" Ref="#PWR045"  Part="1" 
+F 0 "#PWR045" H 6950 4500 50  0001 C CNN
 F 1 "GND" H 6955 4577 50  0000 C CNN
 F 2 "" H 6950 4750 50  0001 C CNN
 F 3 "" H 6950 4750 50  0001 C CNN
@@ -304,8 +304,8 @@ L power:GND #PWR?
 U 1 1 5EC2DC6B
 P 4400 3550
 AR Path="/5EA436AA/5EC2DC6B" Ref="#PWR?"  Part="1" 
-AR Path="/5EA333CB/5EC2DC6B" Ref="#PWR042"  Part="1" 
-F 0 "#PWR042" H 4400 3300 50  0001 C CNN
+AR Path="/5EA333CB/5EC2DC6B" Ref="#PWR043"  Part="1" 
+F 0 "#PWR043" H 4400 3300 50  0001 C CNN
 F 1 "GND" H 4405 3377 50  0000 C CNN
 F 2 "" H 4400 3550 50  0001 C CNN
 F 3 "" H 4400 3550 50  0001 C CNN
@@ -317,8 +317,8 @@ L power:GND #PWR?
 U 1 1 5EC2DC71
 P 5400 2750
 AR Path="/5EA436AA/5EC2DC71" Ref="#PWR?"  Part="1" 
-AR Path="/5EA333CB/5EC2DC71" Ref="#PWR043"  Part="1" 
-F 0 "#PWR043" H 5400 2500 50  0001 C CNN
+AR Path="/5EA333CB/5EC2DC71" Ref="#PWR044"  Part="1" 
+F 0 "#PWR044" H 5400 2500 50  0001 C CNN
 F 1 "GND" H 5405 2577 50  0000 C CNN
 F 2 "" H 5400 2750 50  0001 C CNN
 F 3 "" H 5400 2750 50  0001 C CNN
@@ -407,7 +407,7 @@ AR Path="/5EA436AA/5EC67166" Ref="L?"  Part="1"
 F 0 "L2" V 6350 3100 50  0000 C CNN
 F 1 "MLF2012DR22" V 6150 3100 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6250 3100 50  0001 C CNN
-F 3 "~" H 6250 3100 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 6250 3100 50  0001 C CNN
 	1    6250 3100
 	0    -1   -1   0   
 $EndComp
@@ -431,7 +431,7 @@ AR Path="/5EA436AA/5EC2DBC4" Ref="L?"  Part="1"
 F 0 "L3" H 7003 2696 50  0000 L CNN
 F 1 "LQW32FT470M0HL" H 7003 2605 50  0000 L CNN
 F 2 "Inductor_SMD:L_1210_3225Metric_Pad1.42x2.65mm_HandSolder" H 6950 2650 50  0001 C CNN
-F 3 "~" H 6950 2650 50  0001 C CNN
+F 3 "https://search.murata.co.jp/Ceramy/image/img/P02/JELF243A-9147.pdf" H 6950 2650 50  0001 C CNN
 	1    6950 2650
 	1    0    0    -1  
 $EndComp

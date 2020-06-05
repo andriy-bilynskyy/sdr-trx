@@ -53,7 +53,7 @@ AR Path="/5EAAFBD4/5EAB7E66" Ref="L6"  Part="1"
 F 0 "L6" H 4303 996 50  0000 L CNN
 F 1 "MLF2012A1R5" H 4303 905 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4250 950 50  0001 C CNN
-F 3 "~" H 4250 950 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4250 950 50  0001 C CNN
 	1    4250 950 
 	1    0    0    -1  
 $EndComp
@@ -67,7 +67,7 @@ AR Path="/5EAAFBD4/5EAB90CF" Ref="L11"  Part="1"
 F 0 "L11" V 4700 750 50  0000 C CNN
 F 1 "MLF2012E6R8" V 4600 750 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4500 750 50  0001 C CNN
-F 3 "~" H 4500 750 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4500 750 50  0001 C CNN
 	1    4500 750 
 	0    -1   -1   0   
 $EndComp
@@ -111,7 +111,7 @@ AR Path="/5EAAFBD4/5EAE0189" Ref="L16"  Part="1"
 F 0 "L16" H 5553 996 50  0000 L CNN
 F 1 "MLF2012A1R0" H 5553 905 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5500 950 50  0001 C CNN
-F 3 "~" H 5500 950 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5500 950 50  0001 C CNN
 	1    5500 950 
 	1    0    0    -1  
 $EndComp
@@ -173,8 +173,8 @@ U 1 1 5EAE5C92
 P 5350 1200
 AR Path="/5E9F4ACB/5EAE5C92" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5EAE5C92" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EAE5C92" Ref="#PWR056"  Part="1" 
-F 0 "#PWR056" H 5350 950 50  0001 C CNN
+AR Path="/5EAAFBD4/5EAE5C92" Ref="#PWR057"  Part="1" 
+F 0 "#PWR057" H 5350 950 50  0001 C CNN
 F 1 "GND" H 5355 1027 50  0000 C CNN
 F 2 "" H 5350 1200 50  0001 C CNN
 F 3 "" H 5350 1200 50  0001 C CNN
@@ -189,8 +189,8 @@ U 1 1 5EBAB305
 P 8550 2450
 AR Path="/5E9F4ACB/5EBAB305" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EBAB305" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EBAB305" Ref="#PWR063"  Part="1" 
-F 0 "#PWR063" H 8550 2200 50  0001 C CNN
+AR Path="/5EAAFBD4/5EBAB305" Ref="#PWR064"  Part="1" 
+F 0 "#PWR064" H 8550 2200 50  0001 C CNN
 F 1 "GND" H 8555 2277 50  0000 C CNN
 F 2 "" H 8550 2450 50  0001 C CNN
 F 3 "" H 8550 2450 50  0001 C CNN
@@ -247,8 +247,8 @@ P 7850 3200
 AR Path="/5E9E88B8/5EBDE536" Ref="#PWR?"  Part="1" 
 AR Path="/5E9F4ACB/5EBDE536" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EBDE536" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EBDE536" Ref="#PWR062"  Part="1" 
-F 0 "#PWR062" H 7850 2950 50  0001 C CNN
+AR Path="/5EAAFBD4/5EBDE536" Ref="#PWR063"  Part="1" 
+F 0 "#PWR063" H 7850 2950 50  0001 C CNN
 F 1 "GND" H 7855 3027 50  0000 C CNN
 F 2 "" H 7850 3200 50  0001 C CNN
 F 3 "" H 7850 3200 50  0001 C CNN
@@ -302,8 +302,8 @@ U 1 1 5EC45365
 P 2250 2450
 AR Path="/5E9F4ACB/5EC45365" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EC45365" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EC45365" Ref="#PWR048"  Part="1" 
-F 0 "#PWR048" H 2250 2200 50  0001 C CNN
+AR Path="/5EAAFBD4/5EC45365" Ref="#PWR049"  Part="1" 
+F 0 "#PWR049" H 2250 2200 50  0001 C CNN
 F 1 "GND" H 2255 2277 50  0000 C CNN
 F 2 "" H 2250 2450 50  0001 C CNN
 F 3 "" H 2250 2450 50  0001 C CNN
@@ -336,8 +336,8 @@ P 2950 1100
 AR Path="/5E9E88B8/5EC45382" Ref="#PWR?"  Part="1" 
 AR Path="/5E9F4ACB/5EC45382" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EC45382" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EC45382" Ref="#PWR050"  Part="1" 
-F 0 "#PWR050" H 2950 850 50  0001 C CNN
+AR Path="/5EAAFBD4/5EC45382" Ref="#PWR051"  Part="1" 
+F 0 "#PWR051" H 2950 850 50  0001 C CNN
 F 1 "GND" H 2955 927 50  0000 C CNN
 F 2 "" H 2950 1100 50  0001 C CNN
 F 3 "" H 2950 1100 50  0001 C CNN
@@ -419,8 +419,8 @@ P 2950 3200
 AR Path="/5E9E88B8/5EC453BC" Ref="#PWR?"  Part="1" 
 AR Path="/5E9F4ACB/5EC453BC" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EC453BC" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EC453BC" Ref="#PWR051"  Part="1" 
-F 0 "#PWR051" H 2950 2950 50  0001 C CNN
+AR Path="/5EAAFBD4/5EC453BC" Ref="#PWR052"  Part="1" 
+F 0 "#PWR052" H 2950 2950 50  0001 C CNN
 F 1 "GND" H 2955 3027 50  0000 C CNN
 F 2 "" H 2950 3200 50  0001 C CNN
 F 3 "" H 2950 3200 50  0001 C CNN
@@ -707,8 +707,8 @@ U 1 1 5FA56134
 P 10600 5300
 AR Path="/5E9F4ACB/5FA56134" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5FA56134" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5FA56134" Ref="#PWR067"  Part="1" 
-F 0 "#PWR067" H 10600 5050 50  0001 C CNN
+AR Path="/5EAAFBD4/5FA56134" Ref="#PWR068"  Part="1" 
+F 0 "#PWR068" H 10600 5050 50  0001 C CNN
 F 1 "GND" H 10605 5127 50  0000 C CNN
 F 2 "" H 10600 5300 50  0001 C CNN
 F 3 "" H 10600 5300 50  0001 C CNN
@@ -741,7 +741,7 @@ AR Path="/5EAAFBD4/5F7A4085" Ref="L33"  Part="1"
 F 0 "L33" V 10100 5050 50  0000 C CNN
 F 1 "MLZ2012N101LT000" V 9900 5200 50  0000 R CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 10000 5050 50  0001 C CNN
-F 3 "~" H 10000 5050 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_commercial_decoupling_mlz2012_en.pdf" H 10000 5050 50  0001 C CNN
 	1    10000 5050
 	0    1    -1   0   
 $EndComp
@@ -809,8 +809,8 @@ U 1 1 600BA3C4
 P 10600 6050
 AR Path="/5E9F4ACB/600BA3C4" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/600BA3C4" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/600BA3C4" Ref="#PWR068"  Part="1" 
-F 0 "#PWR068" H 10600 5800 50  0001 C CNN
+AR Path="/5EAAFBD4/600BA3C4" Ref="#PWR069"  Part="1" 
+F 0 "#PWR069" H 10600 5800 50  0001 C CNN
 F 1 "GND" H 10605 5877 50  0000 C CNN
 F 2 "" H 10600 6050 50  0001 C CNN
 F 3 "" H 10600 6050 50  0001 C CNN
@@ -843,7 +843,7 @@ AR Path="/5EAAFBD4/600BA3D1" Ref="L34"  Part="1"
 F 0 "L34" V 10100 5800 50  0000 C CNN
 F 1 "MLZ2012N101LT000" V 9900 5950 50  0000 R CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 10000 5800 50  0001 C CNN
-F 3 "~" H 10000 5800 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_commercial_decoupling_mlz2012_en.pdf" H 10000 5800 50  0001 C CNN
 	1    10000 5800
 	0    1    -1   0   
 $EndComp
@@ -911,8 +911,8 @@ U 1 1 600EC426
 P 8850 5300
 AR Path="/5E9F4ACB/600EC426" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/600EC426" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/600EC426" Ref="#PWR065"  Part="1" 
-F 0 "#PWR065" H 8850 5050 50  0001 C CNN
+AR Path="/5EAAFBD4/600EC426" Ref="#PWR066"  Part="1" 
+F 0 "#PWR066" H 8850 5050 50  0001 C CNN
 F 1 "GND" H 8855 5127 50  0000 C CNN
 F 2 "" H 8850 5300 50  0001 C CNN
 F 3 "" H 8850 5300 50  0001 C CNN
@@ -945,7 +945,7 @@ AR Path="/5EAAFBD4/600EC433" Ref="L31"  Part="1"
 F 0 "L31" V 8350 5050 50  0000 C CNN
 F 1 "MLZ2012N101LT000" V 8150 5200 50  0000 R CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8250 5050 50  0001 C CNN
-F 3 "~" H 8250 5050 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_commercial_decoupling_mlz2012_en.pdf" H 8250 5050 50  0001 C CNN
 	1    8250 5050
 	0    1    -1   0   
 $EndComp
@@ -1013,8 +1013,8 @@ U 1 1 6012240F
 P 8850 6050
 AR Path="/5E9F4ACB/6012240F" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/6012240F" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/6012240F" Ref="#PWR066"  Part="1" 
-F 0 "#PWR066" H 8850 5800 50  0001 C CNN
+AR Path="/5EAAFBD4/6012240F" Ref="#PWR067"  Part="1" 
+F 0 "#PWR067" H 8850 5800 50  0001 C CNN
 F 1 "GND" H 8855 5877 50  0000 C CNN
 F 2 "" H 8850 6050 50  0001 C CNN
 F 3 "" H 8850 6050 50  0001 C CNN
@@ -1047,7 +1047,7 @@ AR Path="/5EAAFBD4/6012241C" Ref="L32"  Part="1"
 F 0 "L32" V 8350 5800 50  0000 C CNN
 F 1 "MLZ2012N101LT000" V 8150 5950 50  0000 R CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8250 5800 50  0001 C CNN
-F 3 "~" H 8250 5800 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_commercial_decoupling_mlz2012_en.pdf" H 8250 5800 50  0001 C CNN
 	1    8250 5800
 	0    1    -1   0   
 $EndComp
@@ -1101,8 +1101,8 @@ P 7850 1100
 AR Path="/5E9E88B8/5EBAB335" Ref="#PWR?"  Part="1" 
 AR Path="/5E9F4ACB/5EBAB335" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EBAB335" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EBAB335" Ref="#PWR061"  Part="1" 
-F 0 "#PWR061" H 7850 850 50  0001 C CNN
+AR Path="/5EAAFBD4/5EBAB335" Ref="#PWR062"  Part="1" 
+F 0 "#PWR062" H 7850 850 50  0001 C CNN
 F 1 "GND" H 7855 927 50  0000 C CNN
 F 2 "" H 7850 1100 50  0001 C CNN
 F 3 "" H 7850 1100 50  0001 C CNN
@@ -1163,8 +1163,8 @@ U 1 1 5EDC1AC2
 P 2250 4150
 AR Path="/5E9F4ACB/5EDC1AC2" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EDC1AC2" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EDC1AC2" Ref="#PWR049"  Part="1" 
-F 0 "#PWR049" H 2250 3900 50  0001 C CNN
+AR Path="/5EAAFBD4/5EDC1AC2" Ref="#PWR050"  Part="1" 
+F 0 "#PWR050" H 2250 3900 50  0001 C CNN
 F 1 "GND" H 2255 3977 50  0000 C CNN
 F 2 "" H 2250 4150 50  0001 C CNN
 F 3 "" H 2250 4150 50  0001 C CNN
@@ -1192,8 +1192,8 @@ U 1 1 5EE77419
 P 8550 4150
 AR Path="/5E9F4ACB/5EE77419" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5EE77419" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5EE77419" Ref="#PWR064"  Part="1" 
-F 0 "#PWR064" H 8550 3900 50  0001 C CNN
+AR Path="/5EAAFBD4/5EE77419" Ref="#PWR065"  Part="1" 
+F 0 "#PWR065" H 8550 3900 50  0001 C CNN
 F 1 "GND" H 8555 3977 50  0000 C CNN
 F 2 "" H 8550 4150 50  0001 C CNN
 F 3 "" H 8550 4150 50  0001 C CNN
@@ -1212,7 +1212,7 @@ AR Path="/5EAAFBD4/5EF7AC24" Ref="L21"  Part="1"
 F 0 "L21" V 5950 750 50  0000 C CNN
 F 1 "MLF2012E6R8" V 5850 750 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5750 750 50  0001 C CNN
-F 3 "~" H 5750 750 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5750 750 50  0001 C CNN
 	1    5750 750 
 	0    -1   -1   0   
 $EndComp
@@ -1256,7 +1256,7 @@ AR Path="/5EAAFBD4/5EF7C688" Ref="L26"  Part="1"
 F 0 "L26" H 6803 996 50  0000 L CNN
 F 1 "MLF2012A1R5" H 6803 905 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6750 950 50  0001 C CNN
-F 3 "~" H 6750 950 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 6750 950 50  0001 C CNN
 	1    6750 950 
 	1    0    0    -1  
 $EndComp
@@ -1331,7 +1331,7 @@ AR Path="/5EAAFBD4/5F04B08B" Ref="L7"  Part="1"
 F 0 "L7" H 4303 1896 50  0000 L CNN
 F 1 "MLF2012DR82" H 4303 1805 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4250 1850 50  0001 C CNN
-F 3 "~" H 4250 1850 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4250 1850 50  0001 C CNN
 	1    4250 1850
 	1    0    0    -1  
 $EndComp
@@ -1345,7 +1345,7 @@ AR Path="/5EAAFBD4/5F04B091" Ref="L12"  Part="1"
 F 0 "L12" V 4700 1650 50  0000 C CNN
 F 1 "MLF2012A3R9" V 4600 1650 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4500 1650 50  0001 C CNN
-F 3 "~" H 4500 1650 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4500 1650 50  0001 C CNN
 	1    4500 1650
 	0    -1   -1   0   
 $EndComp
@@ -1389,7 +1389,7 @@ AR Path="/5EAAFBD4/5F04B0A3" Ref="L17"  Part="1"
 F 0 "L17" H 5553 1896 50  0000 L CNN
 F 1 "MLF2012DR56" H 5553 1805 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5500 1850 50  0001 C CNN
-F 3 "~" H 5500 1850 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5500 1850 50  0001 C CNN
 	1    5500 1850
 	1    0    0    -1  
 $EndComp
@@ -1451,8 +1451,8 @@ U 1 1 5F04B0C4
 P 5350 2100
 AR Path="/5E9F4ACB/5F04B0C4" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5F04B0C4" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5F04B0C4" Ref="#PWR057"  Part="1" 
-F 0 "#PWR057" H 5350 1850 50  0001 C CNN
+AR Path="/5EAAFBD4/5F04B0C4" Ref="#PWR058"  Part="1" 
+F 0 "#PWR058" H 5350 1850 50  0001 C CNN
 F 1 "GND" H 5355 1927 50  0000 C CNN
 F 2 "" H 5350 2100 50  0001 C CNN
 F 3 "" H 5350 2100 50  0001 C CNN
@@ -1472,7 +1472,7 @@ AR Path="/5EAAFBD4/5F04B0CE" Ref="L22"  Part="1"
 F 0 "L22" V 5950 1650 50  0000 C CNN
 F 1 "MLF2012A3R9" V 5850 1650 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5750 1650 50  0001 C CNN
-F 3 "~" H 5750 1650 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5750 1650 50  0001 C CNN
 	1    5750 1650
 	0    -1   -1   0   
 $EndComp
@@ -1516,7 +1516,7 @@ AR Path="/5EAAFBD4/5F04B0E0" Ref="L27"  Part="1"
 F 0 "L27" H 6803 1896 50  0000 L CNN
 F 1 "MLF2012DR82" H 6803 1805 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6750 1850 50  0001 C CNN
-F 3 "~" H 6750 1850 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 6750 1850 50  0001 C CNN
 	1    6750 1850
 	1    0    0    -1  
 $EndComp
@@ -1591,7 +1591,7 @@ AR Path="/5EAAFBD4/5F068AC4" Ref="L8"  Part="1"
 F 0 "L8" H 4303 2796 50  0000 L CNN
 F 1 "MLF2012DR47" H 4303 2705 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4250 2750 50  0001 C CNN
-F 3 "~" H 4250 2750 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4250 2750 50  0001 C CNN
 	1    4250 2750
 	1    0    0    -1  
 $EndComp
@@ -1605,7 +1605,7 @@ AR Path="/5EAAFBD4/5F068ACA" Ref="L13"  Part="1"
 F 0 "L13" V 4700 2550 50  0000 C CNN
 F 1 "MLF2012A2R2" V 4600 2550 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4500 2550 50  0001 C CNN
-F 3 "~" H 4500 2550 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4500 2550 50  0001 C CNN
 	1    4500 2550
 	0    -1   -1   0   
 $EndComp
@@ -1649,7 +1649,7 @@ AR Path="/5EAAFBD4/5F068ADC" Ref="L18"  Part="1"
 F 0 "L18" H 5553 2796 50  0000 L CNN
 F 1 "MLF2012DR33" H 5553 2705 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5500 2750 50  0001 C CNN
-F 3 "~" H 5500 2750 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5500 2750 50  0001 C CNN
 	1    5500 2750
 	1    0    0    -1  
 $EndComp
@@ -1711,8 +1711,8 @@ U 1 1 5F068AFD
 P 5350 3000
 AR Path="/5E9F4ACB/5F068AFD" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5F068AFD" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5F068AFD" Ref="#PWR058"  Part="1" 
-F 0 "#PWR058" H 5350 2750 50  0001 C CNN
+AR Path="/5EAAFBD4/5F068AFD" Ref="#PWR059"  Part="1" 
+F 0 "#PWR059" H 5350 2750 50  0001 C CNN
 F 1 "GND" H 5355 2827 50  0000 C CNN
 F 2 "" H 5350 3000 50  0001 C CNN
 F 3 "" H 5350 3000 50  0001 C CNN
@@ -1732,7 +1732,7 @@ AR Path="/5EAAFBD4/5F068B07" Ref="L23"  Part="1"
 F 0 "L23" V 5950 2550 50  0000 C CNN
 F 1 "MLF2012A2R2" V 5850 2550 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5750 2550 50  0001 C CNN
-F 3 "~" H 5750 2550 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5750 2550 50  0001 C CNN
 	1    5750 2550
 	0    -1   -1   0   
 $EndComp
@@ -1776,7 +1776,7 @@ AR Path="/5EAAFBD4/5F068B19" Ref="L28"  Part="1"
 F 0 "L28" H 6803 2796 50  0000 L CNN
 F 1 "MLF2012DR47" H 6803 2705 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6750 2750 50  0001 C CNN
-F 3 "~" H 6750 2750 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 6750 2750 50  0001 C CNN
 	1    6750 2750
 	1    0    0    -1  
 $EndComp
@@ -1853,7 +1853,7 @@ AR Path="/5EAAFBD4/5F08D331" Ref="L9"  Part="1"
 F 0 "L9" H 4303 3696 50  0000 L CNN
 F 1 "MLF2012DR27" H 4303 3605 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4250 3650 50  0001 C CNN
-F 3 "~" H 4250 3650 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4250 3650 50  0001 C CNN
 	1    4250 3650
 	1    0    0    -1  
 $EndComp
@@ -1867,7 +1867,7 @@ AR Path="/5EAAFBD4/5F08D337" Ref="L14"  Part="1"
 F 0 "L14" V 4700 3450 50  0000 C CNN
 F 1 "MLF2012A1R5" V 4600 3450 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4500 3450 50  0001 C CNN
-F 3 "~" H 4500 3450 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4500 3450 50  0001 C CNN
 	1    4500 3450
 	0    -1   -1   0   
 $EndComp
@@ -1911,7 +1911,7 @@ AR Path="/5EAAFBD4/5F08D349" Ref="L19"  Part="1"
 F 0 "L19" H 5553 3696 50  0000 L CNN
 F 1 "MLF2012DR18" H 5553 3605 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5500 3650 50  0001 C CNN
-F 3 "~" H 5500 3650 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5500 3650 50  0001 C CNN
 	1    5500 3650
 	1    0    0    -1  
 $EndComp
@@ -1973,8 +1973,8 @@ U 1 1 5F08D36A
 P 5350 3900
 AR Path="/5E9F4ACB/5F08D36A" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5F08D36A" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5F08D36A" Ref="#PWR059"  Part="1" 
-F 0 "#PWR059" H 5350 3650 50  0001 C CNN
+AR Path="/5EAAFBD4/5F08D36A" Ref="#PWR060"  Part="1" 
+F 0 "#PWR060" H 5350 3650 50  0001 C CNN
 F 1 "GND" H 5355 3727 50  0000 C CNN
 F 2 "" H 5350 3900 50  0001 C CNN
 F 3 "" H 5350 3900 50  0001 C CNN
@@ -1994,7 +1994,7 @@ AR Path="/5EAAFBD4/5F08D374" Ref="L24"  Part="1"
 F 0 "L24" V 5950 3450 50  0000 C CNN
 F 1 "MLF2012A1R5" V 5850 3450 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5750 3450 50  0001 C CNN
-F 3 "~" H 5750 3450 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5750 3450 50  0001 C CNN
 	1    5750 3450
 	0    -1   -1   0   
 $EndComp
@@ -2038,7 +2038,7 @@ AR Path="/5EAAFBD4/5F08D386" Ref="L29"  Part="1"
 F 0 "L29" H 6803 3696 50  0000 L CNN
 F 1 "MLF2012DR27" H 6803 3605 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6750 3650 50  0001 C CNN
-F 3 "~" H 6750 3650 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 6750 3650 50  0001 C CNN
 	1    6750 3650
 	1    0    0    -1  
 $EndComp
@@ -2115,7 +2115,7 @@ AR Path="/5EAAFBD4/5F0F26C6" Ref="L10"  Part="1"
 F 0 "L10" H 4353 4596 50  0000 L CNN
 F 1 "MLF2012DR15" H 4353 4505 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4300 4550 50  0001 C CNN
-F 3 "~" H 4300 4550 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4300 4550 50  0001 C CNN
 	1    4300 4550
 	1    0    0    -1  
 $EndComp
@@ -2129,7 +2129,7 @@ AR Path="/5EAAFBD4/5F0F26CC" Ref="L15"  Part="1"
 F 0 "L15" V 4750 4350 50  0000 C CNN
 F 1 "MLF2012DR82" V 4650 4350 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4550 4350 50  0001 C CNN
-F 3 "~" H 4550 4350 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 4550 4350 50  0001 C CNN
 	1    4550 4350
 	0    -1   -1   0   
 $EndComp
@@ -2173,7 +2173,7 @@ AR Path="/5EAAFBD4/5F0F26DE" Ref="L20"  Part="1"
 F 0 "L20" H 5603 4596 50  0000 L CNN
 F 1 "MLF2012DR10" H 5603 4505 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5550 4550 50  0001 C CNN
-F 3 "~" H 5550 4550 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5550 4550 50  0001 C CNN
 	1    5550 4550
 	1    0    0    -1  
 $EndComp
@@ -2235,8 +2235,8 @@ U 1 1 5F0F26FF
 P 5400 4800
 AR Path="/5E9F4ACB/5F0F26FF" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5F0F26FF" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5F0F26FF" Ref="#PWR060"  Part="1" 
-F 0 "#PWR060" H 5400 4550 50  0001 C CNN
+AR Path="/5EAAFBD4/5F0F26FF" Ref="#PWR061"  Part="1" 
+F 0 "#PWR061" H 5400 4550 50  0001 C CNN
 F 1 "GND" H 5405 4627 50  0000 C CNN
 F 2 "" H 5400 4800 50  0001 C CNN
 F 3 "" H 5400 4800 50  0001 C CNN
@@ -2256,7 +2256,7 @@ AR Path="/5EAAFBD4/5F0F2709" Ref="L25"  Part="1"
 F 0 "L25" V 6000 4350 50  0000 C CNN
 F 1 "MLF2012DR82" V 5900 4350 50  0000 C CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 5800 4350 50  0001 C CNN
-F 3 "~" H 5800 4350 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 5800 4350 50  0001 C CNN
 	1    5800 4350
 	0    -1   -1   0   
 $EndComp
@@ -2300,7 +2300,7 @@ AR Path="/5EAAFBD4/5F0F271B" Ref="L30"  Part="1"
 F 0 "L30" H 6853 4596 50  0000 L CNN
 F 1 "MLF2012DR15" H 6853 4505 50  0000 L CNN
 F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 6800 4550 50  0001 C CNN
-F 3 "~" H 6800 4550 50  0001 C CNN
+F 3 "https://product.tdk.com/info/en/catalog/datasheets/inductor_automotive_standard_mlf2012_en.pdf" H 6800 4550 50  0001 C CNN
 	1    6800 4550
 	1    0    0    -1  
 $EndComp
@@ -2542,8 +2542,8 @@ U 1 1 5FAC96A1
 P 3200 5150
 AR Path="/5E9F4ACB/5FAC96A1" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5FAC96A1" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5FAC96A1" Ref="#PWR052"  Part="1" 
-F 0 "#PWR052" H 3200 4900 50  0001 C CNN
+AR Path="/5EAAFBD4/5FAC96A1" Ref="#PWR053"  Part="1" 
+F 0 "#PWR053" H 3200 4900 50  0001 C CNN
 F 1 "GND" H 3205 4977 50  0000 C CNN
 F 2 "" H 3200 5150 50  0001 C CNN
 F 3 "" H 3200 5150 50  0001 C CNN
@@ -2558,8 +2558,8 @@ U 1 1 5FAFF372
 P 3200 5850
 AR Path="/5E9F4ACB/5FAFF372" Ref="#PWR?"  Part="1" 
 AR Path="/5EA333CB/5FAFF372" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5FAFF372" Ref="#PWR053"  Part="1" 
-F 0 "#PWR053" H 3200 5600 50  0001 C CNN
+AR Path="/5EAAFBD4/5FAFF372" Ref="#PWR054"  Part="1" 
+F 0 "#PWR054" H 3200 5600 50  0001 C CNN
 F 1 "GND" H 3205 5677 50  0000 C CNN
 F 2 "" H 3200 5850 50  0001 C CNN
 F 3 "" H 3200 5850 50  0001 C CNN
@@ -2612,8 +2612,8 @@ U 1 1 5FC175F5
 P 4750 6700
 AR Path="/5E9F4ACB/5FC175F5" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5FC175F5" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5FC175F5" Ref="#PWR055"  Part="1" 
-F 0 "#PWR055" H 4750 6450 50  0001 C CNN
+AR Path="/5EAAFBD4/5FC175F5" Ref="#PWR056"  Part="1" 
+F 0 "#PWR056" H 4750 6450 50  0001 C CNN
 F 1 "GND" H 4755 6527 50  0000 C CNN
 F 2 "" H 4750 6700 50  0001 C CNN
 F 3 "" H 4750 6700 50  0001 C CNN
@@ -2637,8 +2637,8 @@ U 1 1 5FC8373A
 P 4300 7400
 AR Path="/5E9F4ACB/5FC8373A" Ref="#PWR?"  Part="1" 
 AR Path="/5EA188E4/5FC8373A" Ref="#PWR?"  Part="1" 
-AR Path="/5EAAFBD4/5FC8373A" Ref="#PWR054"  Part="1" 
-F 0 "#PWR054" H 4300 7150 50  0001 C CNN
+AR Path="/5EAAFBD4/5FC8373A" Ref="#PWR055"  Part="1" 
+F 0 "#PWR055" H 4300 7150 50  0001 C CNN
 F 1 "GND" H 4305 7227 50  0000 C CNN
 F 2 "" H 4300 7400 50  0001 C CNN
 F 3 "" H 4300 7400 50  0001 C CNN
