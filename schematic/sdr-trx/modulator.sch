@@ -917,13 +917,13 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 $EndComp
 $Comp
 L sdr-trx:AD8604 U3
-U 3 1 5EB1D8A3
+U 4 1 5EB1D8A3
 P 3750 4750
 F 0 "U3" H 3700 4950 50  0000 L CNN
 F 1 "AD8604" H 3750 5026 50  0001 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 3700 4850 50  0001 C CNN
 F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 3800 4950 50  0001 C CNN
-	3    3750 4750
+	4    3750 4750
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -939,13 +939,13 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 $EndComp
 $Comp
 L sdr-trx:AD8604 U3
-U 4 1 5EB22919
+U 3 1 5EB22919
 P 4700 5400
 F 0 "U3" H 4650 5600 50  0000 L CNN
 F 1 "AD8604" H 4700 5676 50  0001 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 4650 5500 50  0001 C CNN
 F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 4750 5600 50  0001 C CNN
-	4    4700 5400
+	3    4700 5400
 	1    0    0    -1  
 $EndComp
 $Comp

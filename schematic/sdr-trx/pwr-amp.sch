@@ -214,7 +214,7 @@ U 1 1 5EC7D7E5
 P 2900 2550
 F 0 "D1" V 2854 2629 50  0000 L CNN
 F 1 "BZX84C4V7" V 3150 2550 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 2900 2550 50  0001 C CNN
+F 2 "Diode_SMD:D_SOT-23_ANK" H 2900 2550 50  0001 C CNN
 F 3 "https://www.diodes.com/assets/Datasheets/ds18001.pdf" H 2900 2550 50  0001 C CNN
 	1    2900 2550
 	0    1    1    0   
@@ -326,7 +326,7 @@ F 1 "CX2047LANL" H 5100 2550 50  0000 C CNN
 F 2 "sdr-trx:CX2047LANL" H 5150 2500 50  0001 C CNN
 F 3 "https://productfinder.pulseeng.com/doc_type/WEB301/doc_num/CX2047LANL-01/doc_part/CX2047LANL.pdf" H 5150 2850 50  0001 C CNN
 	1    5150 2850
-	-1   0    0    -1  
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	4300 1800 4300 1900

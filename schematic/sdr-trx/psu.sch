@@ -838,7 +838,7 @@ AR Path="/5EC388F5/5EDF51FA" Ref="D?"  Part="1"
 AR Path="/5ED56EC4/5EDF51FA" Ref="D6"  Part="1" 
 F 0 "D6" V 5450 6150 50  0000 L CNN
 F 1 "BZX84-C12" H 5650 6000 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 5650 6100 50  0001 C CNN
+F 2 "Diode_SMD:D_SOT-23_ANK" H 5650 6100 50  0001 C CNN
 F 3 "https://www.diodes.com/assets/Datasheets/ds18001.pdf" H 5650 6100 50  0001 C CNN
 	1    5650 6100
 	0    1    1    0   
@@ -911,7 +911,7 @@ AR Path="/5EC388F5/5EE52CFA" Ref="D?"  Part="1"
 AR Path="/5ED56EC4/5EE52CFA" Ref="D7"  Part="1" 
 F 0 "D7" V 5800 7000 50  0000 L CNN
 F 1 "BZX84-C12" H 5800 6800 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 5800 6900 50  0001 C CNN
+F 2 "Diode_SMD:D_SOT-23_ANK" H 5800 6900 50  0001 C CNN
 F 3 "https://www.diodes.com/assets/Datasheets/ds18001.pdf" H 5800 6900 50  0001 C CNN
 	1    5800 6900
 	0    1    1    0   
@@ -1590,7 +1590,7 @@ AR Path="/5EC388F5/5F68EAE2" Ref="D?"  Part="1"
 AR Path="/5ED56EC4/5F68EAE2" Ref="D8"  Part="1" 
 F 0 "D8" H 5950 4800 50  0000 C CNN
 F 1 "BZX84-C2V4" H 5950 5000 50  0000 C CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 5950 4900 50  0001 C CNN
+F 2 "Diode_SMD:D_SOT-23_ANK" H 5950 4900 50  0001 C CNN
 F 3 "https://www.diodes.com/assets/Datasheets/ds18001.pdf" H 5950 4900 50  0001 C CNN
 	1    5950 4900
 	-1   0    0    1   

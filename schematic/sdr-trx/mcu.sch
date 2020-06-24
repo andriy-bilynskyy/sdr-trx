@@ -480,7 +480,7 @@ U 1 1 5EE1D804
 P 3900 2600
 F 0 "Y1" V 3946 2469 50  0000 R CNN
 F 1 "J49SML-A-G-G-K-24M0" V 4050 4250 50  0000 R CNN
-F 2 "Crystal:Crystal_SMD_HC49-SD_HandSoldering" H 3900 2600 50  0001 C CNN
+F 2 "Crystal:Crystal_SMD_HC49-SD" H 3900 2600 50  0001 C CNN
 F 3 "https://www.jauch.com/downloadfile/5d5283ee24bc6cf48597071bde5f675e0/jauch_datasheet_j49sml.pdf" H 3900 2600 50  0001 C CNN
 	1    3900 2600
 	0    -1   -1   0   
@@ -1242,8 +1242,6 @@ F 3 "http://www.onsemi.com/pub_link/Collateral/NUP4202W1-D.PDF" H 9000 5875 50  
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9050 5600 9050 5550
-Wire Wire Line
 	8950 5500 8950 5600
 Wire Wire Line
 	9050 6000 9050 6050
@@ -1297,8 +1295,6 @@ Wire Wire Line
 	8200 6150 8850 6150
 Wire Wire Line
 	8200 6050 9050 6050
-Wire Wire Line
-	8200 5550 9050 5550
 Wire Wire Line
 	8200 5450 9200 5450
 Text Label 8200 5450 0    50   ~ 0
@@ -2536,10 +2532,7 @@ Connection ~ 9050 6050
 Wire Wire Line
 	9650 5900 9650 5550
 Wire Wire Line
-	9650 5550 9050 5550
-Wire Wire Line
 	9650 5900 9800 5900
-Connection ~ 9050 5550
 $Comp
 L power:GND #PWR?
 U 1 1 5F3BBC3A
@@ -2775,7 +2768,7 @@ Wire Wire Line
 	9950 2150 9600 2150
 Connection ~ 9600 2150
 NoConn ~ 9400 1600
-NoConn ~ 8850 5600
+NoConn ~ 9050 5600
 NoConn ~ 2100 4250
 $Comp
 L power:PWR_FLAG #FLG03
@@ -2807,6 +2800,13 @@ $EndComp
 Wire Wire Line
 	4850 700  4900 700 
 Connection ~ 4850 700 
+Wire Wire Line
+	8200 5550 8850 5550
+Wire Wire Line
+	8850 5600 8850 5550
+Connection ~ 8850 5550
+Wire Wire Line
+	8850 5550 9650 5550
 Wire Bus Line
 	10500 3100 10500 3600
 $EndSCHEMATC
