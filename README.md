@@ -1,6 +1,6 @@
 # SDR transceiver
 
-##General info
+## General info
 
 - [SDR wiki](https://en.wikipedia.org/wiki/Software-defined_radio)
 - [Quadrature Mixers, IQ Demodulation, and the Tayloe Detector](https://www.youtube.com/watch?v=JuuKF1RFvBM)
