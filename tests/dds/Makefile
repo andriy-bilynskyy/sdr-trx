@@ -7,7 +7,7 @@
 #****************************************************************************
 
 
-TOOLCHAIN_PATH := /opt/gcc-arm-none-eabi-9-2019-q4-major
+TOOLCHAIN_PATH := /opt/gcc-arm-none-eabi-9-2020-q2-update
 
 
 CC     := ${TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc
