@@ -815,7 +815,7 @@ P 8100 2650
 AR Path="/5E9E88B8/5EFCAB39" Ref="R?"  Part="1" 
 AR Path="/5E9F4ACB/5EFCAB39" Ref="R22"  Part="1" 
 F 0 "R22" V 8200 2750 50  0000 L CNN
-F 1 "100R 1%" V 8200 2650 50  0000 R CNN
+F 1 "100R" V 8200 2650 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8030 2650 50  0001 C CNN
 F 3 "~" H 8100 2650 50  0001 C CNN
 	1    8100 2650
@@ -828,7 +828,7 @@ P 8100 2250
 AR Path="/5E9E88B8/5EFCAF30" Ref="R?"  Part="1" 
 AR Path="/5E9F4ACB/5EFCAF30" Ref="R21"  Part="1" 
 F 0 "R21" V 8200 2350 50  0000 L CNN
-F 1 "100R 1%" V 8200 2250 50  0000 R CNN
+F 1 "100R" V 8200 2250 50  0000 R CNN
 F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8030 2250 50  0001 C CNN
 F 3 "~" H 8100 2250 50  0001 C CNN
 	1    8100 2250
@@ -960,46 +960,46 @@ F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_
 	1    0    0    -1  
 $EndComp
 $Comp
-L sdr-trx:AD8604 U4
+L sdr-trx:AD8618 U4
 U 2 1 5EB3F5FD
 P 6250 3350
 F 0 "U4" H 6200 3550 50  0000 L CNN
-F 1 "AD8604" H 6250 3626 50  0001 C CNN
+F 1 "AD8618" H 6250 3626 50  0001 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 3450 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 3550 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8615_8616_8618.pdf" H 6300 3550 50  0001 C CNN
 	2    6250 3350
 	1    0    0    -1  
 $EndComp
 $Comp
-L sdr-trx:AD8604 U4
+L sdr-trx:AD8618 U4
 U 1 1 5EB437BC
 P 6250 4000
 F 0 "U4" H 6200 4300 50  0000 L CNN
-F 1 "AD8604" H 6200 4200 50  0000 L CNN
+F 1 "AD8618" H 6200 4200 50  0000 L CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 4100 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 4200 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8615_8616_8618.pdf" H 6300 4200 50  0001 C CNN
 	1    6250 4000
 	1    0    0    -1  
 $EndComp
 $Comp
-L sdr-trx:AD8604 U4
+L sdr-trx:AD8618 U4
 U 4 1 5EB4526D
 P 6250 4650
 F 0 "U4" H 6200 4850 50  0000 L CNN
-F 1 "AD8604" H 6250 4926 50  0001 C CNN
+F 1 "AD8618" H 6250 4926 50  0001 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 4750 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 4850 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8615_8616_8618.pdf" H 6300 4850 50  0001 C CNN
 	4    6250 4650
 	1    0    0    -1  
 $EndComp
 $Comp
-L sdr-trx:AD8604 U4
+L sdr-trx:AD8618 U4
 U 3 1 5EB46B8F
 P 6250 5300
 F 0 "U4" H 6200 5500 50  0000 L CNN
-F 1 "AD8604" H 6250 5576 50  0001 C CNN
+F 1 "AD8618" H 6250 5576 50  0001 C CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 5400 50  0001 C CNN
-F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 5500 50  0001 C CNN
+F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8615_8616_8618.pdf" H 6300 5500 50  0001 C CNN
 	3    6250 5300
 	1    0    0    -1  
 $EndComp

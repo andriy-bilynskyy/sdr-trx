@@ -18,6 +18,12 @@ K quad opamp
 F https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf
 $ENDCMP
 #
+$CMP AD8618
+D Precision, 20 MHz, CMOS, Rail-to-Rail Input/Output Operational Amplifiers
+K quad opamp
+F https://www.analog.com/media/en/technical-documentation/data-sheets/AD8615_8616_8618.pdf
+$ENDCMP
+#
 $CMP ASTX-H11
 D HCMOS output SMD TCXO
 K Crystal Clock Oscillator
