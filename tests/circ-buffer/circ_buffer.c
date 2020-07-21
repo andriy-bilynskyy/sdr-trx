@@ -153,22 +153,19 @@ CIRC_BUFFER_BASE_T circ_buffer_get(circ_buffer_t * buffer, void * data, CIRC_BUF
     return rd_size;
 }
 
-bool circ_buffer_element(const circ_buffer_t * buffer, CIRC_BUFFER_BASE_T idx, void * data) {
-    bool result = false;
+const void * circ_buffer_element(const circ_buffer_t * buffer, CIRC_BUFFER_BASE_T idx) {
+    const void * result = NULL;
 
-    if(buffer && buffer->mp_data && data) {
+    if(buffer && buffer->mp_data) {
         if(buffer->m_tail < buffer->m_head) {
             if(buffer->m_tail + idx < buffer->m_head) {
-                memcpy(data, &buffer->mp_data[(buffer->m_tail + idx) * buffer->m_element_size], buffer->m_element_size);
-                result = true;
+                result = &buffer->mp_data[(buffer->m_tail + idx) * buffer->m_element_size];
             }
         } else if(!is_empty(buffer)) {
             if(buffer->m_tail + idx < buffer->m_buffer_size) {
-                memcpy(data, &buffer->mp_data[(buffer->m_tail + idx) * buffer->m_element_size], buffer->m_element_size);
-                result = true;
+                result = &buffer->mp_data[(buffer->m_tail + idx) * buffer->m_element_size];
             } else if(idx + buffer->m_tail - buffer->m_buffer_size < buffer->m_head) {
-                memcpy(data, &buffer->mp_data[(idx + buffer->m_tail - buffer->m_buffer_size) * buffer->m_element_size], buffer->m_element_size);
-                result = true;
+                result = &buffer->mp_data[(idx + buffer->m_tail - buffer->m_buffer_size) * buffer->m_element_size];
             }
         }
     }

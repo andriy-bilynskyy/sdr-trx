@@ -96,11 +96,10 @@ CIRC_BUFFER_BASE_T circ_buffer_get(circ_buffer_t * buffer, void * data, CIRC_BUF
  * check buffer element at index position, no getting data from buffer just check
  * buffer       - buffer handler
  * idx          - index of element in FIFO buffer to retrieve
- * data         - pointer to variable to retrieve element from FIFO buffer
- * return: true if element exists otherwise false
- * !!! data - should be the same type as it was during buffer creation
+ * return: pointer to buffer element at specified index, NULL if element not exist
+ * !!! pointer has type void* so in any check operation it should be converted to buffer data type
  ******************************************************************************/
-bool circ_buffer_element(const circ_buffer_t * buffer, CIRC_BUFFER_BASE_T idx, void * data);
+const void * circ_buffer_element(const circ_buffer_t * buffer, CIRC_BUFFER_BASE_T idx);
 /*******************************************************************************
  * check buffer elements at index position, no getting data from buffer just check
  * buffer       - buffer handler

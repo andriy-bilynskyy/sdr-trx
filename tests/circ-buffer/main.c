@@ -108,22 +108,17 @@ int main() {
 
         int wr_data[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
         int rd_data[20];
-        int bt = 0;
 
         assert(circ_buffer_put(&buf, wr_data, 3) == 3);
-        assert(circ_buffer_element(&buf, 5, &bt) == false);
-        assert(circ_buffer_element(&buf, 1, &bt) == true);
-        assert(bt == 2);
+        assert(circ_buffer_element(&buf, 5) == NULL);
+        assert(*(int *)circ_buffer_element(&buf, 1) == 2);
         assert(circ_buffer_used(&buf) == 3);
         assert(circ_buffer_get(&buf, rd_data, 2) == 2);
         assert(circ_buffer_used(&buf) == 1);
-        assert(circ_buffer_element(&buf, 0, &bt) == true);
-        assert(bt == 3);
+        assert(*(int *)circ_buffer_element(&buf, 0) == 3);
         assert(circ_buffer_put(&buf, wr_data, sizeof(wr_data)/sizeof(int)) == 9);
-        assert(circ_buffer_element(&buf, 9, &bt) == true);
-        assert(bt == 9);
-        assert(circ_buffer_element(&buf, 6, &bt) == true);
-        assert(bt == 6);
+        assert(*(int *)circ_buffer_element(&buf, 9) == 9);
+        assert(*(int *)circ_buffer_element(&buf, 6) == 6);
         assert(circ_buffer_elements(&buf, 6, rd_data, sizeof(rd_data)/sizeof(int)) == 4);
         int pattern1[] = {6,7,8,9};
         assert(memcmp(rd_data, pattern1, 4*sizeof(int)) == 0);
@@ -228,22 +223,17 @@ int main() {
 
         int wr_data[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
         int rd_data[20];
-        int bt = 0;
 
         assert(circ_buffer_put(&buf, wr_data, 3) == 3);
-        assert(circ_buffer_element(&buf, 5, &bt) == false);
-        assert(circ_buffer_element(&buf, 1, &bt) == true);
-        assert(bt == 2);
+        assert(circ_buffer_element(&buf, 5) == NULL);
+        assert(*(int *)circ_buffer_element(&buf, 1) == 2);
         assert(circ_buffer_used(&buf) == 3);
         assert(circ_buffer_get(&buf, rd_data, 2) == 2);
         assert(circ_buffer_used(&buf) == 1);
-        assert(circ_buffer_element(&buf, 0, &bt) == true);
-        assert(bt == 3);
+        assert(*(int *)circ_buffer_element(&buf, 0) == 3);
         assert(circ_buffer_put(&buf, wr_data, sizeof(wr_data)/sizeof(int)) == 15);
-        assert(circ_buffer_element(&buf, 9, &bt) == true);
-        assert(bt == 15);
-        assert(circ_buffer_element(&buf, 6, &bt) == true);
-        assert(bt == 12);
+        assert(*(int *)circ_buffer_element(&buf, 9) == 15);
+        assert(*(int *)circ_buffer_element(&buf, 6) == 12);
         assert(circ_buffer_elements(&buf, 6, rd_data, sizeof(rd_data)/sizeof(int)) == 4);
         int pattern1[] = {12,13,14,15};
         assert(memcmp(rd_data, pattern1, 4*sizeof(int)) == 0);
