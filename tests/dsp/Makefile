@@ -21,20 +21,14 @@ PROJECT_SRC := \
   ${wildcard ./gplot/*.cpp} \
   ${wildcard ./tracer/*.c} \
   ${wildcard ./tracer/*.cpp} \
-  ${wildcard ./signal/*.c} \
-  ${wildcard ./signal/*.cpp} \
-  ${wildcard ./window_filter/*.c} \
-  ${wildcard ./window_filter/*.cpp} \
-  ${wildcard ./dft/*.c} \
-  ${wildcard ./dft/*.cpp} \
+  ${wildcard ./sdr/*.c} \
+  ${wildcard ./sdr/*.cpp} \
 
 INCLUDE_PATH := \
   ./ \
   ./gplot/ \
   ./tracer/ \
-  ./signal/ \
-  ./window_filter/ \
-  ./dft/ \
+  ./sdr/ \
 
 LDLIBS := \
   pthread \

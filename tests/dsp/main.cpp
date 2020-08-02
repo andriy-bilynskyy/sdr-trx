@@ -10,16 +10,66 @@
 
 #include "safeout.h"
 #include "CPlot2D.h"
-#include <math.h>
+#include "transmitter.h"
 #include <fftw.h>
-#include <stdio.h>
+#include <math.h>
 
-double window_hann(size_t N, ssize_t i) {
-    if(N < 2) {
-        return 0.;
+
+
+#ifdef FFTW_ENABLE_FLOAT
+#define cos(x)  cosf(x)
+#endif
+
+
+gnuplot2d_t plot_input;
+gnuplot2d_t plot_output;
+
+
+extern "C" {
+
+    extern const fftw_real * transmitter_get_input_buffer(void) {
+        const size_t Fs = 96000;
+        const size_t Ft = 1000;
+        const double At = 100;
+        const size_t Num = 9;
+
+        static fftw_real in_buf[(SDR_TX_BUF_SIZE)];
+        static size_t idx = 0;
+
+        dbg::sout << "get input data" << dbg::endl;
+        if(idx >= Num) {
+            return NULL;
+        }
+        for(size_t i = 0; i < (SDR_TX_BUF_SIZE); i++) {
+            in_buf[i] = At * cos(2.*M_PI * Ft * (idx * (SDR_TX_BUF_SIZE) + i) / Fs);
+            plot_input.add_point(idx * (SDR_TX_BUF_SIZE) + i, in_buf[i], "input");
+        }
+        idx++;
+
+        return in_buf;
     }
-    return 0.5 - 0.5*cos(2.*M_PI * i/(N - 1));
+
+    void transmitter_set_output_i_buffer(const fftw_real * data) {
+        static size_t idx = 0;
+
+        dbg::sout << "set i output data" << dbg::endl;
+        for(size_t i = 0; i < (SDR_TX_BUF_SIZE); i++) {
+            plot_output.add_point((idx * (SDR_TX_BUF_SIZE)) + i, data[i], "output i");
+        }
+        idx++;
+    }
+
+    void transmitter_set_output_q_buffer(const fftw_real * data) {
+        static size_t idx = 0;
+
+        dbg::sout << "set q output data" << dbg::endl;
+        for(size_t i = 0; i < (SDR_TX_BUF_SIZE); i++) {
+            plot_output.add_point((idx * (SDR_TX_BUF_SIZE)) + i, data[i], "output q");
+        }
+        idx++;
+    }
 }
+
 
 int main() {
     dbg::sout.set_dbg_level(dbg::DBG_INFO);
@@ -28,97 +78,18 @@ int main() {
 
     if(gnuplot2d_t::check_gnuplot()) {
 
-        const size_t Fs = 96000;
-        const size_t Ft = 1000;
-        const double At = 100;
-        const size_t N  = 512;
-        const size_t Num = 8;
+        transmitter_routine();
 
-        double * x = new(double[N * Num]);
+        dbg::sout << "transmission done" << dbg::endl;
 
-        for(uint32_t i = 0; i < N * Num; i++) {
-            x[i] = At * cos(2.*M_PI * Ft * i / Fs);
-        }
+        plot_input.set_title("Input");
+        plot_input.set_color(0xFF00, "input");
+        plot_input.draw();
 
-        double * comp_i = new(double[N * Num]);
-        double * comp_q = new(double[N * Num]);
-
-        fftw_complex * buf_t = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * N);
-        fftw_complex * buf_f = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * N);
-        fftw_plan p_fwd = fftw_create_plan(N, FFTW_FORWARD, FFTW_ESTIMATE);
-        fftw_plan p_rew = fftw_create_plan(N, FFTW_BACKWARD, FFTW_ESTIMATE);
-
-        for(uint32_t i = 0; i < N/2; i++) {
-            comp_i[i] = 0;
-            comp_q[i] = 0;
-        }
-
-        for(uint32_t j = 0; j < Num*2; j++) {
-            dbg::sout << "iteration" << dbg::endl;
-            for(uint32_t i = 0; i < N; i++) {
-                if(j * N/2 + i < N * Num) {
-                    buf_t[i].re = x[j * N/2 + i] * window_hann(N, i);
-                } else {
-                    buf_t[i].re = 0;
-                }
-                buf_t[i].im = 0;
-            }
-
-            fftw_one(p_fwd, buf_t, buf_f);
-
-            /* phase shift by Pi/2 */
-            for(size_t i = 1; i < N/2 + N%2; i++) {
-                buf_f[i].re *= 2;
-                buf_f[i].im *= 2;
-            }
-
-            for(size_t i = N/2 + 1; i < N; i++) {
-                buf_f[i].re = 0;
-                buf_f[i].im = 0;
-            }
-
-            fftw_one(p_rew, buf_f, buf_t);
-            for(uint32_t i = 0; i < N/2; i++) {
-                if(j * N/2 + i < N * Num) {
-                    comp_i[j * N/2 + i] += buf_t[i].re / N;
-                    comp_q[j * N/2 + i] += buf_t[i].im / N;
-                }
-            }
-            for(uint32_t i = N/2; i < N; i++) {
-                if(j * N/2 + i < N * Num) {
-                    comp_i[j * N/2 + i] = buf_t[i].re / N;
-                    comp_q[j * N/2 + i] = buf_t[i].im / N;
-                }
-            }
-        }
-
-        fftw_destroy_plan(p_rew);
-        fftw_destroy_plan(p_fwd);
-        fftw_free(buf_f);
-        fftw_free(buf_t);
-
-
-        gnuplot2d_t plotOrig;
-        plotOrig.set_title("Origin");
-        plotOrig.set_color(0xFF00, "input");
-        for(uint32_t i = 0; i < N * Num; i++) {
-            plotOrig.add_point((double)i / Fs, x[i], "input");
-        }
-        plotOrig.draw();
-
-        gnuplot2d_t plotRestored;
-        plotRestored.set_title("Restored");
-        plotRestored.set_color(0xFF, "component I");
-        plotRestored.set_color(0xFF0000, "component Q");
-        for(uint32_t i = 0; i < N * Num; i++) {
-            plotRestored.add_point((double)i / Fs, comp_i[i], "component I");
-            plotRestored.add_point((double)i / Fs, comp_q[i], "component Q");
-        }
-        plotRestored.draw();
-
-        delete [] comp_q;
-        delete [] comp_i;
-        delete [] x;
+        plot_output.set_title("Output");
+        plot_output.set_color(0xFF0000, "output i");
+        plot_output.set_color(0xFF, "output q");
+        plot_output.draw();
 
     } else {
         dbg::sout << dbg::err << "gnuplot not detected on current system!" << dbg::endl;
