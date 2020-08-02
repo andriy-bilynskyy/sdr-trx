@@ -97,7 +97,7 @@ astyle:
 	                  ${addsuffix *.hpp, ${INCLUDE_PATH}}}
 
 cppcheck:
-	cppcheck -q --enable=all --inconclusive --suppress=missingIncludeSystem ./
+	cppcheck -q --enable=style,performance,portability,information --inconclusive --inline-suppr ./
 
 help:
 	@:

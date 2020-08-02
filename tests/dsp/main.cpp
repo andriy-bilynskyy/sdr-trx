@@ -25,14 +25,14 @@ gnuplot2d_t plot_input;
 gnuplot2d_t plot_output;
 
 
+const size_t Fs = 96000;
+const size_t Ft = 1000;
+const fftw_real At = 100;
+const size_t Num = 9;
+
 extern "C" {
 
     extern const fftw_real * transmitter_get_input_buffer(void) {
-        const size_t Fs = 96000;
-        const size_t Ft = 1000;
-        const double At = 100;
-        const size_t Num = 9;
-
         static fftw_real in_buf[(SDR_TX_BUF_SIZE)];
         static size_t idx = 0;
 
@@ -77,6 +77,9 @@ int main() {
     dbg::sout << "DSP test application" << dbg::endl;
 
     if(gnuplot2d_t::check_gnuplot()) {
+
+        transmitter_set_band(transmitter_USB);
+        transmitter_set_fcut(transmitter_ncut(3500, Fs));  // 3.5KHz
 
         transmitter_routine();
 

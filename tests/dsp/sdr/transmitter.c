@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <stdbool.h>
 
 
 #ifndef SDR_TX_BUF_SIZE
@@ -29,6 +28,10 @@
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
+
+
+static transmitter_band_t transmitter_band = transmitter_LSB;
+static size_t transmitter_n_cut = SDR_TX_BUF_SIZE;
 
 
 extern const fftw_real * transmitter_get_input_buffer(void);
@@ -72,15 +75,18 @@ void transmitter_routine(void) {
 
                 fftw_one(p_fwd, buf_time, buf_frequency);
 
-                /* phase shift by Pi/2 */
-                for(size_t i = 1; i < SDR_TX_BUF_SIZE; i++) {
-                    buf_frequency[i].re *= 2;
-                    buf_frequency[i].im *= 2;
-                }
-
-                for(size_t i = SDR_TX_BUF_SIZE + 1; i < ((SDR_TX_BUF_SIZE) << 1); i++) {
+                /* LPF */
+                for(size_t i = transmitter_n_cut + 1; i < SDR_TX_BUF_SIZE; i++) {
                     buf_frequency[i].re = 0;
                     buf_frequency[i].im = 0;
+                }
+
+                /* phase shift by Pi/2 */
+                for(size_t i = 1; i < (SDR_TX_BUF_SIZE); i++) {
+                    buf_frequency[i].re *= 2;
+                    buf_frequency[(SDR_TX_BUF_SIZE) + i].re = 0;
+                    buf_frequency[i].im *= 2;
+                    buf_frequency[(SDR_TX_BUF_SIZE) + i].im = 0;
                 }
 
                 fftw_one(p_rew, buf_frequency, buf_time);
@@ -89,15 +95,25 @@ void transmitter_routine(void) {
                     buf_oi_tmp[i] += buf_time[i].re / ((SDR_TX_BUF_SIZE) << 1);
                     buf_oq_tmp[i] += buf_time[i].im / ((SDR_TX_BUF_SIZE) << 1);
                 }
-                transmitter_set_output_i_buffer(buf_oi_tmp);
-                transmitter_set_output_q_buffer(buf_oq_tmp);
+                if(transmitter_band == transmitter_LSB) {
+                    transmitter_set_output_i_buffer(buf_oi_tmp);
+                    transmitter_set_output_q_buffer(buf_oq_tmp);
+                } else {
+                    transmitter_set_output_i_buffer(buf_oq_tmp);
+                    transmitter_set_output_q_buffer(buf_oi_tmp);
+                }
                 for(size_t i = 0; i < (SDR_TX_BUF_SIZE); i++) {
                     buf_oi_tmp[i] = buf_time[(SDR_TX_BUF_SIZE) + i].re / ((SDR_TX_BUF_SIZE) << 1);
                     buf_oq_tmp[i] = buf_time[(SDR_TX_BUF_SIZE) + i].im / ((SDR_TX_BUF_SIZE) << 1);
                 }
             } else {
-                transmitter_set_output_i_buffer(buf_oi_tmp);
-                transmitter_set_output_q_buffer(buf_oq_tmp);
+                if(transmitter_band == transmitter_LSB) {
+                    transmitter_set_output_i_buffer(buf_oi_tmp);
+                    transmitter_set_output_q_buffer(buf_oq_tmp);
+                } else {
+                    transmitter_set_output_i_buffer(buf_oq_tmp);
+                    transmitter_set_output_q_buffer(buf_oi_tmp);
+                }
                 break;
             }
         }
@@ -112,6 +128,14 @@ void transmitter_routine(void) {
     fftw_free(buf_frequency);
     fftw_free(buf_time);
     free(window);
+}
+
+void transmitter_set_band(transmitter_band_t band) {
+    transmitter_band = band;
+}
+
+void transmitter_set_fcut(size_t n_cut) {
+    transmitter_n_cut = n_cut;
 }
 
 

@@ -55,6 +55,7 @@ safeout& safeout::flush(safeout& so, dbg_level_t msg_level) {
     return so;
 }
 
+// cppcheck-suppress constParameter
 safeout & safeout::operator<< (safeout & (*_f)(safeout &)) {
     return _f(*this);
 }
