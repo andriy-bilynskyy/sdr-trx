@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define SDR_TX_BUF_SIZE             512u
+#define SDR_BUF_SIZE             512u
 
 #ifdef __cplusplus
 }

@@ -8,8 +8,8 @@
 ********************************************************************************
 */
 
-#ifndef TRANSMITTER_H_
-#define TRANSMITTER_H_
+#ifndef SDR_H_
+#define SDR_H_
 
 
 #include "sdr_conf.h"
@@ -23,16 +23,16 @@ extern "C" {
 #endif
 
 
-#define transmitter_ncut(Fc, Fs)    ((Fc * ((SDR_TX_BUF_SIZE) << 1)) / Fs)
+#define sdr_ncut(Fc, Fs)    ((Fc * ((SDR_BUF_SIZE) << 1)) / Fs)
 
 typedef enum {
-    transmitter_LSB,
-    transmitter_USB
-} transmitter_band_t;
+    sdr_LSB,
+    sdr_USB
+} sdr_band_t;
 
-void transmitter_routine(void);
-void transmitter_set_band(transmitter_band_t band);
-void transmitter_set_fcut(size_t n_cut);
+void sdr_routine(void);
+void sdr_set_band(sdr_band_t band);
+void sdr_set_fcut(size_t n_cut);
 
 
 #ifdef __cplusplus
