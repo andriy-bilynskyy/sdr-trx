@@ -2,7 +2,7 @@
 #*
 #*  (C) 2020 Andrii Bilynskyi <andriy.bilynskyy@gmail.com>
 #*
-#*  This code is licensed under the MIT.
+#*  This code is licensed under the GPLv3.
 #*
 #****************************************************************************
 
@@ -156,11 +156,11 @@ erase:
 	openocd -f ../openocd/jlink.cfg -f ../openocd/stm32f4x.cfg                  \
             -c "init"                                                           \
             -c "reset init"                                                     \
-            -c "flash protect 0 0 63 off"                                       \
-            -c "stm32f1x unlock 0"                                              \
+            -c "flash protect 0 0 last off"                                     \
+            -c "stm32f4x unlock 0"                                              \
             -c "reset halt"                                                     \
             -c "reset init"                                                     \
-            -c "stm32f1x mass_erase 0"                                          \
+            -c "stm32f4x mass_erase 0"                                          \
             -c "reset"                                                          \
             -c "shutdown";                                                      \
 
