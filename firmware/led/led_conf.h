@@ -12,7 +12,10 @@
 #ifndef __LED_CONF_H
 #define __LED_CONF_H
 
+
 #define LED_PORT        GPIOA
 #define LED_PIN         GPIO_Pin_5
+#define LED_TIMER_ID    7
+
 
 #endif

@@ -15,7 +15,9 @@
 
 typedef enum {
     LED_OFF = 0,
-    LED_ON
+    LED_ON,
+    LED_BLINK_SLOW,
+    LED_BLINK_FAST
 } led_mode_t;
 
 

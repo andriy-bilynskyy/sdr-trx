@@ -44,9 +44,10 @@ int main(void) {
                             RCC_AHB1Periph_GPIOB |
                             RCC_AHB1Periph_GPIOC |
                             RCC_AHB1Periph_GPIOD, ENABLE);
+
     led_start();
+    led_set(LED_BLINK_FAST);
     for(;;) {
-        led_invert();
         DBG_OUT("test!");
         sleep_ms(500);
     }
@@ -64,6 +65,7 @@ int main(void) {
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t* file, uint32_t line) {
     DBG_OUT("assertion in %s:%04u", file, (unsigned int)line);
+    led_set(LED_ON);
     for(;;);
 }
 #endif
@@ -78,6 +80,7 @@ __attribute__((naked)) void HardFault_Handler(void) {
         " mrsne r0, psp                 \n"
         " bl prvGetRegistersFromStack   \n"
     );
+    led_set(LED_ON);
     for(;;);
 }
 
@@ -99,5 +102,6 @@ void prvGetRegistersFromStack(unsigned int * pStack) {
 
 void SystemHseFailed(void) {
     DBG_OUT("HSE failed");
+    led_set(LED_ON);
     for(;;);
 }
