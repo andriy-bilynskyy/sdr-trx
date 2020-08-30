@@ -1,3 +1,14 @@
+/*
+********************************************************************************
+**
+**  (C) 2020 Andrii Bilynskyi <andriy.bilynskyy@gmail.com>
+**
+**  This code is licensed under the GPLv3.
+**
+********************************************************************************
+*/
+
+
 #include "stm32f4xx_conf.h"
 #include "led.h"
 
