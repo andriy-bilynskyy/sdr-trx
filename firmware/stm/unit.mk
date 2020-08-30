@@ -46,5 +46,5 @@ PROJECT_INC += \
 PROJECT_LIB += \
 
 PROJECT_STYLE += \
-  ${wildcard ${CDIR}*.[c,s]} \
-  ${wildcard ${CDIR}*.h} \
+  ${CDIR}system_stm32f4xx.c \
+  ${CDIR}system_stm32f4xx.h\
