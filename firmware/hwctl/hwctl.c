@@ -6,7 +6,8 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    LED driver source file
+    hwctl driver source file
+    GPO expander based on 74HC595
 */
 
 #include "hwctl.h"

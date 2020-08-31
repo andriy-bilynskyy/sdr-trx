@@ -41,6 +41,7 @@ PROJECT_STYLE := \
   ${wildcard src/*.h} \
 
 
+include ../trxctl/unit.mk
 include ../hwctl/unit.mk
 include ../led/unit.mk
 include ../cm/unit.mk

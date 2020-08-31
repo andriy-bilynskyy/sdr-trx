@@ -12,6 +12,7 @@
 #include "stm32f4xx_conf.h"
 #include "led.h"
 #include "hwctl.h"
+#include "trxctl.h"
 
 
 #ifdef DEBUG
@@ -49,14 +50,25 @@ int main(void) {
 
     led_start();
     hwctl_start();
-    led_set(LED_BLINK_FAST);
+    trxctl_start();
+
     hwctl_rx_power(DEV_ON);
-    hwctl_set_band(2);
+    trxctl_rxen(true);
+    //trxctl_txen(true);
+    hwctl_set_band(4);
+
+    if(trxctl_rxget()) {
+        led_set(LED_BLINK_FAST);
+    } else {
+        led_set(LED_BLINK_SLOW);
+    }
 
     for(;;) {
         DBG_OUT("test!");
         sleep_ms(5000);
     }
+
+    trxctl_stop();
     hwctl_stop();
     led_stop();
 
