@@ -115,7 +115,7 @@ void led_start(void) {
     led.GPIO_Mode = GPIO_Mode_OUT;
     led.GPIO_OType = GPIO_OType_PP;
     led.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    led.GPIO_Speed = GPIO_Speed_2MHz;
+    led.GPIO_Speed = GPIO_Low_Speed;
     led.GPIO_Pin = LED_PIN;
 
     GPIO_Init(LED_PORT, &led);
@@ -138,7 +138,7 @@ void led_stop(void) {
     led.GPIO_Mode = GPIO_Mode_IN;
     led.GPIO_OType = GPIO_OType_PP;
     led.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    led.GPIO_Speed = GPIO_Speed_2MHz;
+    led.GPIO_Speed = GPIO_Low_Speed;
     led.GPIO_Pin = LED_PIN;
 
     GPIO_Init(LED_PORT, &led);

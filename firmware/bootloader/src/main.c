@@ -11,6 +11,8 @@
 
 #include "stm32f4xx_conf.h"
 #include "led.h"
+#include "hwctl.h"
+
 
 #ifdef DEBUG
 #include <stdio.h>
@@ -46,11 +48,16 @@ int main(void) {
                             RCC_AHB1Periph_GPIOD, ENABLE);
 
     led_start();
+    hwctl_start();
     led_set(LED_BLINK_FAST);
+    hwctl_rx_power(DEV_ON);
+    hwctl_set_band(2);
+
     for(;;) {
         DBG_OUT("test!");
-        sleep_ms(500);
+        sleep_ms(5000);
     }
+    hwctl_stop();
     led_stop();
 
     RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA |
