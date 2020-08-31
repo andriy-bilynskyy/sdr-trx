@@ -6,22 +6,26 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    trxctl driver header file
+    key driver header file
 */
 
-#ifndef __TRXCTL_H
-#define __TRXCTL_H
+#ifndef __KEY_H
+#define __KEY_H
 
 
-#include <stdbool.h>
+typedef enum {
+    KEY_RELEASED = 0,
+    KEY_PRESSED,
+    KEY_HOLD,
+    KEY_ACTIVATED
+} key_state_t;
 
 
-void trxctl_start(void);
-void trxctl_stop(void);
-void trxctl_txen(bool enable);
-void trxctl_rxen(bool enable);
-bool trxctl_txget(void);
-bool trxctl_rxget(void);
+void key_start(void);
+void key_stop(void);
+key_state_t key_pwr(void);
+key_state_t key_ptt(void);
+
 
 
 #endif

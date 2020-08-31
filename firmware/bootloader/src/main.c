@@ -10,23 +10,11 @@
 
 
 #include "stm32f4xx_conf.h"
+#include "debug.h"
 #include "led.h"
 #include "hwctl.h"
 #include "trxctl.h"
-
-
-#ifdef DEBUG
-#include <stdio.h>
-
-extern void initialise_monitor_handles(void);
-
-#define DBG_INIT() initialise_monitor_handles()
-#define DBG_OUT(fmt, ...)   \
-                printf("%s:%04u " fmt "\n", __FILE__, (unsigned)__LINE__, ##__VA_ARGS__)
-#else
-#define DBG_INIT()
-#define DBG_OUT(fmt, ...)
-#endif
+#include "key.h"
 
 
 void sleep_ms(unsigned int ms) {
@@ -51,23 +39,29 @@ int main(void) {
     led_start();
     hwctl_start();
     trxctl_start();
+    key_start();
 
     hwctl_rx_power(DEV_ON);
     trxctl_rxen(true);
     //trxctl_txen(true);
     hwctl_set_band(4);
 
-    if(trxctl_rxget()) {
-        led_set(LED_BLINK_FAST);
-    } else {
-        led_set(LED_BLINK_SLOW);
-    }
+    // if(trxctl_rxget()) {
+    //     led_set(LED_BLINK_FAST);
+    // } else {
+    //     led_set(LED_BLINK_SLOW);
+    // }
 
     for(;;) {
-        DBG_OUT("test!");
-        sleep_ms(5000);
+        if(key_pwr() == KEY_PRESSED) {
+            led_set(LED_BLINK_FAST);
+        }
+        if(key_ptt() == KEY_HOLD) {
+            led_set(LED_BLINK_SLOW);
+        }
     }
 
+    key_stop();
     trxctl_stop();
     hwctl_stop();
     led_stop();

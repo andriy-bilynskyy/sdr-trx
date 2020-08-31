@@ -6,22 +6,19 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    trxctl driver header file
+    key driver configuration file
 */
 
-#ifndef __TRXCTL_H
-#define __TRXCTL_H
+#ifndef __KEY_CONF_H
+#define __KEY_CONF_H
 
 
-#include <stdbool.h>
-
-
-void trxctl_start(void);
-void trxctl_stop(void);
-void trxctl_txen(bool enable);
-void trxctl_rxen(bool enable);
-bool trxctl_txget(void);
-bool trxctl_rxget(void);
-
+#define KEY_PWR_PORT    GPIOC
+#define KEY_PWR_PIN     GPIO_Pin_2
+#define KEY_PTT_PORT    GPIOC
+#define KEY_PTT_PIN     GPIO_Pin_9
+#define KEY_TIMER_ID    8
+#define KEY_SCAN_T_MS   100
+#define KEY_HOLD_T_MS   1000
 
 #endif
