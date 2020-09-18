@@ -15,21 +15,12 @@
 #include "ui_engine_os_dep.h"
 #include "ui_engine_conf.h"
 #include "stm32f4xx_conf.h"
+#include "misc_hal.h"
 
 
 static volatile bool ft813_qspi_tx_complete = false;
 static volatile bool ft813_int_touch_detected = false;
 
-
-void ui_engine_sleep_ms(uint32_t ms) {
-    const uint32_t delay_ms = (uint64_t)system_ahb_clk() * 126 / 1000000;
-    while(ms--) {
-        volatile uint32_t tmp = delay_ms;
-        while(tmp--) {
-            __asm("nop");
-        }
-    }
-}
 
 void ft813_qspi_wait_sync_obj(void) {
     while(!ft813_qspi_tx_complete);
@@ -47,7 +38,7 @@ void ft813_interrupt_wait_sync_obj(void) {
     uint32_t cnt = UI_ENGINE_TOUCH_UNBLOCK_MS;
     while(!ft813_int_touch_detected && cnt) {
         cnt --;
-        ui_engine_sleep_ms(1);
+        misc_hal_sleep_ms(1);
     }
 }
 

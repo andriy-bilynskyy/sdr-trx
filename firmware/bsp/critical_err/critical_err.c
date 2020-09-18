@@ -51,9 +51,10 @@ static volatile struct {
     uint32_t       psr;
 
     uint32_t       ipsr;
+#ifdef USE_FULL_ASSERT
     const char *   file;
     uint32_t       line;
-
+#endif
 } critical_err_data                         __attribute__(( section(".crash_data") ));
 
 static volatile uint32_t critical_err_crc   __attribute__(( section(".crash_data") ));
@@ -86,7 +87,7 @@ void critical_err_mode(void) {
         }
         FLASH_OB_Lock();
     }
-
+    /* cppcheck-suppress comparePointers */
     for(uint32_t *p = &_stack_end_marker_start; p < &_stack_end_marker_end; p++) {
         *p = CRITICAL_ERR_STACK_END_MARKER;
     }
@@ -277,7 +278,7 @@ void NMI_Handler(void) {
 void critical_err_stack_check(void) {
 
     bool stack_overflowed = false;
-
+    /* cppcheck-suppress comparePointers */
     for(uint32_t *p = &_stack_end_marker_start; p < &_stack_end_marker_end && !stack_overflowed; p++) {
         if(*p != CRITICAL_ERR_STACK_END_MARKER) {
             stack_overflowed = true;
@@ -307,13 +308,13 @@ static void critical_err_widget_default(void) {
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_get_xsize() / 2, 20, UI_ENGINE_FONT29, "Unknown critical error", true);
+        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Unknown critical error", true);
 
         char buf[21] = "Error ID: ";
         utoa(critical_err_data.type, &buf[10], 10);
         ui_engine_text(0, 50, 80, UI_ENGINE_FONT18, buf, false);
 
-        ui_engine_button(1, (ui_engine_get_xsize() - 120) / 2, ui_engine_get_ysize() - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
+        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
@@ -329,7 +330,7 @@ static void critical_err_widget_hardfault(void) {
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_get_xsize() / 2, 20, UI_ENGINE_FONT29, "Hard Fault", true);
+        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Hard Fault", true);
 
         char regs_str[8][15] = {"R0  0x        ", "R1  0x        ", "R2  0x        ", "R3  0x        ",
                                 "R12 0x        ", "LR  0x        ", "PC  0x        ", "PSR 0x        "
@@ -347,7 +348,7 @@ static void critical_err_widget_hardfault(void) {
             ui_engine_text(0, 50, 50 + i * 20, UI_ENGINE_FONT18, regs_str[i], false);
         }
 
-        ui_engine_button(1, (ui_engine_get_xsize() - 120) / 2, ui_engine_get_ysize() - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
+        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
@@ -362,13 +363,13 @@ static void critical_err_widget_unhandledint(void) {
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_get_xsize() / 2, 20, UI_ENGINE_FONT29, "Unhandled interrupt", true);
+        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Unhandled interrupt", true);
 
         char buf[18] = "interrupt ID: ";
         itoa((int)(critical_err_data.ipsr & 0x1FF) - 16, &buf[14], 10);
         ui_engine_text(0, 50, 80, UI_ENGINE_FONT18, buf, false);
 
-        ui_engine_button(1, (ui_engine_get_xsize() - 120) / 2, ui_engine_get_ysize() - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
+        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
@@ -384,8 +385,8 @@ static void critical_err_widget_hsefail(void) {
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_get_xsize() / 2, 20, UI_ENGINE_FONT29, "HSE Failed", true);
-        ui_engine_button(1, (ui_engine_get_xsize() - 120) / 2, ui_engine_get_ysize() - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
+        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "HSE Failed", true);
+        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
@@ -402,7 +403,7 @@ static void critical_err_widget_assert(void) {
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_get_xsize() / 2, 20, UI_ENGINE_FONT29, "Assert Failed", true);
+        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Assert Failed", true);
 
         ui_engine_text(0, 50, 100, UI_ENGINE_FONT18, critical_err_data.file, false);
 
@@ -410,7 +411,7 @@ static void critical_err_widget_assert(void) {
         utoa(critical_err_data.line, &buf[1], 10);
         ui_engine_text(0, 50, 120, UI_ENGINE_FONT18, buf, false);
 
-        ui_engine_button(1, (ui_engine_get_xsize() - 120) / 2, ui_engine_get_ysize() - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
+        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
@@ -427,9 +428,9 @@ static void critical_err_widget_stackoverflowed(void) {
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_get_xsize() / 2, 20, UI_ENGINE_FONT29, "Stack overflowed", true);
+        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Stack overflowed", true);
 
-        ui_engine_button(1, (ui_engine_get_xsize() - 120) / 2, ui_engine_get_ysize() - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
+        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);

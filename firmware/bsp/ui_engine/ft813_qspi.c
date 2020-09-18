@@ -100,9 +100,12 @@ void ft813_qspi_start(void) {
     gpio.GPIO_Pin = UI_NCS_PIN;
     GPIO_Init(UI_NCS_PORT, &gpio);
 
+    RCC_ClocksTypeDef clk;
+    RCC_GetClocksFreq(&clk);
+
     QSPI_InitTypeDef qspi = {
         .QSPI_SShift = QSPI_SShift_NoShift,
-        .QSPI_Prescaler = (system_ahb_clk() / FT813_QSPI_CLK ? system_ahb_clk() / FT813_QSPI_CLK - 1 : 0),
+        .QSPI_Prescaler = ((clk.HCLK_Frequency / FT813_QSPI_CLK) ? (clk.HCLK_Frequency / FT813_QSPI_CLK - 1) : 0),
         .QSPI_CKMode = QSPI_CKMode_Mode0,
         .QSPI_CSHTime = QSPI_CSHTime_1Cycle,
         .QSPI_FSize = 23,

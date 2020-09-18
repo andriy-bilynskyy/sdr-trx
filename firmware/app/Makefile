@@ -28,10 +28,12 @@ PROJECT ?= sdr-trx-app
 
 PROJECT_SRC := \
   ${wildcard src/*.[c,cpp]} \
+  ${wildcard src/widgets/*.[c,cpp]} \
 
 PROJECT_INC := \
   config \
   src \
+  src/widgets \
 
 PROJECT_LIB := \
 
@@ -41,10 +43,12 @@ PROJECT_STYLE := \
   ${wildcard src/*.h} \
 
 
+include ../bsp/rtc/unit.mk
 include ../bsp/ui_engine/unit.mk
 include ../bsp/hwctl/unit.mk
 include ../bsp/led/unit.mk
 include ../bsp/critical_err/unit.mk
+include ../bsp/misc/unit.mk
 include ../common/misc/unit.mk
 include ../common/dbg/unit.mk
 include ../stm/unit.mk
@@ -173,7 +177,7 @@ style:
 check:
 	${CHECK} -q --enable=style,performance,portability,information              \
                 --suppress=missingInclude                                       \
-                --check-config --inconclusive --inline-suppr ${PROJECT_STYLE}   \
+                --force --inconclusive --inline-suppr ${PROJECT_STYLE}          \
 
 help:
 	@:

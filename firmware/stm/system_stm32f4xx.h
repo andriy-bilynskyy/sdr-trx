@@ -40,11 +40,6 @@ extern "C" {
 
 void system_init(void);
 void system_set_clock(void);
-void system_hse_failed(void);
-uint32_t system_sys_clk(void);
-uint32_t system_ahb_clk(void);
-uint32_t system_apb1_clk(void);
-uint32_t system_apb2_clk(void);
 
 
 #ifdef __cplusplus

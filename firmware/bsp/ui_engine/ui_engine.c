@@ -13,12 +13,12 @@
 
 #include "ui_engine.h"
 #include "ui_engine_conf.h"
-#include "ui_engine_os_dep.h"
 #include "ft813_qspi.h"
 #include "ft813_interrupt.h"
 #include "ft813_def.h"
 #include "ft813_graph.h"
 #include "nhd_43_480272ft_ctxl_ctp.h"
+#include "misc_hal.h"
 #include <string.h>
 
 
@@ -39,6 +39,10 @@
 #define UI_ENGINE_FT813_DISPLAY_EN_PIN      7
 
 
+const uint16_t ui_engine_xsize = REG_HSIZE_VALUE;
+const uint16_t ui_engine_ysize = REG_VSIZE_VALUE;
+
+
 static bool ui_engine_qspi_4x = false;
 
 
@@ -48,7 +52,7 @@ static inline void     ui_engine_wr8(uint32_t addr, uint8_t data)               
 static inline void     ui_engine_wr16(uint32_t addr, uint16_t data)                   __attribute__((always_inline));
 static inline void     ui_engine_wr32(uint32_t addr, uint32_t data)                   __attribute__((always_inline));
 static inline uint8_t  ui_engine_rd8(uint32_t addr)                                   __attribute__((always_inline));
-static inline uint16_t ui_engine_rd16(uint32_t addr)                                  __attribute__((always_inline));
+//static inline uint16_t ui_engine_rd16(uint32_t addr)                                  __attribute__((always_inline));
 static inline uint32_t ui_engine_rd32(uint32_t addr)                                  __attribute__((always_inline));
 static inline uint32_t ui_engine_dl(uint32_t offset, void * dl_cmd, uint32_t dl_size) __attribute__((always_inline));
 static inline uint32_t ui_engine_cmd(void * cp_cmd, uint32_t cp_size)                 __attribute__((always_inline));
@@ -71,7 +75,7 @@ bool ui_engine_start(void) {
     ui_engine_host_command(CMD_ACTIVE, 0);
 
     for (uint8_t i = 0; i < UI_ENGINE_INIT_PULL_COUNT && !engine_ok; i++) {
-        ui_engine_sleep_ms(UI_ENGINE_INIT_PULL_PERIOD_MS);
+        misc_hal_sleep_ms(UI_ENGINE_INIT_PULL_PERIOD_MS);
         if (ui_engine_rd8(REG_ID) == REG_CHIP_ID_VALUE) {
             engine_ok = true;
         }
@@ -121,16 +125,6 @@ void ui_engine_stop(void) {
 
     ft813_interrupt_stop();
     ft813_qspi_stop();
-}
-
-uint16_t ui_engine_get_xsize(void) {
-
-    return REG_HSIZE_VALUE;
-}
-
-uint16_t ui_engine_get_ysize(void) {
-
-    return REG_VSIZE_VALUE;
 }
 
 void ui_engine_set_brightness(uint8_t brightness) {
@@ -248,7 +242,7 @@ void ui_engine_circle(int16_t x, int16_t y, uint16_t radius) {
 
 void ui_engine_button(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_t height, ui_engine_font_t font, const char * text) {
 
-    uint32_t size = ((strlen(text) + 1) >> 2) + ((strlen(text) + 1) & 3 ? 7 : 6);
+    uint32_t size = ((strlen(text) + 1) >> 2) + (((strlen(text) + 1) & 3) ? 7 : 6);
     uint32_t data[size];
     data[0] = TAG(tag);
     data[1] = CMD_BUTTON;
@@ -262,7 +256,7 @@ void ui_engine_button(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_
 
 void ui_engine_text(uint8_t tag, int16_t x, int16_t y, ui_engine_font_t font, const char * text, bool center_align) {
 
-    uint32_t size = ((strlen(text) + 1) >> 2) + ((strlen(text) + 1) & 3 ? 6 : 5);
+    uint32_t size = ((strlen(text) + 1) >> 2) + (((strlen(text) + 1) & 3) ? 6 : 5);
     uint32_t data[size];
     data[0] = TAG(tag);
     data[1] = CMD_TEXT;
@@ -400,7 +394,7 @@ void ui_engine_toggle(uint8_t tag, int16_t x, int16_t y, uint16_t width, ui_engi
         strlen(l_off),
         strlen(l_on)
     };
-    uint32_t size = ((len[0] + len[1] + 2) >> 2) + ((len[0] + len[1] + 2) & 3 ? 7 : 6);
+    uint32_t size = ((len[0] + len[1] + 2) >> 2) + (((len[0] + len[1] + 2) & 3) ? 7 : 6);
     uint32_t data[size];
     data[0] = TAG(tag);
     data[1] = CMD_TOGGLE;
@@ -468,12 +462,12 @@ static inline uint8_t ui_engine_rd8(uint32_t addr) {
     return data;
 }
 
-static inline uint16_t ui_engine_rd16(uint32_t addr) {
-
-    uint16_t data = 0;
-    ft813_qspi_rd(addr, &data, sizeof(data), ui_engine_qspi_4x);
-    return data;
-}
+//static inline uint16_t ui_engine_rd16(uint32_t addr) {
+//
+//    uint16_t data = 0;
+//    ft813_qspi_rd(addr, &data, sizeof(data), ui_engine_qspi_4x);
+//    return data;
+//}
 
 static inline uint32_t ui_engine_rd32(uint32_t addr) {
 
@@ -505,6 +499,6 @@ static inline void ui_engine_cmd_all(void * cp_cmd, uint32_t cp_size) {
         uint32_t sent = ui_engine_cmd(cp_cmd, cp_size);
         cp_cmd = (uint8_t *)cp_cmd + sent;
         cp_size -= sent;
-        ui_engine_sleep_ms(UI_ENGINE_CMD_WAIT_PERIOD_MS);
+        misc_hal_sleep_ms(UI_ENGINE_CMD_WAIT_PERIOD_MS);
     }
 }

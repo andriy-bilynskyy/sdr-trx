@@ -19,8 +19,6 @@
 #include <stdbool.h>
 
 
-void ui_engine_sleep_ms(uint32_t ms)     __attribute__((weak));
-
 void ft813_qspi_wait_sync_obj(void)      __attribute__((weak));
 void ft813_qspi_set_sync_obj(void)       __attribute__((weak));
 void ft813_qspi_clr_sync_obj(void)       __attribute__((weak));

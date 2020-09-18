@@ -1,3 +1,6 @@
 **/*.o
 **/*.d
 **/*.orig
+.cproject
+.project
+.settings/

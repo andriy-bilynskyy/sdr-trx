@@ -108,13 +108,12 @@
 #include "stm32f4xx.h"
 
 
+extern void system_hse_failed(void);
+
+
 /* Uncomment the following line if you need to relocate your vector Table in Internal SRAM. */
 /* #define VECT_TAB_SRAM */
 #define VECT_TAB_OFFSET  0x00 /* Vector Table base offset field. This value must be a multiple of 0x200. */
-
-/* System clock sources frequencies */
-#define HSI_CLK_MHZ       16000000UL
-#define HSE_CLK_MHZ       24000000UL
 
 /* PLL SECTION */
 #define PLL_M      12
@@ -223,118 +222,5 @@ void system_set_clock(void) {
     }
 
 }
-
-uint32_t system_sys_clk(void) {
-
-    uint32_t sys_clk = 0;
-
-    switch(RCC->CFGR & RCC_CFGR_SWS) {
-    case RCC_CFGR_SWS_HSI:
-        sys_clk = HSI_CLK_MHZ;
-        break;
-    case RCC_CFGR_SWS_HSE:
-        sys_clk = HSE_CLK_MHZ;
-        break;
-    case RCC_CFGR_SWS_PLL:
-        sys_clk = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSE) ? HSE_CLK_MHZ : HSI_CLK_MHZ);
-        sys_clk = ((uint64_t)sys_clk * PLL_N) / (PLL_M * PLL_P);
-        break;
-    default:        /* N/A */
-        break;
-    }
-
-    return sys_clk;
-}
-
-uint32_t system_ahb_clk(void) {
-
-    uint32_t ahb_clk = system_sys_clk();
-
-    switch(RCC->CFGR & RCC_CFGR_HPRE) {
-    case RCC_CFGR_HPRE_DIV1:
-    default:
-        ahb_clk /= 1;
-        break;
-    case RCC_CFGR_HPRE_DIV2:
-        ahb_clk /= 2;
-        break;
-    case RCC_CFGR_HPRE_DIV4:
-        ahb_clk /= 4;
-        break;
-    case RCC_CFGR_HPRE_DIV8:
-        ahb_clk /= 8;
-        break;
-    case RCC_CFGR_HPRE_DIV16:
-        ahb_clk /= 16;
-        break;
-    case RCC_CFGR_HPRE_DIV64:
-        ahb_clk /= 64;
-        break;
-    case RCC_CFGR_HPRE_DIV128:
-        ahb_clk /= 128;
-        break;
-    case RCC_CFGR_HPRE_DIV256:
-        ahb_clk /= 256;
-        break;
-    case RCC_CFGR_HPRE_DIV512:
-        ahb_clk /= 512;
-        break;
-    }
-
-    return ahb_clk;
-}
-
-uint32_t system_apb1_clk(void) {
-
-    uint32_t apb1_clk = system_ahb_clk();
-
-    switch(RCC->CFGR & RCC_CFGR_PPRE1) {
-    case RCC_CFGR_PPRE1_DIV1:
-    default:
-        apb1_clk /= 1;
-        break;
-    case RCC_CFGR_PPRE1_DIV2:
-        apb1_clk /= 2;
-        break;
-    case RCC_CFGR_PPRE1_DIV4:
-        apb1_clk /= 4;
-        break;
-    case RCC_CFGR_PPRE1_DIV8:
-        apb1_clk /= 8;
-        break;
-    case RCC_CFGR_PPRE1_DIV16:
-        apb1_clk /= 16;
-        break;
-    }
-
-    return apb1_clk;
-}
-
-uint32_t system_apb2_clk(void) {
-
-    uint32_t apb2_clk = system_ahb_clk();
-
-    switch(RCC->CFGR & RCC_CFGR_PPRE2) {
-    case RCC_CFGR_PPRE2_DIV1:
-    default:
-        apb2_clk /= 1;
-        break;
-    case RCC_CFGR_PPRE2_DIV2:
-        apb2_clk /= 2;
-        break;
-    case RCC_CFGR_PPRE2_DIV4:
-        apb2_clk /= 4;
-        break;
-    case RCC_CFGR_PPRE2_DIV8:
-        apb2_clk /= 8;
-        break;
-    case RCC_CFGR_PPRE2_DIV16:
-        apb2_clk /= 16;
-        break;
-    }
-
-    return apb2_clk;
-}
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

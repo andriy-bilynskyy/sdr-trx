@@ -47,10 +47,12 @@ typedef enum {
 } ui_engine_font_t;
 
 
+extern const uint16_t ui_engine_xsize;
+extern const uint16_t ui_engine_ysize;
+
+
 bool                ui_engine_start(void);
 void                ui_engine_stop(void);
-uint16_t            ui_engine_get_xsize(void);
-uint16_t            ui_engine_get_ysize(void);
 void                ui_engine_set_brightness(uint8_t brightness);
 ui_engine_touch_t   ui_engine_get_touch(bool block);
 void                ui_engine_draw_start(uint8_t r, uint8_t g, uint8_t b);
@@ -64,7 +66,7 @@ void                ui_engine_rectangle(int16_t x1, int16_t y1, int16_t x2, int1
 void                ui_engine_circle(int16_t x, int16_t y, uint16_t radius);
 void                ui_engine_button(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_t height, ui_engine_font_t font, const char * text);
 void                ui_engine_text(uint8_t tag, int16_t x, int16_t y, ui_engine_font_t font, const char * text, bool center_align);
-void                ui_engine_slider(uint8_t tag, int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t value);
+void                ui_engine_slider(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_t height, uint16_t value);
 void                ui_engine_dial(uint8_t tag, int16_t x, int16_t y, uint16_t radius, uint16_t value);
 void                ui_engine_number(uint8_t tag, int16_t x, int16_t y, ui_engine_font_t font, uint32_t value, uint8_t base, bool is_signed, bool center_align);
 void                ui_engine_progress(int16_t x, int16_t y, uint16_t width, uint16_t height, uint16_t value, uint16_t range);
