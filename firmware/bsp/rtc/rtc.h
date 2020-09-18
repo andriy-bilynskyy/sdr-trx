@@ -34,7 +34,8 @@ bool        rtc_init(void);
 void        rtc_reset(void);
 date_time_t rtc_get_time(void);
 void        rtc_set_time(const date_time_t * time);
-
+uint8_t     rtc_sram_write(uint8_t offset, const void * data, uint8_t size);
+uint8_t     rtc_sram_read(uint8_t offset, void * data, uint8_t size);
 uint8_t     rtc_get_weekday(uint16_t year, uint8_t month, uint8_t day);
 bool        rtc_is_leap_year(uint16_t year);
 uint8_t     rtc_days_in_month(uint16_t year, uint8_t month);

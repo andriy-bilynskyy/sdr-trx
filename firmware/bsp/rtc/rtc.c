@@ -14,21 +14,22 @@
 #include "stm32f4xx_conf.h"
 #include "misc_hal.h"
 #include "debug.h"
+#include <string.h>
 
 
 #define RTC_LSE_STARTUP_TIMEOUT_MS     10000
+#define RTC_SRAM_SIZE                  (20 * 4)
 
 
 static const date_time_t rtc_default_time = {
-    .hours = 0,
-    .minutes = 0,
-    .seconds = 0,
-    .day = 1,
-    .month = 1,
-    .year = 2020
+    .hours      = 0,
+    .minutes    = 0,
+    .seconds    = 0,
+    .day        = 1,
+    .month      = 1,
+    .year       = 2020
 };
 
-date_time_t dummy;
 
 bool rtc_init(void) {
 
@@ -132,6 +133,75 @@ void rtc_set_time(const date_time_t * time) {
     RTC_SetTime(RTC_Format_BIN, &rtc_time);
     RTC_SetDate(RTC_Format_BIN, &rtc_date);
     PWR_BackupAccessCmd(DISABLE);
+}
+
+uint8_t rtc_sram_write(uint8_t offset, const void * data, uint8_t size) {
+
+    uint32_t wr_byres = size < RTC_SRAM_SIZE - offset ? size : RTC_SRAM_SIZE - offset;
+    if(wr_byres) {
+        uint8_t s32 = offset >> 2;
+        uint8_t s8  = offset & 3;
+        uint8_t e32 = (offset + wr_byres) >> 2;
+        uint8_t e8  = (offset + wr_byres) & 3;
+
+        if(s32 == e32) {
+            uint32_t ds = ((uint32_t *)(RTC_BASE + 0x50))[s32];
+            for(uint8_t i = s8; i < e8; i++) {
+                *(((uint8_t *)&ds) + i) = ((uint8_t *)data)[i - s8];
+            }
+            PWR_BackupAccessCmd(ENABLE);
+            ((uint32_t *)(RTC_BASE + 0x50))[s32] = ds;
+            PWR_BackupAccessCmd(DISABLE);
+        } else {
+            uint32_t ds = ((uint32_t *)(RTC_BASE + 0x50))[s32];
+            for(uint8_t i = s8; i < 4; i++) {
+                *(((uint8_t *)&ds) + i) = ((uint8_t *)data)[i - s8];
+            }
+            uint32_t de = ((uint32_t *)(RTC_BASE + 0x50))[e32];
+            for(uint8_t i = 0; i < e8; i++) {
+                *(((uint8_t *)&de) + i) = ((uint8_t *)data + wr_byres - e8)[i];
+            }
+            PWR_BackupAccessCmd(ENABLE);
+            ((uint32_t *)(RTC_BASE + 0x50))[s32] = ds;
+            ((uint32_t *)(RTC_BASE + 0x50))[e32] = de;
+            for(uint8_t i = s32 + 1; i < e32; i++) {
+                ((uint32_t *)(RTC_BASE + 0x50))[i] = ((uint32_t *)((uint8_t *)data - s8))[i - s32];
+            }
+            PWR_BackupAccessCmd(DISABLE);
+        }
+    }
+    return wr_byres;
+}
+
+uint8_t rtc_sram_read(uint8_t offset, void * data, uint8_t size) {
+
+    uint32_t rd_byres = size < RTC_SRAM_SIZE - offset ? size : RTC_SRAM_SIZE - offset;
+    if(rd_byres) {
+        uint8_t s32 = offset >> 2;
+        uint8_t s8  = offset & 3;
+        uint8_t e32 = (offset + rd_byres) >> 2;
+        uint8_t e8  = (offset + rd_byres) & 3;
+
+        if(s32 == e32) {
+            uint32_t ds = ((uint32_t *)(RTC_BASE + 0x50))[s32];
+            for(uint8_t i = s8; i < e8; i++) {
+                ((uint8_t *)data)[i - s8] = *(((uint8_t *)&ds) + i);
+            }
+        } else {
+            uint32_t ds = ((uint32_t *)(RTC_BASE + 0x50))[s32];
+            for(uint8_t i = s8; i < 4; i++) {
+                ((uint8_t *)data)[i - s8] = *(((uint8_t *)&ds) + i);
+            }
+            uint32_t de = ((uint32_t *)(RTC_BASE + 0x50))[e32];
+            for(uint8_t i = 0; i < e8; i++) {
+                ((uint8_t *)data + rd_byres - e8)[i] = *(((uint8_t *)&de) + i);
+            }
+            for(uint8_t i = s32 + 1; i < e32; i++) {
+                ((uint32_t *)((uint8_t *)data - s8))[i - s32] = ((uint32_t *)(RTC_BASE + 0x50))[i];
+            }
+        }
+    }
+    return rd_byres;
 }
 
 /* https://en.wikipedia.org/wiki/Determination_of_the_day_of_the_week. Sunday = 0*/
