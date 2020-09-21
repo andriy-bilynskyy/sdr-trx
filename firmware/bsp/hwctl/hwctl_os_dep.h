@@ -6,26 +6,22 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    hwctl driver header file
+    hwctl driver OS dependencies header file
     GPO expander based on 74HC595
     https://www.ti.com/lit/ds/symlink/sn74hc595.pdf
 */
 
-#ifndef __HWCTL_H
-#define __HWCTL_H
+#ifndef __HW_CTL_OS_DEP_H
+#define __HW_CTL_OS_DEP_H
+
 
 #include <stdint.h>
 #include <stdbool.h>
 
 
-void hwctl_start(void);
-void hwctl_stop(void);
-void hwctl_set_band(uint8_t band);
-void hwctl_tx_power(bool dev_on);
-void hwctl_rx_power(bool dev_on);
-void hwctl_bkl_power(bool dev_on);
-void hwctl_usb_power(bool dev_on);
-void hwctl_ext_mic(bool dev_on);
+void hwctl_wait_sync_obj(void)      __attribute__((weak));
+void hwctl_set_sync_obj(void)       __attribute__((weak));
+void hwctl_clr_sync_obj(void)       __attribute__((weak));
 
 
 #endif
