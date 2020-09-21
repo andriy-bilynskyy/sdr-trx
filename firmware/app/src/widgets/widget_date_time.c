@@ -154,3 +154,23 @@ void widget_date_time(void) {
     }
 }
 
+void widget_date_lse_fail(void) {
+
+    for(;;) {
+        ui_engine_draw_start(0, 0, 0);
+        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
+        ui_engine_set_fgcolor(31, 31, 255);
+        /* header */
+        ui_engine_button(WIDGET_DATE_TIME_TAG_EXIT, 5,  5, 20, 20, UI_ENGINE_FONT26, "-");
+        ui_engine_text(0,                           30, 0,         UI_ENGINE_FONT29, "Date Time Settings", false);
+        /* Error message */
+        ui_engine_text(0, ui_engine_xsize / 2, ui_engine_ysize / 2, UI_ENGINE_FONT31, "LSE Failed", true);
+        ui_engine_draw_end();
+
+        ui_engine_touch_t touch = ui_engine_get_touch(true);
+
+        if(touch.tag == WIDGET_DATE_TIME_TAG_EXIT) {
+            break;
+        }
+    }
+}

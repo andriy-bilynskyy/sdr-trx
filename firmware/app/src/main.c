@@ -30,7 +30,8 @@ int main(void) {
                             RCC_AHB1Periph_GPIOB |
                             RCC_AHB1Periph_GPIOC |
                             RCC_AHB1Periph_GPIOD, ENABLE);
-    rtc_init();
+
+    bool rtc_inited = rtc_init();
 
     led_start();
     hwctl_start();
@@ -39,8 +40,11 @@ int main(void) {
     if(ui_engine_start()) {
 
         for(;;) {
-
-            widget_date_time();
+            if(rtc_inited) {
+                widget_date_time();
+            } else {
+                widget_date_lse_fail();
+            }
             critical_err_stack_check();
         }
 

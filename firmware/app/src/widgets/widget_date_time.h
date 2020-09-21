@@ -14,6 +14,7 @@
 
 
 void widget_date_time(void);
+void widget_date_lse_fail(void);
 
 
 #endif

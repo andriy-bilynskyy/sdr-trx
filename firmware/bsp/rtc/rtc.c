@@ -17,7 +17,7 @@
 #include <string.h>
 
 
-#define RTC_LSE_STARTUP_TIMEOUT_MS     10000
+#define RTC_LSE_STARTUP_TIMEOUT_SEC    15
 #define RTC_SRAM_SIZE                  (20 * 4)
 
 
@@ -42,12 +42,11 @@ bool rtc_init(void) {
         RCC_BackupResetCmd(ENABLE);
         RCC_BackupResetCmd(DISABLE);
         /* LSE start */
-        RCC_LSEModeConfig(RCC_LSE_HIGHDRIVE_MODE);
         RCC_LSEConfig(RCC_LSE_ON);
-        volatile uint32_t startup_cnt = RTC_LSE_STARTUP_TIMEOUT_MS;
+        volatile uint32_t startup_cnt = RTC_LSE_STARTUP_TIMEOUT_SEC;
         FlagStatus lse_started;
         do {
-            misc_hal_sleep_ms(1);
+            misc_hal_sleep_ms(1000);
             lse_started = RCC_GetFlagStatus(RCC_FLAG_LSERDY);
             startup_cnt--;
         } while(lse_started == RESET && startup_cnt);
