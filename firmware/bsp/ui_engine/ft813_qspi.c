@@ -115,21 +115,24 @@ void ft813_qspi_start(void) {
     QSPI_Init(&qspi);
 
     QSPI_Cmd(ENABLE);
-
     QSPI_DMACmd(ENABLE);
 
     QSPI_ITConfig(QSPI_IT_TC | QSPI_IT_TE, ENABLE);
     NVIC_SetPriority(QUADSPI_IRQn, UI_FT813_QSPI_IRQ_PRIO);
     NVIC_EnableIRQ(QUADSPI_IRQn);
+
+    ft813_qspi_set_sync_obj();
 }
 
 void ft813_qspi_stop(void) {
 
+    DMA_Cmd(DMA2_Stream7, DISABLE);
+    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
+
     NVIC_DisableIRQ(QUADSPI_IRQn);
-    QSPI_ITConfig(QSPI_IT_TC, DISABLE);
+    QSPI_ITConfig(QSPI_IT_TC | QSPI_IT_TE, DISABLE);
 
     QSPI_DMACmd(DISABLE);
-
     QSPI_Cmd(DISABLE);
 
     QSPI_DeInit();
@@ -166,7 +169,13 @@ void ft813_qspi_stop(void) {
 
 void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
 
-    while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET);
+    ft813_qspi_wait_sync_obj();
+    ft813_qspi_clr_sync_obj();
+
+    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
+    while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
+        (void)QSPI_ReceiveData8();
+    }
 
     QSPI_ComConfig_InitTypeDef com;
     QSPI_ComConfig_StructInit(&com);
@@ -175,13 +184,8 @@ void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
     com.QSPI_ComConfig_Ins = cmd;
     com.QSPI_ComConfig_ABMode = mode_4x ? QSPI_ComConfig_ABMode_4Line : QSPI_ComConfig_ABMode_1Line;
     com.QSPI_ComConfig_ABSize = QSPI_ComConfig_ABSize_16bit;
-
     QSPI_SetAlternateByte((uint16_t)arg << 8);
-
-    ft813_qspi_clr_sync_obj();
     QSPI_ComConfig_Init(&com);
-
-    ft813_qspi_wait_sync_obj();
 }
 
 void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x) {
@@ -192,7 +196,13 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_WR;
 
-    while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET);
+    ft813_qspi_wait_sync_obj();
+    ft813_qspi_clr_sync_obj();
+
+    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
+    while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
+        (void)QSPI_ReceiveData8();
+    }
 
     QSPI_ComConfig_InitTypeDef com;
     QSPI_ComConfig_StructInit(&com);
@@ -200,8 +210,6 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     com.QSPI_ComConfig_ADMode = mode_4x ? QSPI_ComConfig_ADMode_4Line : QSPI_ComConfig_ADMode_1Line;
     com.QSPI_ComConfig_ADSize = QSPI_ComConfig_ADSize_24bit;
     com.QSPI_ComConfig_DMode = mode_4x ? QSPI_ComConfig_DMode_4Line : QSPI_ComConfig_DMode_1Line;
-
-    ft813_qspi_clr_sync_obj();
     QSPI_ComConfig_Init(&com);
 
     QSPI_SetDataLength(size - 1);
@@ -218,11 +226,6 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
-    QSPI_DMACmd(ENABLE);
-
-    ft813_qspi_wait_sync_obj();
-
-    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
 }
 
 void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
@@ -233,7 +236,13 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_RD;
 
-    while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET);
+    ft813_qspi_wait_sync_obj();
+    ft813_qspi_clr_sync_obj();
+
+    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
+    while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
+        (void)QSPI_ReceiveData8();
+    }
 
     QSPI_ComConfig_InitTypeDef com;
     QSPI_ComConfig_StructInit(&com);
@@ -242,8 +251,6 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     com.QSPI_ComConfig_ADSize = QSPI_ComConfig_ADSize_24bit;
     com.QSPI_ComConfig_DummyCycles = mode_4x ? 2 : 8;
     com.QSPI_ComConfig_DMode = mode_4x ? QSPI_ComConfig_DMode_4Line : QSPI_ComConfig_DMode_1Line;
-
-    ft813_qspi_clr_sync_obj();
     QSPI_ComConfig_Init(&com);
 
     QSPI_SetDataLength(size - 1);
@@ -262,8 +269,6 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     DMA_Cmd(DMA2_Stream7, ENABLE);
 
     ft813_qspi_wait_sync_obj();
-
-    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
 
     return;
 }
