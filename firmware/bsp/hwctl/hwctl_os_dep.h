@@ -15,13 +15,8 @@
 #define __HW_CTL_OS_DEP_H
 
 
-#include <stdint.h>
-#include <stdbool.h>
-
-
-void hwctl_wait_sync_obj(void)      __attribute__((weak));
-void hwctl_set_sync_obj(void)       __attribute__((weak));
-void hwctl_clr_sync_obj(void)       __attribute__((weak));
+void hwctl_post_sync_obj(void)          __attribute__((weak));
+void hwctl_pend_sync_obj(void)          __attribute__((weak));
 
 
 #endif

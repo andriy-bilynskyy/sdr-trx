@@ -121,7 +121,7 @@ void ft813_qspi_start(void) {
     NVIC_SetPriority(QUADSPI_IRQn, UI_FT813_QSPI_IRQ_PRIO);
     NVIC_EnableIRQ(QUADSPI_IRQn);
 
-    ft813_qspi_set_sync_obj();
+    ft813_qspi_post_sync_obj();
 }
 
 void ft813_qspi_stop(void) {
@@ -169,8 +169,7 @@ void ft813_qspi_stop(void) {
 
 void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
 
-    ft813_qspi_wait_sync_obj();
-    ft813_qspi_clr_sync_obj();
+    ft813_qspi_pend_sync_obj();
 
     DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
@@ -196,8 +195,7 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_WR;
 
-    ft813_qspi_wait_sync_obj();
-    ft813_qspi_clr_sync_obj();
+    ft813_qspi_pend_sync_obj();
 
     DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
@@ -236,8 +234,7 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_RD;
 
-    ft813_qspi_wait_sync_obj();
-    ft813_qspi_clr_sync_obj();
+    ft813_qspi_pend_sync_obj();
 
     DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
@@ -268,7 +265,8 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
 
-    ft813_qspi_wait_sync_obj();
+    ft813_qspi_pend_sync_obj();
+    ft813_qspi_post_sync_obj();
 
     return;
 }
@@ -277,13 +275,13 @@ void QUADSPI_IRQHandler(void) {
     if(QSPI_GetFlagStatus(QSPI_FLAG_TC) == SET) {
         QSPI_ClearITPendingBit(QSPI_IT_TC);
 
-        ft813_qspi_set_sync_obj();
+        ft813_qspi_post_sync_obj();
     }
     if(QSPI_GetFlagStatus(QSPI_FLAG_TE) == SET) {
         QSPI_ClearITPendingBit(QSPI_IT_TE);
         /* we're in indirect mode, so error is caused by outta address space condition */
         /* the QSPI transfer function are unblocked. but check code. which addresses are accessed */
-        ft813_qspi_set_sync_obj();
+        ft813_qspi_post_sync_obj();
         DMA_Cmd(DMA2_Stream7, DISABLE);
         QSPI_ClearFlag(QSPI_FLAG_TE);
         QSPI_AbortRequest();

@@ -18,8 +18,6 @@
 
 void ft813_interrupt_start(void) {
 
-    ft813_interrupt_clr_sync_obj();
-
     GPIO_WriteBit(UI_FT813_INT_PORT, UI_FT813_INT_PIN, Bit_RESET);
 
     GPIO_InitTypeDef  gpio = {
@@ -65,13 +63,12 @@ void ft813_interrupt_stop(void) {
 }
 
 void ft813_interrupt_wait(void) {
-    ft813_interrupt_wait_sync_obj();
-    ft813_interrupt_clr_sync_obj();
+    ft813_interrupt_pend_sync_obj(UI_ENGINE_TOUCH_UNBLOCK_MS);
 }
 
 void UI_FT813_INT_IRQ_HANDL(void) {
     if(EXTI_GetITStatus(UI_FT813_INT_LINE) != RESET) {
         EXTI_ClearITPendingBit(UI_FT813_INT_LINE);
-        ft813_interrupt_set_sync_obj();
+        ft813_interrupt_post_sync_obj();
     }
 }

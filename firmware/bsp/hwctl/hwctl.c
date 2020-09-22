@@ -76,7 +76,7 @@ void hwctl_start(void) {
     NVIC_SetPriority(HWCTL_SPI_IRQ, HWCTL_SPI_IRQ_PRIO);
     NVIC_EnableIRQ(HWCTL_SPI_IRQ);
 
-    hwctl_set_sync_obj();
+    hwctl_post_sync_obj();
 
     hwctl_register = 0;
     hwctl_update();
@@ -112,6 +112,8 @@ void hwctl_stop(void) {
 }
 
 void hwctl_set_band(uint8_t band) {
+
+    hwctl_pend_sync_obj();
     uint8_t reg = hwctl_register & ~HWCTL_BAND_MASK;
     if(band >= HWCTL_BANDS_NUM) {
         band = 0;
@@ -120,10 +122,14 @@ void hwctl_set_band(uint8_t band) {
     if(reg != hwctl_register) {
         hwctl_register = reg;
         hwctl_update();
+    } else {
+        hwctl_post_sync_obj();
     }
 }
 
 void hwctl_tx_power(bool dev_on) {
+
+    hwctl_pend_sync_obj();
     uint8_t reg = hwctl_register & ~HWCTL_TX_PWR_MASK;
     if(dev_on) {
         reg |= HWCTL_TX_PWR_MASK;
@@ -131,10 +137,14 @@ void hwctl_tx_power(bool dev_on) {
     if(reg != hwctl_register) {
         hwctl_register = reg;
         hwctl_update();
+    } else {
+        hwctl_post_sync_obj();
     }
 }
 
 void hwctl_rx_power(bool dev_on) {
+
+    hwctl_pend_sync_obj();
     uint8_t reg = hwctl_register & ~HWCTL_RX_PWR_MASK;
     if(dev_on) {
         reg |= HWCTL_RX_PWR_MASK;
@@ -142,10 +152,14 @@ void hwctl_rx_power(bool dev_on) {
     if(reg != hwctl_register) {
         hwctl_register = reg;
         hwctl_update();
+    } else {
+        hwctl_post_sync_obj();
     }
 }
 
 void hwctl_bkl_power(bool dev_on) {
+
+    hwctl_pend_sync_obj();
     uint8_t reg = hwctl_register & ~HWCTL_BL_PWR_MASK;
     if(dev_on) {
         reg |= HWCTL_BL_PWR_MASK;
@@ -153,10 +167,14 @@ void hwctl_bkl_power(bool dev_on) {
     if(reg != hwctl_register) {
         hwctl_register = reg;
         hwctl_update();
+    } else {
+        hwctl_post_sync_obj();
     }
 }
 
 void hwctl_usb_power(bool dev_on) {
+
+    hwctl_pend_sync_obj();
     uint8_t reg = hwctl_register & ~HWCTL_USB_PWR_MASK;
     if(dev_on) {
         reg |= HWCTL_USB_PWR_MASK;
@@ -164,10 +182,14 @@ void hwctl_usb_power(bool dev_on) {
     if(reg != hwctl_register) {
         hwctl_register = reg;
         hwctl_update();
+    } else {
+        hwctl_post_sync_obj();
     }
 }
 
 void hwctl_ext_mic(bool dev_on) {
+
+    hwctl_pend_sync_obj();
     uint8_t reg = hwctl_register & ~HWCTL_EXT_MIC_MASK;
     if(dev_on) {
         reg |= HWCTL_EXT_MIC_MASK;
@@ -175,6 +197,8 @@ void hwctl_ext_mic(bool dev_on) {
     if(reg != hwctl_register) {
         hwctl_register = reg;
         hwctl_update();
+    } else {
+        hwctl_post_sync_obj();
     }
 }
 
@@ -182,14 +206,12 @@ void HWCTL_SPI_IRQ_HANDLER(void) {
     if(SPI_I2S_GetITStatus(HWCTL_SPI, SPI_I2S_IT_TXE) == SET) {
         SPI_I2S_ITConfig(HWCTL_SPI, SPI_I2S_IT_TXE, DISABLE);
         GPIO_WriteBit(HWCTL_PORT, HWCTL_LAT_PIN, Bit_SET);
-        hwctl_set_sync_obj();
+        hwctl_post_sync_obj();
     }
 }
 
 
 static inline void hwctl_update(void) {
-    hwctl_wait_sync_obj();
-    hwctl_clr_sync_obj();
     GPIO_WriteBit(HWCTL_PORT, HWCTL_LAT_PIN, Bit_RESET);
     SPI_I2S_SendData(HWCTL_SPI, hwctl_register);
     SPI_I2S_ITConfig(HWCTL_SPI, SPI_I2S_IT_TXE, ENABLE);

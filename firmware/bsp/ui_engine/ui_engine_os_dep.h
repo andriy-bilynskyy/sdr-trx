@@ -16,16 +16,13 @@
 
 
 #include <stdint.h>
-#include <stdbool.h>
 
 
-void ft813_qspi_wait_sync_obj(void)      __attribute__((weak));
-void ft813_qspi_set_sync_obj(void)       __attribute__((weak));
-void ft813_qspi_clr_sync_obj(void)       __attribute__((weak));
+void ft813_qspi_post_sync_obj(void)                     __attribute__((weak));
+void ft813_qspi_pend_sync_obj(void)                     __attribute__((weak));
 
-void ft813_interrupt_wait_sync_obj(void) __attribute__((weak));
-void ft813_interrupt_set_sync_obj(void)  __attribute__((weak));
-void ft813_interrupt_clr_sync_obj(void)  __attribute__((weak));
+void ft813_interrupt_post_sync_obj(void)                __attribute__((weak));
+void ft813_interrupt_pend_sync_obj(uint32_t timeout_ms) __attribute__((weak));
 
 
 #endif

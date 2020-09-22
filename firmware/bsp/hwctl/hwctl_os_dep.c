@@ -14,19 +14,31 @@
 
 
 #include "hwctl_os_dep.h"
+#include "stm32f4xx_conf.h"
+
+static volatile uint8_t hwctl_tx_complete = 0;
 
 
-static volatile bool hwctl_tx_complete = false;
+void hwctl_post_sync_obj(void) {
 
-
-void hwctl_wait_sync_obj(void) {
-    while(!hwctl_tx_complete);
+    for(;;) {
+        (void)__LDREXB(&hwctl_tx_complete);
+        if(!__STREXB(1, &hwctl_tx_complete)) {
+            __DMB();
+            break;
+        }
+    }
 }
 
-void hwctl_set_sync_obj(void) {
-    hwctl_tx_complete = true;
-}
+void hwctl_pend_sync_obj(void) {
 
-void hwctl_clr_sync_obj(void) {
-    hwctl_tx_complete = false;
+    for(;;) {
+        uint8_t val = __LDREXB(&hwctl_tx_complete);
+        if(val) {
+            if(!__STREXB(0, &hwctl_tx_complete)) {
+                __DMB();
+                break;
+            }
+        }
+    }
 }
