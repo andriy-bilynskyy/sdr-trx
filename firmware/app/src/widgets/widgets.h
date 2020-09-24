@@ -6,15 +6,19 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widget date time header file
+    Widgets header file
 */
 
-#ifndef __WIDGET_DATE_TIME_H
-#define __WIDGET_DATE_TIME_H
+#ifndef __WIDGETS_H
+#define __WIDGETS_H
 
 
-void * widget_date_time(void);
-void * widget_date_time_lse_fail(void);
+#include "widget_main.h"
+#include "widget_date_time.h"
+#include "widget_sensors.h"
+
+
+typedef void * (*widget_t)(void);
 
 
 #endif

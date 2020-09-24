@@ -15,8 +15,9 @@
 #include "led.h"
 #include "hwctl.h"
 #include "ui_engine.h"
-#include "widget_date_time.h"
 #include "rtc.h"
+#include "adc.h"
+#include "widgets.h"
 
 
 int main(void) {
@@ -35,16 +36,21 @@ int main(void) {
 
     led_start();
     hwctl_start();
+    adc_start();
+
     hwctl_bkl_power(true);
 
     if(ui_engine_start()) {
 
+        widget_t current_widget = widget_main;
+
         for(;;) {
-            if(rtc_inited) {
-                widget_date_time();
-            } else {
-                widget_date_lse_fail();
+
+            current_widget = (widget_t)current_widget();
+            if(current_widget == widget_date_time && !rtc_inited) {
+                current_widget = widget_date_time_lse_fail;
             }
+
             critical_err_stack_check();
         }
 
@@ -56,6 +62,8 @@ int main(void) {
 
     ui_engine_stop();
     hwctl_bkl_power(false);
+
+    adc_stop();
     hwctl_stop();
     led_stop();
     RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA |

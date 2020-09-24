@@ -15,6 +15,6 @@
 
 char * itoa(int value, char * buf, int base);
 char * utoa(unsigned int value, char * buf, int base);
-
+char * gcvtf(float value, int precision, char * buf);
 
 #endif

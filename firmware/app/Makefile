@@ -43,6 +43,7 @@ PROJECT_STYLE := \
   ${wildcard src/*.h} \
 
 
+include ../bsp/adc/unit.mk
 include ../bsp/rtc/unit.mk
 include ../bsp/ui_engine/unit.mk
 include ../bsp/hwctl/unit.mk
@@ -59,15 +60,15 @@ LD_SCRIPT := STM32F413ZH_FLASH.ld
 
 OBJECTS := ${addsuffix .o, ${PROJECT_SRC}}
 
-CFLAGS  := -Wall -Wno-strict-aliasing -std=c99 -fdata-sections -ffunction-sections
+CFLAGS  := -Wall -Wdouble-promotion -Wno-strict-aliasing -std=c99 -fdata-sections -ffunction-sections
 CFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -D__FPU_PRESENT -DUSE_FULL_ASSERT
 
-ASFLAGS  := -Wall -std=c99 -fdata-sections -ffunction-sections
+ASFLAGS  := -Wall -Wdouble-promotion -std=c99 -fdata-sections -ffunction-sections
 ASFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
 ASFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -D__FPU_PRESENT -DUSE_FULL_ASSERT
 
-CXXFLAGS  := -Wall -fno-exceptions -fdata-sections -ffunction-sections
+CXXFLAGS  := -Wall -Wdouble-promotion -fno-exceptions -fdata-sections -ffunction-sections
 CXXFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
 CXXFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -D__FPU_PRESENT -DUSE_FULL_ASSERT
 

@@ -10,7 +10,7 @@
 */
 
 
-#include "widget_date_time.h"
+#include "widgets.h"
 #include "ui_engine.h"
 #include "misc_func.h"
 #include "rtc.h"
@@ -30,7 +30,10 @@
 #define WIDGET_DATE_TIME_TOUCH_SKIP_CNT 5
 
 
-void widget_date_time(void) {
+void * widget_date_time(void) {
+
+    void * next_widget = widget_main;
+    bool init = true;
 
     bool    touched = false;
     uint8_t touched_cnt = WIDGET_DATE_TIME_TOUCH_SKIP_CNT;
@@ -79,6 +82,13 @@ void widget_date_time(void) {
         ui_engine_draw_end();
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
+
+        if(init) {
+            if(!touch.tag) {
+                init = false;
+            }
+            continue;
+        }
 
         if(!touch.tag) {
             touched = false;
@@ -152,9 +162,13 @@ void widget_date_time(void) {
             }
         }
     }
+    return next_widget;
 }
 
-void widget_date_lse_fail(void) {
+void * widget_date_time_lse_fail(void) {
+
+    void * next_widget = widget_main;
+    bool init = true;
 
     for(;;) {
         ui_engine_draw_start(0, 0, 0);
@@ -169,8 +183,16 @@ void widget_date_lse_fail(void) {
 
         ui_engine_touch_t touch = ui_engine_get_touch(true);
 
+        if(init) {
+            if(!touch.tag) {
+                init = false;
+            }
+            continue;
+        }
+
         if(touch.tag == WIDGET_DATE_TIME_TAG_EXIT) {
             break;
         }
     }
+    return next_widget;
 }
