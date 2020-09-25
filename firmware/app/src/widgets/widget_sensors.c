@@ -60,15 +60,16 @@ void * widget_sensors(void) {
         buf[pos + 1] = '\0';
         ui_engine_text(0, 300, 130,  UI_ENGINE_FONT28, buf, false);
         /* Output power */
+        swr_meter_t power_swr = adc_swr();
         ui_engine_text(0, 20,  160, UI_ENGINE_FONT28, "RF TX power:", false);
-        gcvtf(adc_power(), 2, buf);
+        gcvtf(power_swr.power, 2, buf);
         pos = strlen(buf);
         buf[pos] = 'W';
         buf[pos + 1] = '\0';
         ui_engine_text(0, 300, 160, UI_ENGINE_FONT28, buf, false);
         /* SWR */
         ui_engine_text(0, 20,  190, UI_ENGINE_FONT28, "SWR:", false);
-        ui_engine_text(0, 300, 190, UI_ENGINE_FONT28, gcvtf(adc_swr(), 2, buf), false);
+        ui_engine_text(0, 300, 190, UI_ENGINE_FONT28, gcvtf(power_swr.swr, 2, buf), false);
 
         ui_engine_draw_end();
 

@@ -13,13 +13,18 @@
 #define __ADC_H
 
 
-void adc_start(void);
-void adc_stop(void);
-float adc_batt_voltage(void);
-float adc_temperature1(void);
-float adc_temperature2(void);
-float adc_power(void);
-float adc_swr(void);
+typedef struct {
+    float power;
+    float swr;
+} swr_meter_t;
+
+
+void        adc_start(void);
+void        adc_stop(void);
+float       adc_batt_voltage(void);
+float       adc_temperature1(void);
+float       adc_temperature2(void);
+swr_meter_t adc_swr(void);
 
 
 #endif

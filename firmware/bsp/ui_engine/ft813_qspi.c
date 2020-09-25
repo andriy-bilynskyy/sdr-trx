@@ -127,7 +127,7 @@ void ft813_qspi_start(void) {
 void ft813_qspi_stop(void) {
 
     DMA_Cmd(DMA2_Stream7, DISABLE);
-    DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
+    DMA_DeInit(DMA2_Stream7);
 
     NVIC_DisableIRQ(QUADSPI_IRQn);
     QSPI_ITConfig(QSPI_IT_TC | QSPI_IT_TE, DISABLE);
@@ -213,15 +213,23 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     QSPI_SetDataLength(size - 1);
     QSPI_SetAddress(addr);
 
+    /***************************************************************************
+     * Bug "ES0305 section 2.1.8 In some specific cases, DMA2 data corruption occurs when managing
+     * AHB and APB2 peripherals in a concurrent way" Workaround Implementation:
+     * Change the following configuration of DMA peripheral
+     *   - Enable peripheral increment
+     *   - Disable memory increment
+     *   - Set DMA direction as peripheral to memory mode
+     **************************************************************************/
     DMA_InitTypeDef dma;
     DMA_StructInit(&dma);
     dma.DMA_Channel = DMA_Channel_3;
     dma.DMA_Priority = UI_FT813_QSPI_DMA_PRIO;
-    dma.DMA_DIR = DMA_DIR_MemoryToPeripheral;
-    dma.DMA_PeripheralBaseAddr = (uint32_t)&(QUADSPI->DR);
-    dma.DMA_Memory0BaseAddr = (uint32_t)data;
+    dma.DMA_DIR = DMA_DIR_PeripheralToMemory;   /* Reverse DMA direction */
+    dma.DMA_PeripheralBaseAddr = (uint32_t)data;
+    dma.DMA_Memory0BaseAddr = (uint32_t)&(QUADSPI->DR);
     dma.DMA_BufferSize = size;
-    dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    dma.DMA_PeripheralInc = DMA_PeripheralInc_Enable;
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
 }
@@ -240,7 +248,16 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
         (void)QSPI_ReceiveData8();
     }
-
+    /***************************************************************************
+     * Bug "ES0305 section 2.1.8 In some specific cases, DMA2 data corruption occurs when managing
+     *  AHB and APB2 peripherals in a concurrent way" Workaround Implementation:
+     *  Change the following configuration of DMA peripheral
+     *    - Enable peripheral increment
+     *    - Disable memory increment
+     *    - Set DMA direction as memory to peripheral mode
+     *    - 4 Extra words (32-bits) are added for read operation to guarantee
+     *       the last data is transferred from DMA FIFO to RAM memory
+     **************************************************************************/
     QSPI_ComConfig_InitTypeDef com;
     QSPI_ComConfig_StructInit(&com);
     com.QSPI_ComConfig_FMode = QSPI_ComConfig_FMode_Indirect_Read;
@@ -250,18 +267,18 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     com.QSPI_ComConfig_DMode = mode_4x ? QSPI_ComConfig_DMode_4Line : QSPI_ComConfig_DMode_1Line;
     QSPI_ComConfig_Init(&com);
 
-    QSPI_SetDataLength(size - 1);
+    QSPI_SetDataLength(size - 1 + 4);   /* 4 Extra words (32-bits) */
     QSPI_SetAddress(addr);
 
     DMA_InitTypeDef dma;
     DMA_StructInit(&dma);
     dma.DMA_Channel = DMA_Channel_3;
     dma.DMA_Priority = UI_FT813_QSPI_DMA_PRIO;
-    dma.DMA_DIR = DMA_DIR_PeripheralToMemory;
-    dma.DMA_PeripheralBaseAddr = (uint32_t)&(QUADSPI->DR);
-    dma.DMA_Memory0BaseAddr = (uint32_t)data;
+    dma.DMA_DIR = DMA_DIR_MemoryToPeripheral;   /* Reverse DMA direction */
+    dma.DMA_PeripheralBaseAddr = (uint32_t)data;
+    dma.DMA_Memory0BaseAddr = (uint32_t)&(QUADSPI->DR);
     dma.DMA_BufferSize = size;
-    dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
+    dma.DMA_PeripheralInc = DMA_PeripheralInc_Enable;
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
 

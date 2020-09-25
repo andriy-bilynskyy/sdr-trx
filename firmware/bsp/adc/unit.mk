@@ -16,6 +16,7 @@ PROJECT_INC += \
   ${CDIR} \
 
 PROJECT_LIB += \
+  m \
 
 PROJECT_STYLE += \
   ${wildcard ${CDIR}*.c} \
