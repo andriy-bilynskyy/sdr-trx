@@ -18,6 +18,8 @@
 #include <stdint.h>
 
 
+void ft813_lock_sync_obj(void)                          __attribute__((weak));
+void ft813_unlock_sync_obj(void)                        __attribute__((weak));
 void ft813_qspi_post_sync_obj(void)                     __attribute__((weak));
 void ft813_qspi_pend_sync_obj(void)                     __attribute__((weak));
 

@@ -86,6 +86,8 @@ void hwctl_start(void) {
 
 void hwctl_stop(void) {
 
+    hwctl_pend_sync_obj();
+
     GPIO_WriteBit(HWCTL_PORT, HWCTL_EN_PIN, Bit_SET);
 
     NVIC_DisableIRQ(HWCTL_SPI_IRQ);

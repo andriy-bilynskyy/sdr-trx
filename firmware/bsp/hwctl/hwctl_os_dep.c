@@ -16,18 +16,12 @@
 #include "hwctl_os_dep.h"
 #include "stm32f4xx_conf.h"
 
-static volatile uint8_t hwctl_tx_complete = 0;
+static volatile uint8_t hwctl_tx_complete = 0;  /* operation complete semaphore */
 
 
 void hwctl_post_sync_obj(void) {
 
-    for(;;) {
-        (void)__LDREXB(&hwctl_tx_complete);
-        if(!__STREXB(1, &hwctl_tx_complete)) {
-            __DMB();
-            break;
-        }
-    }
+    hwctl_tx_complete = 1;
 }
 
 void hwctl_pend_sync_obj(void) {

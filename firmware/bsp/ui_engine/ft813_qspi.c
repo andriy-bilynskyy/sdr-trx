@@ -63,6 +63,8 @@
 
 void ft813_qspi_start(void) {
 
+    ft813_lock_sync_obj();
+
     RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_QSPI, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 
@@ -122,9 +124,15 @@ void ft813_qspi_start(void) {
     NVIC_EnableIRQ(QUADSPI_IRQn);
 
     ft813_qspi_post_sync_obj();
+
+    ft813_unlock_sync_obj();
 }
 
 void ft813_qspi_stop(void) {
+
+    ft813_lock_sync_obj();
+
+    ft813_qspi_pend_sync_obj();
 
     DMA_Cmd(DMA2_Stream7, DISABLE);
     DMA_DeInit(DMA2_Stream7);
@@ -165,9 +173,13 @@ void ft813_qspi_stop(void) {
     GPIO_WriteBit(UI_NCS_PORT, UI_NCS_PIN, Bit_RESET);
 
     RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_QSPI, DISABLE);
+
+    ft813_unlock_sync_obj();
 }
 
 void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
+
+    ft813_lock_sync_obj();
 
     ft813_qspi_pend_sync_obj();
 
@@ -185,6 +197,8 @@ void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
     com.QSPI_ComConfig_ABSize = QSPI_ComConfig_ABSize_16bit;
     QSPI_SetAlternateByte((uint16_t)arg << 8);
     QSPI_ComConfig_Init(&com);
+
+    ft813_unlock_sync_obj();
 }
 
 void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x) {
@@ -194,6 +208,8 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     }
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_WR;
+
+    ft813_lock_sync_obj();
 
     ft813_qspi_pend_sync_obj();
 
@@ -232,6 +248,8 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     dma.DMA_PeripheralInc = DMA_PeripheralInc_Enable;
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
+
+    ft813_unlock_sync_obj();
 }
 
 void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
@@ -241,6 +259,8 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     }
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_RD;
+
+    ft813_lock_sync_obj();
 
     ft813_qspi_pend_sync_obj();
 
@@ -284,6 +304,8 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
 
     ft813_qspi_pend_sync_obj();
     ft813_qspi_post_sync_obj();
+
+    ft813_unlock_sync_obj();
 
     return;
 }
