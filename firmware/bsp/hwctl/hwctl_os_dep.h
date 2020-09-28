@@ -11,8 +11,8 @@
     https://www.ti.com/lit/ds/symlink/sn74hc595.pdf
 */
 
-#ifndef __HW_CTL_OS_DEP_H
-#define __HW_CTL_OS_DEP_H
+#ifndef __HWCTL_OS_DEP_H
+#define __HWCTL_OS_DEP_H
 
 
 void hwctl_post_sync_obj(void)          __attribute__((weak));

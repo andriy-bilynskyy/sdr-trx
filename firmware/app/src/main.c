@@ -17,6 +17,7 @@
 #include "ui_engine.h"
 #include "rtc.h"
 #include "adc.h"
+#include "i2c_master.h"
 #include "widgets.h"
 
 
@@ -37,6 +38,7 @@ int main(void) {
     led_start();
     hwctl_start();
     adc_start();
+    i2c_master_start();
 
     hwctl_bkl_power(true);
 
@@ -63,6 +65,7 @@ int main(void) {
     ui_engine_stop();
     hwctl_bkl_power(false);
 
+    i2c_master_stop();
     adc_stop();
     hwctl_stop();
     led_stop();
