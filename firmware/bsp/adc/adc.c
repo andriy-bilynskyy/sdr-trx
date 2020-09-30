@@ -187,8 +187,8 @@ static swr_meter_t adc_swr_meter(uint16_t adc_fwd, uint16_t adc_rev) {
     float d = sqrtf(p_rev / p_fwd);
 
     swr_meter_t result = {
-        .power = p_fwd + p_rev,
-        .swr   = (p_fwd + p_rev < 0.2f) ? 1.0f : (1.0f + d) / (1.0f - d)
+        .power = p_fwd,
+        .swr   = (p_fwd < 0.2f) ? NAN : (1.0f + d) / (1.0f - d)
     };
 
     return result;

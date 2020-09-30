@@ -18,6 +18,7 @@
 #include "ft813_def.h"
 #include "ft813_graph.h"
 #include "nhd_43_480272ft_ctxl_ctp.h"
+#include "hwctl.h"
 #include "misc_hal.h"
 #include <string.h>
 
@@ -83,6 +84,9 @@ bool ui_engine_start(void) {
 
     if(engine_ok) {
 
+        hwctl_start();
+        hwctl_bkl_power(true);
+
         ui_engine_wr16(REG_HSIZE, REG_HSIZE_VALUE);
         ui_engine_wr16(REG_HCYCLE, REG_HCYCLE_VALUE);
         ui_engine_wr16(REG_HOFFSET, REG_HOFFSET_VALUE);
@@ -119,6 +123,8 @@ bool ui_engine_start(void) {
 }
 
 void ui_engine_stop(void) {
+
+    hwctl_bkl_power(false);
 
     ui_engine_host_command(CMD_RST_PULSE, 0);
     ui_engine_host_command(CMD_SLEEP, 0);

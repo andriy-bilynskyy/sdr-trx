@@ -40,8 +40,6 @@ int main(void) {
     adc_start();
     i2c_master_start();
 
-    hwctl_bkl_power(true);
-
     if(ui_engine_start()) {
 
         widget_t current_widget = widget_main;
