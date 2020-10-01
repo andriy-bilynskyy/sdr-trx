@@ -43,6 +43,7 @@ PROJECT_STYLE := \
   ${wildcard src/*.h} \
 
 
+include ../bsp/mem24/unit.mk
 include ../bsp/rf_amp/unit.mk
 include ../bsp/i2c_master/unit.mk
 include ../bsp/adc/unit.mk

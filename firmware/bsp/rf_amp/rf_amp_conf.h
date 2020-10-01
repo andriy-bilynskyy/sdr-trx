@@ -8,6 +8,7 @@
 ********************************************************************************
     RF amplifier driver configuration file
     Controlling LDMOS bias voltage using AD5243 digital potentiometer
+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD5243_5248.pdf
 */
 
 #ifndef __RF_AMP_CONF_H
