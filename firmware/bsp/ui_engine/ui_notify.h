@@ -6,14 +6,18 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widget sensors header file
+    UI notify widget header file
 */
 
-#ifndef __WIDGET_SENSORS_H
-#define __WIDGET_SENSORS_H
+
+#ifndef __UI_NOTYFY_H
+#define __UI_NOTIFY_H
 
 
-void * widget_sensors(void * parent);
+#include <stdint.h>
+
+
+void ui_notify(uint8_t argc, const char * argv[], const char * button);
 
 
 #endif

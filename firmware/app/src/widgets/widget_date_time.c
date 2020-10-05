@@ -12,6 +12,7 @@
 
 #include "widgets.h"
 #include "ui_engine.h"
+#include "ui_notify.h"
 #include "misc_func.h"
 #include "rtc.h"
 #include <stdbool.h>
@@ -30,11 +31,9 @@
 #define WIDGET_DATE_TIME_TOUCH_SKIP_CNT 5
 
 
-void * widget_date_time(void) {
+void * widget_date_time(void * parent) {
 
-    void * next_widget = widget_main;
-    bool init = true;
-
+    bool    init = true;
     bool    touched = false;
     uint8_t touched_cnt = WIDGET_DATE_TIME_TOUCH_SKIP_CNT;
 
@@ -162,37 +161,13 @@ void * widget_date_time(void) {
             }
         }
     }
-    return next_widget;
+    return parent;
 }
 
-void * widget_date_time_lse_fail(void) {
+void * widget_date_time_lse_fail(void * parent) {
 
-    void * next_widget = widget_main;
-    bool init = true;
+    const char * argv[] = {"LSE Failed"};
+    ui_notify(1, argv, "Ok");
 
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_set_fgcolor(31, 31, 255);
-        /* header */
-        ui_engine_button(WIDGET_DATE_TIME_TAG_EXIT, 5,  5, 20, 20, UI_ENGINE_FONT26, "-");
-        ui_engine_text(0,                           30, 0,         UI_ENGINE_FONT29, "Date Time Settings", false);
-        /* Error message */
-        ui_engine_text(0, ui_engine_xsize / 2, ui_engine_ysize / 2, UI_ENGINE_FONT31, "LSE Failed", true);
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(init) {
-            if(!touch.tag) {
-                init = false;
-            }
-            continue;
-        }
-
-        if(touch.tag == WIDGET_DATE_TIME_TAG_EXIT) {
-            break;
-        }
-    }
-    return next_widget;
+    return parent;
 }

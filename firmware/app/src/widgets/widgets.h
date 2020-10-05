@@ -18,7 +18,7 @@
 #include "widget_sensors.h"
 
 
-typedef void * (*widget_t)(void);
+typedef void * (*widget_t)(void * parent);
 
 
 #endif

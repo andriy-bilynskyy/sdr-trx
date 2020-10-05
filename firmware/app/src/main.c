@@ -46,7 +46,7 @@ int main(void) {
 
         for(;;) {
 
-            current_widget = (widget_t)current_widget();
+            current_widget = current_widget(widget_main);
             if(current_widget == widget_date_time && !rtc_inited) {
                 current_widget = widget_date_time_lse_fail;
             }

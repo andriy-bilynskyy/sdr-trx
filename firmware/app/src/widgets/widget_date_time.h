@@ -13,8 +13,8 @@
 #define __WIDGET_DATE_TIME_H
 
 
-void * widget_date_time(void);
-void * widget_date_time_lse_fail(void);
+void * widget_date_time(void * parent);
+void * widget_date_time_lse_fail(void * parent);
 
 
 #endif

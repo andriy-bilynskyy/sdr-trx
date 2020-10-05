@@ -14,6 +14,7 @@
 #include "stm32f4xx_conf.h"
 #include "hwctl.h"
 #include "ui_engine.h"
+#include "ui_notify.h"
 #include "debug.h"
 #include "misc_func.h"
 
@@ -305,138 +306,69 @@ void critical_err_stack_check(void) {
 
 static void critical_err_widget_default(void) {
 
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Unknown critical error", true);
-
-        char buf[21] = "Error ID: ";
-        utoa(critical_err_data.type, &buf[10], 10);
-        ui_engine_text(0, 50, 80, UI_ENGINE_FONT18, buf, false);
-
-        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(touch.tag == 1) {
-            break;
-        }
-    }
+    const char * argv[] = {"Unknown critical error"};
+    ui_notify(1, argv, "Reboot");
 }
 
 static void critical_err_widget_hardfault(void) {
 
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Hard Fault", true);
+    char regs_str[8][15] = {"R0  0x        ", "R1  0x        ", "R2  0x        ", "R3  0x        ",
+                            "R12 0x        ", "LR  0x        ", "PC  0x        ", "PSR 0x        "
+                           };
 
-        char regs_str[8][15] = {"R0  0x        ", "R1  0x        ", "R2  0x        ", "R3  0x        ",
-                                "R12 0x        ", "LR  0x        ", "PC  0x        ", "PSR 0x        "
-                               };
+    uint32_t regs_val[8] = {critical_err_data.r0,  critical_err_data.r1, critical_err_data.r2, critical_err_data.r3,
+                            critical_err_data.r12, critical_err_data.lr, critical_err_data.pc, critical_err_data.psr
+                           };
 
-        uint32_t regs_val[8] = {critical_err_data.r0,  critical_err_data.r1, critical_err_data.r2, critical_err_data.r3,
-                                critical_err_data.r12, critical_err_data.lr, critical_err_data.pc, critical_err_data.psr
-                               };
-
-        for(uint8_t i = 0; i < 8; i++) {
-            for(uint8_t j = 13; j > 5; j--) {
-                regs_str[i][j] = "0123456789ABCDEF"[regs_val[i] & 0xF];
-                regs_val[i] >>= 4;
-            }
-            ui_engine_text(0, 50, 50 + i * 20, UI_ENGINE_FONT18, regs_str[i], false);
-        }
-
-        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(touch.tag == 1) {
-            break;
+    for(uint8_t i = 0; i < 8; i++) {
+        for(uint8_t j = 13; j > 5; j--) {
+            regs_str[i][j] = "0123456789ABCDEF"[regs_val[i] & 0xF];
+            regs_val[i] >>= 4;
         }
     }
+
+    const char * argv[] = {"Hard Fault",
+                           regs_str[0], regs_str[1], regs_str[2], regs_str[3],
+                           regs_str[4], regs_str[5], regs_str[6], regs_str[7]
+                          };
+
+    ui_notify(9, argv, "Reboot");
 }
 
 static void critical_err_widget_unhandledint(void) {
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Unhandled interrupt", true);
 
-        char buf[18] = "interrupt ID: ";
-        itoa((int)(critical_err_data.ipsr & 0x1FF) - 16, &buf[14], 10);
-        ui_engine_text(0, 50, 80, UI_ENGINE_FONT18, buf, false);
+    char buf[18] = "interrupt ID: ";
+    itoa((int)(critical_err_data.ipsr & 0x1FF) - 16, &buf[14], 10);
+    const char * argv[] = {"Unhandled interrupt",
+                           "", "",
+                           buf
+                          };
 
-        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(touch.tag == 1) {
-            break;
-        }
-    }
+    ui_notify(4, argv, "Reboot");
 }
 
 static void critical_err_widget_hsefail(void) {
 
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "HSE Failed", true);
-        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(touch.tag == 1) {
-            break;
-        }
-    }
+    const char * argv[] = {"HSE Failed"};
+    ui_notify(1, argv, "Reboot");
 }
 
 #ifdef USE_FULL_ASSERT
 static void critical_err_widget_assert(void) {
 
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Assert Failed", true);
+    char buf[12] = "L";
+    utoa(critical_err_data.line, &buf[1], 10);
+    const char * argv[] = {"Assert Failed",
+                           "", "",
+                           critical_err_data.file, buf
+                          };
 
-        ui_engine_text(0, 50, 100, UI_ENGINE_FONT18, critical_err_data.file, false);
-
-        char buf[12] = "L";
-        utoa(critical_err_data.line, &buf[1], 10);
-        ui_engine_text(0, 50, 120, UI_ENGINE_FONT18, buf, false);
-
-        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(touch.tag == 1) {
-            break;
-        }
-    }
+    ui_notify(5, argv, "Reboot");
 }
 #endif
 
 static void critical_err_widget_stackoverflowed(void) {
 
-    for(;;) {
-        ui_engine_draw_start(0, 0, 0);
-        ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
-        ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, "Stack overflowed", true);
-
-        ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, "Reboot");
-        ui_engine_draw_end();
-
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
-
-        if(touch.tag == 1) {
-            break;
-        }
-    }
+    const char * argv[] = {"Stack overflowed"};
+    ui_notify(1, argv, "Reboot");
 }

@@ -25,9 +25,8 @@
 #define WIDGET_SENSORS_TAG_PAVAL      3
 
 
-void * widget_sensors(void) {
+void * widget_sensors(void * parent) {
 
-    void * next_widget = widget_main;
     bool init = true;
     bool touched = false;
 
@@ -125,6 +124,6 @@ void * widget_sensors(void) {
     }
     rf_amp_stop();
 
-    return next_widget;
+    return parent;
 }
 

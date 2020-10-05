@@ -22,9 +22,9 @@
 #define WIDGET_MAIN_TAG_SENSORS         2
 
 
-void * widget_main(void) {
+void * widget_main(void * parent){
 
-    void * next_widget = widget_main;
+    widget_t next_widget = parent;
     bool init = true;
 
     for(;;) {
