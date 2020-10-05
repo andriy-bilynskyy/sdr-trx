@@ -35,7 +35,7 @@ bool rtc_init(void) {
 
     bool inited = false;
 
-    if((RCC->BDCR & RCC_BDCR_RTCEN) != RCC_BDCR_RTCEN) {
+    if((RCC->BDCR & RCC_BDCR_RTCEN) != RCC_BDCR_RTCEN || (RCC->BDCR & RCC_BDCR_LSERDY) != RCC_BDCR_LSERDY) {
         DBG_OUT("RTC not initialized. initializing...");
         PWR_BackupAccessCmd(ENABLE);
         /* reset backup registers */
