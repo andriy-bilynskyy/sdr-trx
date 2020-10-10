@@ -45,7 +45,6 @@ void i2c_master_start(void) {
         I2C_InitTypeDef i2c;
         I2C_StructInit(&i2c);
         i2c.I2C_ClockSpeed = I2C_SPEED;
-        i2c.I2C_Ack = I2C_Ack_Enable;
         I2C_Init(I2C_I2C, &i2c);
 
         I2C_Cmd(I2C_I2C, ENABLE);
@@ -157,6 +156,7 @@ uint32_t i2c_master_read(uint8_t dev_addr, void * data, uint32_t size) {
 
         i2c_master_address = (dev_addr << 1) | (uint8_t)I2C_OAR1_ADD0;
 
+        I2C_AcknowledgeConfig(I2C_I2C, size > 1 ? ENABLE : DISABLE);
         I2C_ITConfig(I2C_I2C, I2C_IT_EVT, ENABLE);
         I2C_GenerateSTART(I2C_I2C, ENABLE);
         i2c_pend_sync_obj();
