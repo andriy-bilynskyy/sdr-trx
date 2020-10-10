@@ -57,11 +57,11 @@ void * widget_date_time(void * parent) {
         ui_engine_button(WIDGET_DATE_TIME_TAG_Y_DOWN, 5,   50, 30, 30, UI_ENGINE_FONT26, "<");
         ui_engine_button(WIDGET_DATE_TIME_TAG_Y_UP,   145, 50, 30, 30, UI_ENGINE_FONT26, ">");
         /* month */
-        const char * months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        static const char * months[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         ui_engine_button(WIDGET_DATE_TIME_TAG_MON, 5, 90, 170, 30, UI_ENGINE_FONT29, months[ti.month - 1]);
         /* calendar header */
         for(uint8_t i = 0; i < 7; i++) {
-            const char * wdays[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+            static const char * wdays[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
             ui_engine_text(0, ui_engine_xsize - 40 * (7 - i), ui_engine_ysize - 35 * 7 + 15, UI_ENGINE_FONT27, wdays[i], false);
         }
         /* calendar days */
