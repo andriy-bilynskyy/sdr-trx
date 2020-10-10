@@ -6,20 +6,14 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widgets header file
+    Widget transceiver header file
 */
 
-#ifndef __WIDGETS_H
-#define __WIDGETS_H
+#ifndef __WIDGET_TRX_H
+#define __WIDGET_TRX_H
 
 
-#include "widget_main.h"
-#include "widget_date_time.h"
-#include "widget_sensors.h"
-#include "widget_trx.h"
-
-
-typedef void * (*widget_t)(void * parent);
+void * widget_trx(void * parent);
 
 
 #endif

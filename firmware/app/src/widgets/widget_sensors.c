@@ -12,6 +12,7 @@
 
 #include "widgets.h"
 #include "ui_engine.h"
+#include "ui_notify.h"
 #include "misc_func.h"
 #include "adc.h"
 #include "rf_amp.h"

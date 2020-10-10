@@ -20,6 +20,7 @@
 /* active widgets tags definitions */
 #define WIDGET_MAIN_TAG_DATE_TIME       1
 #define WIDGET_MAIN_TAG_SENSORS         2
+#define WIDGET_MAIN_TAG_TRX             3
 
 
 void * widget_main(void * parent){
@@ -35,6 +36,8 @@ void * widget_main(void * parent){
         ui_engine_button(WIDGET_MAIN_TAG_DATE_TIME, 20, 50,  180, 40, UI_ENGINE_FONT30, "Date Time");
         /* Sensors */
         ui_engine_button(WIDGET_MAIN_TAG_SENSORS,   20, 100, 180, 40, UI_ENGINE_FONT30, "Sensors");
+        /* Sensors */
+        ui_engine_button(WIDGET_MAIN_TAG_TRX,       20, 150, 180, 40, UI_ENGINE_FONT30, "Transceiver");
 
         ui_engine_draw_end();
 
@@ -53,6 +56,10 @@ void * widget_main(void * parent){
         }
         if(touch.tag == WIDGET_MAIN_TAG_SENSORS) {
             next_widget = widget_sensors;
+            break;
+        }
+        if(touch.tag == WIDGET_MAIN_TAG_TRX) {
+            next_widget = widget_trx;
             break;
         }
     }
