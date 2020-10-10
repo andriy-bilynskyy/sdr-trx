@@ -25,6 +25,9 @@
 #define WIDGET_SENSORS_TAG_PAVAL      3
 
 
+static void widget_sensors_rf_amp_error(void);
+
+
 void * widget_sensors(void * parent) {
 
     bool init = true;
@@ -33,7 +36,9 @@ void * widget_sensors(void * parent) {
     bool rf_amp_on = false;
     uint8_t rf_amp_value = RF_AMP_MIN;
 
-    rf_amp_start();
+    if(!rf_amp_start()) {
+        widget_sensors_rf_amp_error();
+    }
     for(;;) {
 
         char buf[16];
@@ -105,18 +110,22 @@ void * widget_sensors(void * parent) {
                 if(touch.tag == WIDGET_SENSORS_TAG_PAON) {
                     rf_amp_on = !rf_amp_on;
                     if(rf_amp_on) {
-                        rf_amp_bias1(rf_amp_value);
-                        rf_amp_bias2(rf_amp_value);
+                        if(!rf_amp_bias1(rf_amp_value) || !rf_amp_bias2(rf_amp_value)) {
+                            widget_sensors_rf_amp_error();
+                        }
                     } else {
-                        rf_amp_off();
+                        if(!rf_amp_off()) {
+                            widget_sensors_rf_amp_error();
+                        }
                     }
                 }
             }
             if(touch.tag == WIDGET_SENSORS_TAG_PAVAL) {
                 rf_amp_value = ((uint32_t)touch.value  * (RF_AMP_MAX - RF_AMP_MIN)) / 0xFFFF + RF_AMP_MIN;
                 if(rf_amp_on) {
-                    rf_amp_bias1(rf_amp_value);
-                    rf_amp_bias2(rf_amp_value);
+                    if(!rf_amp_bias1(rf_amp_value) || !rf_amp_bias2(rf_amp_value)) {
+                        widget_sensors_rf_amp_error();
+                    }
                 }
             }
             touched = true;
@@ -127,3 +136,9 @@ void * widget_sensors(void * parent) {
     return parent;
 }
 
+
+static void widget_sensors_rf_amp_error(void) {
+
+    const char * argv[] = {"RF amplifier error"};
+    ui_notify(1, argv, "Ok");
+}

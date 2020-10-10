@@ -21,14 +21,14 @@
 #define POTENTIOMETER_ADDR      0x2F
 
 
-void rf_amp_start(void) {
+bool rf_amp_start(void) {
 
     hwctl_start();
     i2c_master_start();
 
     hwctl_tx_power(true);
     misc_hal_sleep_ms(10);      /* power stabilization */
-    rf_amp_off();
+    return rf_amp_off();
 }
 
 void rf_amp_stop(void) {
@@ -37,22 +37,23 @@ void rf_amp_stop(void) {
     hwctl_tx_power(false);
 }
 
-void rf_amp_off(void) {
+bool rf_amp_off(void) {
 
     uint8_t bt1[] = {0x40, 0x00};
     uint8_t bt2[] = {0xC0, 0x00};
-    (void)i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1));
-    (void)i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2));
+
+    return ((i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1)) &&
+            (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2)));
 }
 
-void rf_amp_bias1(uint8_t bias) {
+bool rf_amp_bias1(uint8_t bias) {
 
     uint8_t bt1[] = {0x00, bias};
-    (void)i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1));
+    return (i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1));
 }
 
-void rf_amp_bias2(uint8_t bias) {
+bool rf_amp_bias2(uint8_t bias) {
 
     uint8_t bt2[] = {0x80, bias};
-    (void)i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2));
+    return (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2));
 }

@@ -18,17 +18,18 @@
 
 #include "rf_amp_conf.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 
 #define RF_AMP_MIN      (uint8_t)((RF_AMP_MINV * 256) / 5.0f)
 #define RF_AMP_MAX      (uint8_t)((RF_AMP_MAXV * 256) / 5.0f)
 
 
-void rf_amp_start(void);
+bool rf_amp_start(void);
 void rf_amp_stop(void);
-void rf_amp_off(void);
-void rf_amp_bias1(uint8_t bias);
-void rf_amp_bias2(uint8_t bias);
+bool rf_amp_off(void);
+bool rf_amp_bias1(uint8_t bias);
+bool rf_amp_bias2(uint8_t bias);
 
 
 #endif
