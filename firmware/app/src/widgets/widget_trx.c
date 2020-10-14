@@ -45,9 +45,7 @@ void * widget_trx(void * parent) {
     hwctl_tx_power(true);
     hwctl_rx_power(true);
 
-    if(dco_start()) {
-        dco_set_frequency(frequency);
-    } else {
+    if(!dco_start(frequency)) {
         widget_trx_dco_error();
     }
 

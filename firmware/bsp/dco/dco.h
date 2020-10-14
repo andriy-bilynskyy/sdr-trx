@@ -24,10 +24,20 @@
 #define DCO_MIN_FREQUENCY   1800000UL
 #define DCO_MAX_FREQUENCY   30000000UL
 
+typedef struct {
+    bool    system_initing;
+    bool    lost_pllb;
+    bool    lost_plla;
+    bool    lost_clkin;
+    bool    lost_xtal;
+    uint8_t revision;
+} dco_status_t;
 
-bool dco_start(void);
-void dco_stop(void);
-bool dco_set_frequency(uint32_t frequency);
+
+bool         dco_start(uint32_t frequency);
+void         dco_stop(void);
+bool         dco_set_frequency(uint32_t frequency);
+dco_status_t dco_status(void);
 
 
 #endif
