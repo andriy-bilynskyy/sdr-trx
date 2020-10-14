@@ -19,7 +19,7 @@
 /* memory page size */
 #define MEM24_PAGE_SIZE     32
 /* memory page write time, ms */
-#define MEM24_PAGE_WR_T     4
+#define MEM24_PAGE_WR_T     0
 
 
 #endif
