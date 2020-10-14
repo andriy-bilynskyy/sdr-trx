@@ -35,7 +35,7 @@ bool rtc_init(void) {
 
     bool inited = false;
 
-    if((RCC->BDCR & RCC_BDCR_RTCEN) != RCC_BDCR_RTCEN || (RCC->BDCR & RCC_BDCR_LSERDY) != RCC_BDCR_LSERDY) {
+    if(!rtc_is_inited()) {
         DBG_OUT("RTC not initialized. initializing...");
         PWR_BackupAccessCmd(ENABLE);
         /* reset backup registers */
@@ -82,6 +82,10 @@ bool rtc_init(void) {
         inited = true;
     }
     return inited;
+}
+
+bool rtc_is_inited(void) {
+    return ((RCC->BDCR & RCC_BDCR_RTCEN) == RCC_BDCR_RTCEN && (RCC->BDCR & RCC_BDCR_LSERDY) == RCC_BDCR_LSERDY);
 }
 
 void rtc_reset(void) {

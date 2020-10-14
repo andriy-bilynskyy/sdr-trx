@@ -31,6 +31,7 @@ typedef struct {
 
 
 bool        rtc_init(void);
+bool        rtc_is_inited(void);
 void        rtc_reset(void);
 date_time_t rtc_get_time(void);
 void        rtc_set_time(const date_time_t * time);
