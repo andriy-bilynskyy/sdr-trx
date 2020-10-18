@@ -6,21 +6,20 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widgets header file
+    transmit receive control driver header file
 */
 
-#ifndef __WIDGETS_H
-#define __WIDGETS_H
+#ifndef __TRXCTL_H
+#define __RTXCTL_H
 
 
-#include "widget_main.h"
-#include "widget_date_time.h"
-#include "widget_sensors.h"
-#include "widget_trx.h"
-#include "widget_audio.h"
+#include <stdbool.h>
 
 
-typedef void * (*widget_t)(void * parent);
+void trxctl_start(void);
+void trxctl_stop(void);
+void trxctl_transmit(bool enable);
+void trxctl_receive(bool enable);
 
 
 #endif

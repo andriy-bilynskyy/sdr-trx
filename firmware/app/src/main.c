@@ -14,6 +14,7 @@
 #include "debug.h"
 #include "led.h"
 #include "hwctl.h"
+#include "trxctl.h"
 #include "ui_engine.h"
 #include "rtc.h"
 #include "adc.h"
@@ -37,6 +38,7 @@ int main(void) {
 
     led_start();
     hwctl_start();
+    trxctl_start();
     adc_start();
     i2c_master_start();
 
@@ -65,6 +67,7 @@ int main(void) {
 
     i2c_master_stop();
     adc_stop();
+    trxctl_stop();
     hwctl_stop();
     led_stop();
     RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA |

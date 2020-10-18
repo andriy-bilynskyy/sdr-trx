@@ -21,6 +21,7 @@
 #define WIDGET_MAIN_TAG_DATE_TIME       1
 #define WIDGET_MAIN_TAG_SENSORS         2
 #define WIDGET_MAIN_TAG_TRX             3
+#define WIDGET_MAIN_TAG_AUDIO           4
 
 
 void * widget_main(void * parent){
@@ -38,6 +39,8 @@ void * widget_main(void * parent){
         ui_engine_button(WIDGET_MAIN_TAG_SENSORS,   20, 100, 180, 40, UI_ENGINE_FONT30, "Sensors");
         /* Sensors */
         ui_engine_button(WIDGET_MAIN_TAG_TRX,       20, 150, 180, 40, UI_ENGINE_FONT30, "Transceiver");
+        /* Audio */
+        ui_engine_button(WIDGET_MAIN_TAG_AUDIO,     20, 200, 180, 40, UI_ENGINE_FONT30, "Audio");
 
         ui_engine_draw_end();
 
@@ -60,6 +63,10 @@ void * widget_main(void * parent){
         }
         if(touch.tag == WIDGET_MAIN_TAG_TRX) {
             next_widget = widget_trx;
+            break;
+        }
+        if(touch.tag == WIDGET_MAIN_TAG_AUDIO) {
+            next_widget = widget_audio;
             break;
         }
     }
