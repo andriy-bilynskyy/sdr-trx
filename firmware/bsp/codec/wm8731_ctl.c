@@ -17,12 +17,12 @@
 
 
 typedef struct {
-    codec_volume_t out_r;
-    codec_volume_t out_l;
-    codec_volume_t inp;
-    codec_volume_t mic;
-    out_src_t      out_src;
-    inp_src_t      inp_src;
+    codec_volume_t  out_r;
+    codec_volume_t  out_l;
+    codec_volume_t  inp;
+    codec_volume_t  mic;
+    codec_out_src_t out_src;
+    codec_inp_src_t inp_src;
 } wm8731_ctl_data_t;
 
 
@@ -88,7 +88,7 @@ bool wm8731_ctl_start(void) {
         result = (i2c_master_write(WM8731_I2C_ADDR, &src, sizeof(src)) == sizeof(src));
     }
     if(result) {
-        uint16_t dig = WM8731_DIGITAL_AUDIO_PATH;
+        uint16_t dig = WM8731_DIGITAL_AUDIO_PATH | WM8731_DIGITAL_AUDIO_PATH_DEEMP_48;
         result = (i2c_master_write(WM8731_I2C_ADDR, &dig, sizeof(dig)) == sizeof(dig));
     }
     if(result) {
@@ -96,7 +96,7 @@ bool wm8731_ctl_start(void) {
         result = (i2c_master_write(WM8731_I2C_ADDR, &fmt, sizeof(fmt)) == sizeof(fmt));
     }
     if(result) {
-        uint16_t sampl = WM8731_SAMPLING_CTL;
+        uint16_t sampl = WM8731_SAMPLING_CTL | WM8731_SAMPLING_CTL_SR_VAL(7) | WM8731_SAMPLING_CTL_CLKIDIV2;
         result = (i2c_master_write(WM8731_I2C_ADDR, &sampl, sizeof(sampl)) == sizeof(sampl));
     }
     if(result) {
@@ -220,11 +220,11 @@ bool wm8731_ctl_set_mic_volume(codec_volume_t volume) {
     return result;
 }
 
-out_src_t wm8731_ctl_get_out_src() {
+codec_out_src_t wm8731_ctl_get_out_src() {
     return wm8731_ctl_data.out_src;
 }
 
-bool wm8731_ctl_set_out_src(out_src_t out_src) {
+bool wm8731_ctl_set_out_src(codec_out_src_t out_src) {
 
     bool result = true;
 
@@ -260,11 +260,11 @@ bool wm8731_ctl_set_out_src(out_src_t out_src) {
     return result;
 }
 
-inp_src_t wm8731_ctl_get_inp_src() {
+codec_inp_src_t wm8731_ctl_get_inp_src() {
     return wm8731_ctl_data.inp_src;
 }
 
-bool wm8731_ctl_set_inp_src(inp_src_t inp_src) {
+bool wm8731_ctl_set_inp_src(codec_inp_src_t inp_src) {
 
     bool result = false;
     if(inp_src == INP_MIC || inp_src == INP_LINE) {

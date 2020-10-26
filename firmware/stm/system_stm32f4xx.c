@@ -57,17 +57,17 @@
  *------------------------------------------------------------------------------
  *        PLL_R                                  | 2
  *------------------------------------------------------------------------------
- *        PLLI2S_M                               | NA
+ *        PLLI2S_M                               | 12
  *------------------------------------------------------------------------------
- *        PLLI2S_N                               | NA
+ *        PLLI2S_N                               | 172
  *------------------------------------------------------------------------------
  *        PLLI2S_P                               | NA
  *------------------------------------------------------------------------------
- *        PLLI2S_Q                               | NA
+ *        PLLI2S_Q                               | 2
  *------------------------------------------------------------------------------
- *        PLLI2S_R                               | NA
+ *        PLLI2S_R                               | 2
  *------------------------------------------------------------------------------
- *        I2S input clock                        | NA
+ *        I2S input clock                        | 172000000
  *------------------------------------------------------------------------------
  *        VDD(V)                                 | 3.3
  *------------------------------------------------------------------------------
@@ -121,6 +121,12 @@ extern void system_hse_failed(void);
 #define PLL_R      2
 #define PLL_N      96
 #define PLL_P      2
+
+/* I2S PLL SECTION */
+#define PLLI2S_M   12
+#define PLLI2S_N   172
+#define PLLI2S_Q   2
+#define PLLI2S_R   2
 
 
 void system_init(void) {
@@ -215,6 +221,17 @@ void system_set_clock(void) {
         /* Wait till the main PLL is used as system clock source */
         while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS ) != RCC_CFGR_SWS_PLL) {
         }
+
+        /* Configure PLLI2S */
+        RCC->PLLI2SCFGR = PLLI2S_M | (PLLI2S_N << 6) | (PLLI2S_Q << 24) | (PLLI2S_R << 28);
+
+        /* Enable PLLI2S */
+        RCC->CR |= ((uint32_t)RCC_CR_PLLI2SON);
+
+        /* Wait till PLLI2S is ready */
+        while((RCC->CR & RCC_CR_PLLI2SRDY) == 0) {
+        }
+
     } else {
         /* If HSE fails to start-up, the application will have wrong clock
              configuration. User can add here some code to deal with this error */

@@ -12,18 +12,30 @@
 
 
 #include "codec.h"
+#include "codec_conf.h"
 #include "wm8731_ctl.h"
+#include "wm8731_i2s.h"
 #include "hwctl.h"
+
+
+const uint16_t codec_buf_elements = CODEC_BUF_SIZE;
 
 
 bool codec_start(void) {
 
     hwctl_start();
-    return wm8731_ctl_start();
+    bool result = wm8731_ctl_start();
+
+    if(result) {
+        wm8731_i2s_start();
+    }
+
+    return result;
 }
 
 void codec_stop(void) {
 
+    wm8731_i2s_stop();
     wm8731_ctl_stop();
 }
 
@@ -67,22 +79,37 @@ bool codec_set_mic_volume(codec_volume_t volume) {
     return wm8731_ctl_set_mic_volume(volume);
 }
 
-out_src_t codec_get_out_src() {
+codec_out_src_t codec_get_out_src() {
 
     return wm8731_ctl_get_out_src();
 }
 
-bool codec_set_out_src(out_src_t out_src) {
+bool codec_set_out_src(codec_out_src_t out_src) {
 
     return wm8731_ctl_set_out_src(out_src);
 }
 
-inp_src_t codec_get_inp_src() {
+codec_inp_src_t codec_get_inp_src() {
 
     return wm8731_ctl_get_inp_src();
 }
 
-bool codec_set_inp_src(inp_src_t inp_src) {
+bool codec_set_inp_src(codec_inp_src_t inp_src) {
 
     return wm8731_ctl_set_inp_src(inp_src);
+}
+
+void codec_set_callback(codec_data_ready_cb_t adc_data_ready) {
+
+    wm8731_i2s_set_callback(adc_data_ready);
+}
+
+uint16_t * codec_get_input_buf() {
+
+    return wm8731_i2s_get_input_buf();
+}
+
+uint16_t * codec_get_output_buf() {
+
+    return wm8731_i2s_get_output_buf();
 }

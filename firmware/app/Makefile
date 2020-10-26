@@ -136,7 +136,7 @@ ${PROJECT}.elf: ${OBJECTS} ${LD_SCRIPT}
 	${LD} ${BINFLAGS} $< -o $@
 
 clean:
-	rm -f ${OBJECTS} ${OBJECTS:.o=.d} ${PROJECT}.elf ${PROJECT}.hex ${PROJECT}.map
+	rm -f ${OBJECTS} ${PROJECT_UNIT_GEN} ${OBJECTS:.o=.d} ${PROJECT}.elf ${PROJECT}.hex ${PROJECT}.map
 
 flash:
 	@if [ -f "${PROJECT}.hex" ] ;                                               \

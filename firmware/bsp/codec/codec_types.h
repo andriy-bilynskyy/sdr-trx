@@ -34,12 +34,14 @@ typedef enum {
     OUT_MIC,
     OUT_LINE,
     OUT_DAC
-} out_src_t;
+} codec_out_src_t;
 
 typedef enum {
     INP_MIC,
     INP_LINE,
-} inp_src_t;
+} codec_inp_src_t;
+
+typedef void (*codec_data_ready_cb_t)(void);
 
 
 #endif

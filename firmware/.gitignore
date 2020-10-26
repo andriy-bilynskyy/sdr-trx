@@ -1,6 +1,7 @@
 **/*.o
 **/*.d
 **/*.orig
+**/*_patched.*
 .cproject
 .project
 .settings/

@@ -27,10 +27,10 @@ codec_volume_t  wm8731_ctl_get_input_volume(void);
 bool            wm8731_ctl_set_input_volume(codec_volume_t volume);
 codec_volume_t  wm8731_ctl_get_mic_volume(void);
 bool            wm8731_ctl_set_mic_volume(codec_volume_t volume);
-out_src_t       wm8731_ctl_get_out_src();
-bool            wm8731_ctl_set_out_src(out_src_t out_src);
-inp_src_t       wm8731_ctl_get_inp_src();
-bool            wm8731_ctl_set_inp_src(inp_src_t inp_src);
+codec_out_src_t wm8731_ctl_get_out_src();
+bool            wm8731_ctl_set_out_src(codec_out_src_t out_src);
+codec_inp_src_t wm8731_ctl_get_inp_src();
+bool            wm8731_ctl_set_inp_src(codec_inp_src_t inp_src);
 
 
 #endif

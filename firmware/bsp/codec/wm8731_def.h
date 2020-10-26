@@ -92,6 +92,7 @@
 #define WM8731_SAMPLING_CTL_CLKODIV2            (1<<(7+8))
 #define WM8731_SAMPLING_CTL_CLKIDIV2            (1<<(6+8))
 #define WM8731_SAMPLING_CTL_SR                  (15<<(2+8))
+#define WM8731_SAMPLING_CTL_SR_VAL(x)           (((x)<<(2+8))&WM8731_SAMPLING_CTL_SR)
 #define WM8731_SAMPLING_CTL_BOSR                (1<<(1+8))
 #define WM8731_SAMPLING_CTL_MODE                (1<<(0+8))
 

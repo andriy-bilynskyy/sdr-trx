@@ -17,6 +17,7 @@
 #include "hwctl.h"
 #include "trxctl.h"
 #include <stdbool.h>
+#include <string.h>
 
 
 /* active widgets tags definitions */
@@ -34,6 +35,7 @@
 
 
 static void widget_audio_codec_error(void);
+static void widget_audio_data_ready(void);
 
 
 void * widget_audio(void * parent) {
@@ -46,7 +48,9 @@ void * widget_audio(void * parent) {
     bool ext_mic = false;
     hwctl_ext_mic(ext_mic);
 
-    if(!codec_start()) {
+    if(codec_start()) {
+        codec_set_callback(widget_audio_data_ready);
+    } else {
         widget_audio_codec_error();
     }
     for(;;) {
@@ -79,7 +83,7 @@ void * widget_audio(void * parent) {
         ui_engine_toggle(WIDGET_AUDIO_TAG_MICVOL,  100,  230, 50,     UI_ENGINE_FONT27, mic.volume, "Norm", "Boost");
         ui_engine_toggle(WIDGET_AUDIO_TAG_EXTMIC,  180,  230, 50,     UI_ENGINE_FONT27, ext_mic, "Int.", "Ext.");
         /* source */
-        out_src_t src = codec_get_out_src();
+        codec_out_src_t src = codec_get_out_src();
         static const char * sources[] = {"None", "Mic.", "Line", "DAC"};
         ui_engine_text(  0,                        280,  225,         UI_ENGINE_FONT27, "Source:", false);
         ui_engine_button(WIDGET_AUDIO_TAG_SRC,     350,  220, ui_engine_xsize - 380, 30, UI_ENGINE_FONT27, sources[src]);
@@ -137,7 +141,7 @@ void * widget_audio(void * parent) {
                     hwctl_ext_mic(ext_mic);
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_SRC) {
-                    src = ((src == OUT_DAC) ? OUT_MUTE : (out_src_t)(src + 1));
+                    src = ((src == OUT_DAC) ? OUT_MUTE : (codec_out_src_t)(src + 1));
                     if(!codec_set_out_src(src)) {
                         widget_audio_codec_error();
                     }
@@ -174,4 +178,12 @@ static void widget_audio_codec_error(void) {
 
     const char * argv[] = {"Codec error"};
     ui_notify(1, argv, "Ok");
+}
+
+/******************************************************************************
+ * Echo from line input for test
+ ******************************************************************************/
+static void widget_audio_data_ready(void) {
+
+    memcpy(codec_get_output_buf(), codec_get_input_buf(), codec_buf_elements * sizeof(uint16_t));
 }

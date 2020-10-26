@@ -1,0 +1,19 @@
+diff --git a/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c b/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c
+index 4be61d6..d448f90 100644
+--- a/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c
++++ b/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c
+@@ -479,12 +479,11 @@ void I2S_Init(SPI_TypeDef* SPIx, I2S_InitTypeDef* I2S_InitStruct)
+   if((I2S_InitStruct->I2S_Standard  == I2S_Standard_PCMShort) || (I2S_InitStruct->I2S_Standard  == I2S_Standard_PCMLong))
+   {
+     /* Write to SPIx I2SCFGR */  
+-    SPIx->I2SCFGR = tmpreg | SPI_I2SCFGR_ASTRTEN;
++    tmpreg |= SPI_I2SCFGR_ASTRTEN;
+   }
+-#else
++#endif
+   /* Write to SPIx I2SCFGR */  
+   SPIx->I2SCFGR = tmpreg ;
+-#endif 
+ }
+ 
+ /**
