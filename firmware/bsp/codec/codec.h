@@ -41,7 +41,7 @@ bool                codec_set_inp_src(codec_inp_src_t inp_src);
  * in thread unblocked by this object.
  ******************************************************************************/
 void                codec_set_callback(codec_data_ready_cb_t adc_data_ready);
-uint16_t *          codec_get_input_buf();
+const uint16_t *    codec_get_input_buf();
 uint16_t *          codec_get_output_buf();
 
 

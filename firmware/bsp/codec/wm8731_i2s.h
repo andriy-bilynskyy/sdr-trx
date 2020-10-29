@@ -17,10 +17,10 @@
 #include "codec_types.h"
 
 
-void       wm8731_i2s_start(void);
-void       wm8731_i2s_stop(void);
-void       wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready);
-uint16_t * wm8731_i2s_get_input_buf();
-uint16_t * wm8731_i2s_get_output_buf();
+void             wm8731_i2s_start(void);
+void             wm8731_i2s_stop(void);
+void             wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready);
+const uint16_t * wm8731_i2s_get_input_buf();
+uint16_t *       wm8731_i2s_get_output_buf();
 
 #endif
