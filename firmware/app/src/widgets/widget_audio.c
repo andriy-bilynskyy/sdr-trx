@@ -48,7 +48,7 @@ void * widget_audio(void * parent) {
     bool ext_mic = false;
     hwctl_ext_mic(ext_mic);
 
-    if(codec_start()) {
+    if(codec_start(CODEC_SR_96K)) {
         codec_set_callback(widget_audio_data_ready);
     } else {
         widget_audio_codec_error();
@@ -141,7 +141,7 @@ void * widget_audio(void * parent) {
                     hwctl_ext_mic(ext_mic);
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_SRC) {
-                    src = ((src == OUT_DAC) ? OUT_MUTE : (codec_out_src_t)(src + 1));
+                    src = ((src == CODEC_OUT_DAC) ? CODEC_OUT_MUTE : (codec_out_src_t)(src + 1));
                     if(!codec_set_out_src(src)) {
                         widget_audio_codec_error();
                     }

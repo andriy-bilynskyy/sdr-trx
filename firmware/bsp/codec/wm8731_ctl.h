@@ -17,7 +17,7 @@
 #include "codec_types.h"
 
 
-bool            wm8731_ctl_start(void);
+bool            wm8731_ctl_start(codec_sample_rate_t sr);
 void            wm8731_ctl_stop(void);
 codec_volume_t  wm8731_ctl_get_output_volume_r(void);
 codec_volume_t  wm8731_ctl_get_output_volume_l(void);

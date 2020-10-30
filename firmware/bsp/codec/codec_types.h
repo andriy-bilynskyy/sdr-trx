@@ -30,16 +30,23 @@ typedef struct {
 } codec_volume_t;
 
 typedef enum {
-    OUT_MUTE,
-    OUT_MIC,
-    OUT_LINE,
-    OUT_DAC
+    CODEC_OUT_MUTE,
+    CODEC_OUT_MIC,
+    CODEC_OUT_LINE,
+    CODEC_OUT_DAC
 } codec_out_src_t;
 
 typedef enum {
-    INP_MIC,
-    INP_LINE,
+    CODEC_INP_MIC,
+    CODEC_INP_LINE
 } codec_inp_src_t;
+
+typedef enum {
+    CODEC_SR_8K,
+    CODEC_SR_32K,
+    CODEC_SR_48K,
+    CODEC_SR_96K
+} codec_sample_rate_t;
 
 typedef void (*codec_data_ready_cb_t)(void);
 

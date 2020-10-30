@@ -33,12 +33,12 @@ static const wm8731_ctl_data_t wm8731_ctl_data_def = {
     .out_l   = {.mute = false, .volume = 0x49},
     .inp     = {.mute = false, .volume = 0x17},
     .mic     = {.mute = false, .volume = 0x01},
-    .out_src = OUT_DAC,
-    .inp_src = INP_LINE
+    .out_src = CODEC_OUT_DAC,
+    .inp_src = CODEC_INP_LINE
 };
 
 
-bool wm8731_ctl_start(void) {
+bool wm8731_ctl_start(codec_sample_rate_t sr) {
 
     i2c_master_start();
 
@@ -70,25 +70,25 @@ bool wm8731_ctl_start(void) {
         uint16_t src = WM8731_ANALOG_AUDIO_PATH |
                        (wm8731_ctl_data.mic.volume ? WM8731_ANALOG_AUDIO_PATH_MICBOOST : 0) |
                        (wm8731_ctl_data.mic.mute ? WM8731_ANALOG_AUDIO_PATH_MUTEMIC : 0) |
-                       (wm8731_ctl_data.inp_src == INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
+                       (wm8731_ctl_data.inp_src == CODEC_INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
         switch(wm8731_ctl_data.out_src) {
-        case OUT_MIC:
+        case CODEC_OUT_MIC:
             src |= WM8731_ANALOG_AUDIO_PATH_SIDETONE;
             break;
-        case OUT_LINE:
+        case CODEC_OUT_LINE:
             src |= WM8731_ANALOG_AUDIO_PATH_BYPASS;
             break;
-        case OUT_DAC:
+        case CODEC_OUT_DAC:
             src |= WM8731_ANALOG_AUDIO_PATH_DACSEL;
             break;
-        case OUT_MUTE:
+        case CODEC_OUT_MUTE:
         default:
             break;
         }
         result = (i2c_master_write(WM8731_I2C_ADDR, &src, sizeof(src)) == sizeof(src));
     }
     if(result) {
-        uint16_t dig = WM8731_DIGITAL_AUDIO_PATH | WM8731_DIGITAL_AUDIO_PATH_DEEMP_48;
+        uint16_t dig = WM8731_DIGITAL_AUDIO_PATH;
         result = (i2c_master_write(WM8731_I2C_ADDR, &dig, sizeof(dig)) == sizeof(dig));
     }
     if(result) {
@@ -96,7 +96,22 @@ bool wm8731_ctl_start(void) {
         result = (i2c_master_write(WM8731_I2C_ADDR, &fmt, sizeof(fmt)) == sizeof(fmt));
     }
     if(result) {
-        uint16_t sampl = WM8731_SAMPLING_CTL | WM8731_SAMPLING_CTL_SR_VAL(7) | WM8731_SAMPLING_CTL_CLKIDIV2;
+        uint16_t sampl = WM8731_SAMPLING_CTL;
+        switch(sr) {
+        case CODEC_SR_8K:
+            sampl |= WM8731_SAMPLING_CTL_SR_VAL(3);
+            break;
+        case CODEC_SR_32K:
+            sampl |= WM8731_SAMPLING_CTL_SR_VAL(6);
+            break;
+        case CODEC_SR_48K:
+            sampl |= WM8731_SAMPLING_CTL_SR_VAL(0);
+            break;
+        case CODEC_SR_96K:
+        default:
+            sampl |= WM8731_SAMPLING_CTL_SR_VAL(7) | WM8731_SAMPLING_CTL_CLKIDIV2;
+            break;
+        }
         result = (i2c_master_write(WM8731_I2C_ADDR, &sampl, sizeof(sampl)) == sizeof(sampl));
     }
     if(result) {
@@ -196,18 +211,18 @@ bool wm8731_ctl_set_mic_volume(codec_volume_t volume) {
     uint16_t src = WM8731_ANALOG_AUDIO_PATH |
                    (volume.volume ? WM8731_ANALOG_AUDIO_PATH_MICBOOST : 0) |
                    (volume.mute ? WM8731_ANALOG_AUDIO_PATH_MUTEMIC : 0) |
-                   (wm8731_ctl_data.inp_src == INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
+                   (wm8731_ctl_data.inp_src == CODEC_INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
     switch(wm8731_ctl_data.out_src) {
-    case OUT_MIC:
+    case CODEC_OUT_MIC:
         src |= WM8731_ANALOG_AUDIO_PATH_SIDETONE;
         break;
-    case OUT_LINE:
+    case CODEC_OUT_LINE:
         src |= WM8731_ANALOG_AUDIO_PATH_BYPASS;
         break;
-    case OUT_DAC:
+    case CODEC_OUT_DAC:
         src |= WM8731_ANALOG_AUDIO_PATH_DACSEL;
         break;
-    case OUT_MUTE:
+    case CODEC_OUT_MUTE:
     default:
         break;
     }
@@ -231,19 +246,19 @@ bool wm8731_ctl_set_out_src(codec_out_src_t out_src) {
     uint16_t src = WM8731_ANALOG_AUDIO_PATH |
                    (wm8731_ctl_data.mic.volume ? WM8731_ANALOG_AUDIO_PATH_MICBOOST : 0) |
                    (wm8731_ctl_data.mic.mute ? WM8731_ANALOG_AUDIO_PATH_MUTEMIC : 0) |
-                   (wm8731_ctl_data.inp_src == INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
+                   (wm8731_ctl_data.inp_src == CODEC_INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
 
     switch(out_src) {
-    case OUT_MIC:
+    case CODEC_OUT_MIC:
         src |= WM8731_ANALOG_AUDIO_PATH_SIDETONE;
         break;
-    case OUT_LINE:
+    case CODEC_OUT_LINE:
         src |= WM8731_ANALOG_AUDIO_PATH_BYPASS;
         break;
-    case OUT_DAC:
+    case CODEC_OUT_DAC:
         src |= WM8731_ANALOG_AUDIO_PATH_DACSEL;
         break;
-    case OUT_MUTE:
+    case CODEC_OUT_MUTE:
         break;
     default:
         result = false;
@@ -267,22 +282,22 @@ codec_inp_src_t wm8731_ctl_get_inp_src() {
 bool wm8731_ctl_set_inp_src(codec_inp_src_t inp_src) {
 
     bool result = false;
-    if(inp_src == INP_MIC || inp_src == INP_LINE) {
+    if(inp_src == CODEC_INP_MIC || inp_src == CODEC_INP_LINE) {
         uint16_t src = WM8731_ANALOG_AUDIO_PATH |
                        (wm8731_ctl_data.mic.volume ? WM8731_ANALOG_AUDIO_PATH_MICBOOST : 0) |
                        (wm8731_ctl_data.mic.mute ? WM8731_ANALOG_AUDIO_PATH_MUTEMIC : 0) |
-                       (inp_src == INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
+                       (inp_src == CODEC_INP_MIC ? WM8731_ANALOG_AUDIO_PATH_INSEL_MIC : WM8731_ANALOG_AUDIO_PATH_INSEL_LINE);
         switch(wm8731_ctl_data.out_src) {
-        case OUT_MIC:
+        case CODEC_OUT_MIC:
             src |= WM8731_ANALOG_AUDIO_PATH_SIDETONE;
             break;
-        case OUT_LINE:
+        case CODEC_OUT_LINE:
             src |= WM8731_ANALOG_AUDIO_PATH_BYPASS;
             break;
-        case OUT_DAC:
+        case CODEC_OUT_DAC:
             src |= WM8731_ANALOG_AUDIO_PATH_DACSEL;
             break;
-        case OUT_MUTE:
+        case CODEC_OUT_MUTE:
         default:
             break;
         }

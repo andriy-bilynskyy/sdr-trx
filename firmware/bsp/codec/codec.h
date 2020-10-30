@@ -20,7 +20,7 @@
 extern const uint16_t codec_buf_elements;
 
 
-bool                codec_start(void);
+bool                codec_start(codec_sample_rate_t sr);
 void                codec_stop(void);
 codec_volume_t      codec_get_headphone_volume(void);
 codec_volume_t      codec_get_speaker_volume(void);

@@ -70,7 +70,7 @@ static volatile uint8_t         wm8731_active_buf = 1;
 static codec_data_ready_cb_t    wm8731_data_ready_cb = NULL;
 
 
-void wm8731_i2s_start(void) {
+void wm8731_i2s_start(codec_sample_rate_t sr) {
 
     CODEC_I2S_APB_CMD(CODEC_I2S_PERIPH, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
@@ -110,9 +110,23 @@ void wm8731_i2s_start(void) {
         .I2S_Standard = I2S_Standard_Phillips,
         .I2S_DataFormat = I2S_DataFormat_16b,
         .I2S_MCLKOutput = I2S_MCLKOutput_Enable,
-        .I2S_AudioFreq = I2S_AudioFreq_96k,
         .I2S_CPOL = I2S_CPOL_Low
     };
+    switch(sr) {
+    case CODEC_SR_8K:
+        i2s.I2S_AudioFreq = I2S_AudioFreq_8k;
+        break;
+    case CODEC_SR_32K:
+        i2s.I2S_AudioFreq = I2S_AudioFreq_32k;
+        break;
+    case CODEC_SR_48K:
+        i2s.I2S_AudioFreq = I2S_AudioFreq_48k;
+        break;
+    case CODEC_SR_96K:
+    default:
+        i2s.I2S_AudioFreq = I2S_AudioFreq_96k;
+        break;
+    }
     I2S_Init(CODEC_I2S, &i2s);
     I2S_FullDuplexConfig(CODEC_I2S_EXT, &i2s);
 

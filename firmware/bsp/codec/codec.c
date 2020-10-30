@@ -21,13 +21,13 @@
 const uint16_t codec_buf_elements = CODEC_BUF_SIZE;
 
 
-bool codec_start(void) {
+bool codec_start(codec_sample_rate_t sr) {
 
     hwctl_start();
-    bool result = wm8731_ctl_start();
+    bool result = wm8731_ctl_start(sr);
 
     if(result) {
-        wm8731_i2s_start();
+        wm8731_i2s_start(sr);
     }
 
     return result;
