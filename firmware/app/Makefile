@@ -43,6 +43,7 @@ PROJECT_STYLE := \
   ${wildcard config/*.h} \
 
 
+include ../free_rtos/unit.mk
 include ../bsp/codec/unit.mk
 include ../bsp/dco/unit.mk
 include ../bsp/mem24/unit.mk

@@ -10,6 +10,8 @@
 
 
 #include "stm32f4xx_conf.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "critical_err.h"
 #include "debug.h"
 #include "led.h"
@@ -22,11 +24,19 @@
 #include "widgets.h"
 
 
-int main(void) {
+void vApplicationMallocFailedHook(void) {
 
-    DBG_OUT("main start");
+}
 
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char * pcTaskName) {
+
+    (void) pcTaskName;
+    (void) xTask;
+}
+
+void task1(void * param) {
+
+    DBG_OUT("Task started");
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1 | RCC_AHB1Periph_DMA2, ENABLE);
@@ -79,6 +89,19 @@ int main(void) {
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_BKPSRAM, DISABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1 | RCC_AHB1Periph_DMA2, DISABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, DISABLE);
+
+    DBG_OUT("Task stopped");
+}
+
+int main(void) {
+
+    DBG_OUT("main start");
+
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
+    xTaskCreate(task1, "Task1", 256, NULL, 3, NULL);
+    vTaskStartScheduler();
+    for(;;);
 
     return 0;
 }
