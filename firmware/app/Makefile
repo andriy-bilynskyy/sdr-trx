@@ -30,11 +30,13 @@ PROJECT_SRC := \
   ${wildcard src/*.[c,cpp]} \
   ${wildcard src/widgets/*.[c,cpp]} \
   ${wildcard src/rtos_ext/*.[c,cpp]} \
+  ${wildcard src/tasks/*.[c,cpp]} \
 
 PROJECT_INC := \
   config \
   src \
   src/widgets \
+  src/tasks \
 
 PROJECT_LIB := \
 
@@ -42,6 +44,7 @@ PROJECT_STYLE := \
   ${wildcard src/*.[h,c,cpp]} \
   ${wildcard src/widgets/*.[h,c,cpp]} \
   ${wildcard src/rtos_ext/*.[c,cpp]} \
+  ${wildcard src/tasks/*.[h,c,cpp]} \
   ${wildcard config/*.h} \
 
 
