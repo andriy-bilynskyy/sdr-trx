@@ -39,13 +39,20 @@
  ******************************************************************************/
 #define UI_ENGINE_FT813_DISPLAY_EN_PIN      7
 
+/******************************************************************************
+ * UI Engine RAM command cache size
+ ******************************************************************************/
+#define UI_ENGINE_CMD_BUF_SIZE              (4 * 1024)
+
 
 const uint16_t ui_engine_xsize = REG_HSIZE_VALUE;
 const uint16_t ui_engine_ysize = REG_VSIZE_VALUE;
 
 
-static bool ui_engine_started = false;
-static bool ui_engine_qspi_4x = false;
+static bool     ui_engine_started = false;
+static bool     ui_engine_qspi_4x = false;
+static uint8_t  ui_engine_cmd_buf_data[UI_ENGINE_CMD_BUF_SIZE] = {0};
+static uint32_t ui_engine_cmd_buf_size = 0;
 
 
 static inline void     ui_engine_set_bus(bool qspi_4x)                                __attribute__((always_inline));
@@ -58,7 +65,8 @@ static inline uint8_t  ui_engine_rd8(uint32_t addr)                             
 static inline uint32_t ui_engine_rd32(uint32_t addr)                                  __attribute__((always_inline));
 static inline uint32_t ui_engine_dl(uint32_t offset, void * dl_cmd, uint32_t dl_size) __attribute__((always_inline));
 static inline uint32_t ui_engine_cmd(void * cp_cmd, uint32_t cp_size)                 __attribute__((always_inline));
-static inline void     ui_engine_cmd_all(void * cp_cmd, uint32_t cp_size)             __attribute__((always_inline));
+static inline void     ui_engine_cmd_buf(void * cp_cmd, uint32_t cp_size)             __attribute__((always_inline));
+static inline void     ui_engine_cmd_buf_flush(void)                                  __attribute__((always_inline));
 
 
 bool ui_engine_start(void) {
@@ -172,7 +180,7 @@ void ui_engine_draw_start(uint8_t r, uint8_t g, uint8_t b) {
             CLEAR_COLOR_RGB(r, g, b),
             CLEAR(1, 1, 1)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -183,7 +191,9 @@ void ui_engine_draw_end(void) {
             DISPLAY(),
             CMD_SWAP
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
+
+        ui_engine_cmd_buf_flush();
     }
 }
 
@@ -193,7 +203,7 @@ void ui_engine_set_color(uint8_t r, uint8_t g, uint8_t b) {
         uint32_t data[] = {
             COLOR_RGB(r, g, b)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -204,7 +214,7 @@ void ui_engine_set_fgcolor(uint8_t r, uint8_t g, uint8_t b) {
             CMD_FGCOLOR,
             (uint32_t)r << 16 | (uint32_t)g << 8 | b
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -215,7 +225,7 @@ void ui_engine_set_bgcolor(uint8_t r, uint8_t g, uint8_t b) {
             CMD_BGCOLOR,
             (uint32_t)r << 16 | (uint32_t)g << 8 | b
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -229,7 +239,7 @@ void ui_engine_set_gradient(uint8_t r0, uint8_t g0, uint8_t b0, uint8_t r1, uint
                          ((uint32_t)REG_VSIZE_VALUE << 16) | REG_HSIZE_VALUE,
                          (uint32_t)r1 << 16 | (uint32_t)g1 << 8 | b1
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -243,7 +253,7 @@ void ui_engine_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t widt
             VERTEX2II(x2, y2, 0, 0),
             END()
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -257,7 +267,7 @@ void ui_engine_rectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t
             VERTEX2II(x2, y2, 0, 0),
             END()
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -270,7 +280,7 @@ void ui_engine_circle(int16_t x, int16_t y, uint16_t radius) {
             VERTEX2II(x, y, 0, 0),
             END()
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -286,7 +296,7 @@ void ui_engine_button(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_
         data[4] = (uint32_t)font & 0xFFFF;
         strcpy((char *)&data[5], text);
         data[size - 1] = TAG(0);
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -304,7 +314,7 @@ void ui_engine_text(uint8_t tag, int16_t x, int16_t y, ui_engine_font_t font, co
         }
         strcpy((char *)&data[4], text);
         data[size - 1] = TAG(0);
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -324,7 +334,7 @@ void ui_engine_slider(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_
             0xFFFF,
             TAG(0)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -343,7 +353,7 @@ void ui_engine_dial(uint8_t tag, int16_t x, int16_t y, uint16_t radius, uint16_t
             value,
             TAG(0)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -369,7 +379,7 @@ void ui_engine_number(uint8_t tag, int16_t x, int16_t y, ui_engine_font_t font, 
         if(is_signed) {
             data[5] |= OPT_SIGNED << 16;
         }
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -383,7 +393,7 @@ void ui_engine_progress(int16_t x, int16_t y, uint16_t width, uint16_t height, u
             ((uint32_t)value << 16),
             range
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -403,7 +413,7 @@ void ui_engine_scrollbar(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint
             ((uint32_t)0xFFFF << 16),
             TAG(0)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -421,7 +431,7 @@ void ui_engine_clock(uint8_t tag, int16_t x, int16_t y, uint16_t radius, time_t 
             (uint32_t)ti->tm_sec & 0xFFFF,
             TAG(0)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -437,7 +447,7 @@ void ui_engine_gauge(uint8_t tag, int16_t x, int16_t y, uint16_t radius, uint16_
             ((uint32_t)range << 16) | value,
             TAG(0)
         };
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -459,7 +469,7 @@ void ui_engine_toggle(uint8_t tag, int16_t x, int16_t y, uint16_t width, ui_engi
         *(((char *)&data[5]) + len[0]) = 0xFF;
         strcpy(((char *)&data[5]) + len[0] + 1, l_on);
         data[size - 1] = TAG(0);
-        ui_engine_cmd_all(data, sizeof(data));
+        ui_engine_cmd_buf(data, sizeof(data));
     }
 }
 
@@ -548,12 +558,29 @@ static inline uint32_t ui_engine_cmd(void * cp_cmd, uint32_t cp_size) {
     return wr_byres;
 }
 
-static inline void ui_engine_cmd_all(void * cp_cmd, uint32_t cp_size) {
+static inline void ui_engine_cmd_buf(void * cp_cmd, uint32_t cp_size) {
 
     while(cp_size) {
-        uint32_t sent = ui_engine_cmd(cp_cmd, cp_size);
-        cp_cmd = (uint8_t *)cp_cmd + sent;
-        cp_size -= sent;
-        misc_hal_sleep_ms(UI_ENGINE_CMD_WAIT_PERIOD_MS);
+        uint32_t bts = (cp_size < UI_ENGINE_CMD_BUF_SIZE - ui_engine_cmd_buf_size) ? cp_size : UI_ENGINE_CMD_BUF_SIZE - ui_engine_cmd_buf_size;
+        memcpy(&ui_engine_cmd_buf_data[ui_engine_cmd_buf_size], cp_cmd, bts);
+        cp_size -= bts;
+        cp_cmd = (uint8_t *)cp_cmd + bts;
+        ui_engine_cmd_buf_size += bts;
+        if(ui_engine_cmd_buf_size == UI_ENGINE_CMD_BUF_SIZE) {
+            ui_engine_cmd_buf_flush();
+        }
     }
+}
+
+static inline void ui_engine_cmd_buf_flush(void) {
+
+    uint32_t idx = 0;
+    while(idx < ui_engine_cmd_buf_size) {
+        uint32_t sent = ui_engine_cmd(&ui_engine_cmd_buf_data[idx], ui_engine_cmd_buf_size - idx);
+        idx += sent;
+        if(idx < ui_engine_cmd_buf_size) {
+            misc_hal_sleep_ms(UI_ENGINE_CMD_WAIT_PERIOD_MS);
+        }
+    }
+    ui_engine_cmd_buf_size = 0;
 }

@@ -88,6 +88,7 @@ void * widget_trx(void * parent) {
 
         if(!touch.tag) {
             touched = false;
+            touched_cnt = WIDGET_TRX_TOUCH_SKIP_CNT;
         } else {
             if(!touched  || !touched_cnt) {
                 if(touch.tag == WIDGET_TRX_TAG_EXIT) {
