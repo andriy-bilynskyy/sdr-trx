@@ -28,7 +28,7 @@
 
 #define TASK_UI_NAME                    "UI"
 #define TASK_UI_PRIO                    1
-#define TASK_UI_STACK                   256
+#define TASK_UI_STACK                   512
 
 #define TASK_RTC_START_NAME             "RTC"
 #define TASK_RTC_START_PRIO             0

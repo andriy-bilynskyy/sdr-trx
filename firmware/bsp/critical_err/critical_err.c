@@ -326,7 +326,7 @@ void critical_err_task_stack_overflowed(char * task_name) {
     critical_err_crc = CRC_CalcBlockCRC((uint32_t *)&critical_err_data, sizeof(critical_err_data) / sizeof(uint32_t));
 
 #ifdef DEBUG
-    DBG_OUT("Task stack overflowed");
+    DBG_OUT("Task %s stack overflowed", task_name);
     for(;;);
 #else
     NVIC_SystemReset();
@@ -342,7 +342,7 @@ void critical_err_malloc_failed(void) {
     critical_err_crc = CRC_CalcBlockCRC((uint32_t *)&critical_err_data, sizeof(critical_err_data) / sizeof(uint32_t));
 
 #ifdef DEBUG
-    DBG_OUT("Task stack overflowed");
+    DBG_OUT("Malloc failed");
     for(;;);
 #else
     NVIC_SystemReset();
