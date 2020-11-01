@@ -14,6 +14,7 @@
 
 
 void critical_err_stack_check(void);
-
+void critical_err_task_stack_overflowed(char * task_name);
+void critical_err_malloc_failed(void);
 
 #endif

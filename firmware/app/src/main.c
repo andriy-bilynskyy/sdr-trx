@@ -24,16 +24,6 @@
 #include "widgets.h"
 
 
-void vApplicationMallocFailedHook(void) {
-
-}
-
-void vApplicationStackOverflowHook(TaskHandle_t xTask, char * pcTaskName) {
-
-    (void) pcTaskName;
-    (void) xTask;
-}
-
 void task1(void * param) {
 
     DBG_OUT("Task started");

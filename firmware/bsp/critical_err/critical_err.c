@@ -17,6 +17,8 @@
 #include "ui_notify.h"
 #include "debug.h"
 #include "misc_func.h"
+#include "FreeRTOS.h"
+#include <string.h>
 
 
 /*******************************************************************************
@@ -34,7 +36,9 @@ typedef enum {
     CRITICAL_ERR_UNHANDLED_INT,
     CRITICAL_ERR_CLOCK,
     CRITICAL_ERR_ASSERT,
-    CRITICAL_ERR_STACK_OVERFLOWED
+    CRITICAL_ERR_STACK_OVERFLOWED,
+    CRITICAL_ERR_TASK_STACK_OVERFLOWED,
+    CRITICAL_ERR_MALLOC_FAILED
 } critical_err_t;
 
 
@@ -56,6 +60,7 @@ static volatile struct {
     const char *   file;
     uint32_t       line;
 #endif
+    char           task_name[configMAX_TASK_NAME_LEN];
 } critical_err_data                         __attribute__(( section(".crash_data") ));
 
 static volatile uint32_t critical_err_crc   __attribute__(( section(".crash_data") ));
@@ -69,6 +74,8 @@ static void critical_err_widget_hsefail(void);
 static void critical_err_widget_assert(void);
 #endif
 static void critical_err_widget_stackoverflowed(void);
+static void critical_err_widget_taskstackoverflowed(void);
+static void critical_err_widget_mallocfailed(void);
 
 
 /* Early boot check if fault happened */
@@ -130,6 +137,12 @@ void critical_err_mode(void) {
 #endif
         case CRITICAL_ERR_STACK_OVERFLOWED:
             critical_err_widget_stackoverflowed();
+            break;
+        case CRITICAL_ERR_TASK_STACK_OVERFLOWED:
+            critical_err_widget_taskstackoverflowed();
+            break;
+        case CRITICAL_ERR_MALLOC_FAILED:
+            critical_err_widget_mallocfailed();
             break;
         default:
             critical_err_widget_default();
@@ -303,6 +316,39 @@ void critical_err_stack_check(void) {
     }
 }
 
+void critical_err_task_stack_overflowed(char * task_name) {
+
+    critical_err_data.type = CRITICAL_ERR_TASK_STACK_OVERFLOWED;
+    memcpy((char *)critical_err_data.task_name, task_name, sizeof(critical_err_data.task_name));
+
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_CRC, ENABLE);
+    CRC_ResetDR();
+    critical_err_crc = CRC_CalcBlockCRC((uint32_t *)&critical_err_data, sizeof(critical_err_data) / sizeof(uint32_t));
+
+#ifdef DEBUG
+    DBG_OUT("Task stack overflowed");
+    for(;;);
+#else
+    NVIC_SystemReset();
+#endif
+}
+
+void critical_err_malloc_failed(void) {
+
+    critical_err_data.type = CRITICAL_ERR_MALLOC_FAILED;
+
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_CRC, ENABLE);
+    CRC_ResetDR();
+    critical_err_crc = CRC_CalcBlockCRC((uint32_t *)&critical_err_data, sizeof(critical_err_data) / sizeof(uint32_t));
+
+#ifdef DEBUG
+    DBG_OUT("Task stack overflowed");
+    for(;;);
+#else
+    NVIC_SystemReset();
+#endif
+}
+
 
 static void critical_err_widget_default(void) {
 
@@ -369,6 +415,22 @@ static void critical_err_widget_assert(void) {
 
 static void critical_err_widget_stackoverflowed(void) {
 
-    const char * argv[] = {"Stack overflowed"};
+    const char * argv[] = {"System stack overflowed"};
+    ui_notify(1, argv, "Reboot");
+}
+
+static void critical_err_widget_taskstackoverflowed(void) {
+
+    const char * argv[] = {"Task stack overflowed",
+                           "", "",
+                           (char *)critical_err_data.task_name
+                          };
+
+    ui_notify(4, argv, "Reboot");
+}
+
+static void critical_err_widget_mallocfailed(void) {
+
+    const char * argv[] = {"Malloc failed"};
     ui_notify(1, argv, "Reboot");
 }
