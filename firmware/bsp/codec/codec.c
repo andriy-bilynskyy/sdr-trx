@@ -104,12 +104,12 @@ void codec_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_i2s_set_callback(adc_data_ready);
 }
 
-const uint16_t * codec_get_input_buf() {
+const int16_t * codec_get_input_buf() {
 
     return wm8731_i2s_get_input_buf();
 }
 
-uint16_t * codec_get_output_buf() {
+int16_t * codec_get_output_buf() {
 
     return wm8731_i2s_get_output_buf();
 }

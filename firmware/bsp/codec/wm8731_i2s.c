@@ -64,8 +64,8 @@
 #define CODEC_I2S_IRQHandler    DMA1_Stream3_IRQHandler
 
 
-static uint16_t                 wm8731_dac_buffer[2][CODEC_BUF_SIZE] = {0};
-static uint16_t                 wm8731_adc_buffer[2][CODEC_BUF_SIZE] = {0};
+static int16_t                  wm8731_dac_buffer[2][CODEC_BUF_SIZE] = {0};
+static int16_t                  wm8731_adc_buffer[2][CODEC_BUF_SIZE] = {0};
 static volatile uint8_t         wm8731_active_buf = 1;
 static codec_data_ready_cb_t    wm8731_data_ready_cb = NULL;
 
@@ -136,8 +136,8 @@ void wm8731_i2s_start(codec_sample_rate_t sr) {
     SPI_I2S_DMACmd(CODEC_I2S_EXT, SPI_I2S_DMAReq_Rx, ENABLE);
 
     for(uint32_t i = 0; i < CODEC_BUF_SIZE; i++) {
-        wm8731_dac_buffer[0][i] = ((uint16_t)(-1) / 2);
-        wm8731_dac_buffer[1][i] = ((uint16_t)(-1) / 2);
+        wm8731_dac_buffer[0][i] = 0;
+        wm8731_dac_buffer[1][i] = 0;
     }
     wm8731_active_buf = 1;
     wm8731_data_ready_cb = NULL;
@@ -234,12 +234,12 @@ void wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_data_ready_cb = adc_data_ready;
 }
 
-const uint16_t * wm8731_i2s_get_input_buf() {
+const int16_t * wm8731_i2s_get_input_buf() {
 
     return wm8731_adc_buffer[wm8731_active_buf];
 }
 
-uint16_t * wm8731_i2s_get_output_buf() {
+int16_t * wm8731_i2s_get_output_buf() {
 
     return wm8731_dac_buffer[wm8731_active_buf];
 }

@@ -66,7 +66,8 @@ void * realloc(void * ptr, size_t new_size) {
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
         result = pvPortMalloc(new_size);
         if(result) {
-            memcpy(result, ptr, new_size);
+            extern UBaseType_t _estack;
+            memcpy(result, ptr, ((new_size < (void *)&_estack - ptr) ? new_size : (void *)&_estack - ptr));
             vPortFree(ptr);
         }
     } else {
