@@ -35,7 +35,12 @@ static inline void hwctl_update(void)   __attribute__((always_inline));
 
 void hwctl_start(void) {
 
+    hwctl_create_lock();
+    hwctl_lock();
     if(!hwctl_started) {
+        hwctl_create_sync();
+        hwctl_started = true;
+
         HWCTL_SPI_APB_CMD(HWCTL_SPI_PERIPH, ENABLE);
 
         GPIO_WriteBit(HWCTL_PORT, HWCTL_DATA_PIN, Bit_RESET);
@@ -78,22 +83,18 @@ void hwctl_start(void) {
         NVIC_SetPriority(HWCTL_SPI_IRQ, HWCTL_SPI_IRQ_PRIO);
         NVIC_EnableIRQ(HWCTL_SPI_IRQ);
 
-        hwctl_post_sync_obj();
-
         hwctl_register = 0;
         hwctl_update();
 
         GPIO_WriteBit(HWCTL_PORT, HWCTL_EN_PIN, Bit_RESET);
-
-        hwctl_started = true;
     }
+    hwctl_unlock();
 }
 
 void hwctl_stop(void) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
-
         GPIO_WriteBit(HWCTL_PORT, HWCTL_EN_PIN, Bit_SET);
 
         NVIC_DisableIRQ(HWCTL_SPI_IRQ);
@@ -119,13 +120,16 @@ void hwctl_stop(void) {
         HWCTL_SPI_APB_CMD(HWCTL_SPI_PERIPH, DISABLE);
 
         hwctl_started = false;
+        hwctl_delete_sync();
     }
+    hwctl_unlock();
+    hwctl_delete_lock();
 }
 
 void hwctl_set_band(uint8_t band) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
         uint8_t reg = hwctl_register & ~HWCTL_BAND_MASK;
         if(band >= HWCTL_BANDS_NUM) {
             band = 0;
@@ -134,16 +138,15 @@ void hwctl_set_band(uint8_t band) {
         if(reg != hwctl_register) {
             hwctl_register = reg;
             hwctl_update();
-        } else {
-            hwctl_post_sync_obj();
         }
     }
+    hwctl_unlock();
 }
 
 void hwctl_tx_power(bool dev_on) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
         uint8_t reg = hwctl_register & ~HWCTL_TX_PWR_MASK;
         if(dev_on) {
             reg |= HWCTL_TX_PWR_MASK;
@@ -151,16 +154,15 @@ void hwctl_tx_power(bool dev_on) {
         if(reg != hwctl_register) {
             hwctl_register = reg;
             hwctl_update();
-        } else {
-            hwctl_post_sync_obj();
         }
     }
+    hwctl_unlock();
 }
 
 void hwctl_rx_power(bool dev_on) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
         uint8_t reg = hwctl_register & ~HWCTL_RX_PWR_MASK;
         if(dev_on) {
             reg |= HWCTL_RX_PWR_MASK;
@@ -168,16 +170,15 @@ void hwctl_rx_power(bool dev_on) {
         if(reg != hwctl_register) {
             hwctl_register = reg;
             hwctl_update();
-        } else {
-            hwctl_post_sync_obj();
         }
     }
+    hwctl_unlock();
 }
 
 void hwctl_bkl_power(bool dev_on) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
         uint8_t reg = hwctl_register & ~HWCTL_BL_PWR_MASK;
         if(dev_on) {
             reg |= HWCTL_BL_PWR_MASK;
@@ -185,16 +186,15 @@ void hwctl_bkl_power(bool dev_on) {
         if(reg != hwctl_register) {
             hwctl_register = reg;
             hwctl_update();
-        } else {
-            hwctl_post_sync_obj();
         }
     }
+    hwctl_unlock();
 }
 
 void hwctl_usb_power(bool dev_on) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
         uint8_t reg = hwctl_register & ~HWCTL_USB_PWR_MASK;
         if(dev_on) {
             reg |= HWCTL_USB_PWR_MASK;
@@ -202,16 +202,15 @@ void hwctl_usb_power(bool dev_on) {
         if(reg != hwctl_register) {
             hwctl_register = reg;
             hwctl_update();
-        } else {
-            hwctl_post_sync_obj();
         }
     }
+    hwctl_unlock();
 }
 
 void hwctl_ext_mic(bool dev_on) {
 
+    hwctl_lock();
     if(hwctl_started) {
-        hwctl_pend_sync_obj();
         uint8_t reg = hwctl_register & ~HWCTL_EXT_MIC_MASK;
         if(dev_on) {
             reg |= HWCTL_EXT_MIC_MASK;
@@ -219,17 +218,16 @@ void hwctl_ext_mic(bool dev_on) {
         if(reg != hwctl_register) {
             hwctl_register = reg;
             hwctl_update();
-        } else {
-            hwctl_post_sync_obj();
         }
     }
+    hwctl_unlock();
 }
 
 void HWCTL_SPI_IRQ_HANDLER(void) {
     if(SPI_I2S_GetITStatus(HWCTL_SPI, SPI_I2S_IT_TXE) == SET) {
         SPI_I2S_ITConfig(HWCTL_SPI, SPI_I2S_IT_TXE, DISABLE);
         GPIO_WriteBit(HWCTL_PORT, HWCTL_LAT_PIN, Bit_SET);
-        hwctl_post_sync_obj();
+        hwctl_sync_set_isr();
     }
 }
 
@@ -238,4 +236,5 @@ static inline void hwctl_update(void) {
     GPIO_WriteBit(HWCTL_PORT, HWCTL_LAT_PIN, Bit_RESET);
     SPI_I2S_SendData(HWCTL_SPI, hwctl_register);
     SPI_I2S_ITConfig(HWCTL_SPI, SPI_I2S_IT_TXE, ENABLE);
+    hwctl_sync_wait();
 }

@@ -13,11 +13,15 @@
 #define __I2C_MASTER_OS_DEP_H
 
 
-void i2c_post_sync_obj(void)          __attribute__((weak));
-void i2c_pend_sync_obj(void)          __attribute__((weak));
+void i2c_master_create_lock(void)      __attribute__((weak));
+void i2c_master_delete_lock(void)      __attribute__((weak));
+void i2c_master_lock(void)             __attribute__((weak));
+void i2c_master_unlock(void)           __attribute__((weak));
 
-void i2c_lock_sync_obj(void)          __attribute__((weak));
-void i2c_unlock_sync_obj(void)        __attribute__((weak));
+void i2c_master_create_sync(void)       __attribute__((weak));
+void i2c_master_delete_sync(void)       __attribute__((weak));
+void i2c_master_sync_set_isr(void)      __attribute__((weak));
+void i2c_master_sync_wait(void)         __attribute__((weak));
 
 
 #endif

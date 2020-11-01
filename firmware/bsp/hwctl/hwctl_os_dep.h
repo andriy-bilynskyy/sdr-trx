@@ -14,9 +14,14 @@
 #ifndef __HWCTL_OS_DEP_H
 #define __HWCTL_OS_DEP_H
 
+void hwctl_create_lock(void)      __attribute__((weak));
+void hwctl_delete_lock(void)      __attribute__((weak));
+void hwctl_lock(void)             __attribute__((weak));
+void hwctl_unlock(void)           __attribute__((weak));
 
-void hwctl_post_sync_obj(void)          __attribute__((weak));
-void hwctl_pend_sync_obj(void)          __attribute__((weak));
-
+void hwctl_create_sync(void)       __attribute__((weak));
+void hwctl_delete_sync(void)       __attribute__((weak));
+void hwctl_sync_set_isr(void)      __attribute__((weak));
+void hwctl_sync_wait(void)         __attribute__((weak));
 
 #endif

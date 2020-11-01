@@ -12,38 +12,39 @@
 
 
 #include "i2c_master_os_dep.h"
-#include "stm32f4xx_conf.h"
+#include <stdbool.h>
 
 
-static volatile uint8_t i2c_op_complete = 0;    /* operation complete semaphore */
-static volatile uint8_t i2c_dev_enable = 1;     /* device mutex */
+static volatile bool i2c_master_sync = false;
 
 
-void i2c_post_sync_obj(void) {
-
-    i2c_op_complete = 1;
+void i2c_master_create_lock(void) {
 }
 
-void i2c_pend_sync_obj(void) {
-
-    while(!i2c_op_complete);
-    i2c_op_complete = 0;
+void i2c_master_delete_lock(void) {
 }
 
-void i2c_lock_sync_obj(void) {
-
-    for(;;) {
-        uint8_t val = __LDREXB(&i2c_dev_enable);
-        if(val) {
-            if(!__STREXB(0, &i2c_dev_enable)) {
-                __DMB();
-                break;
-            }
-        }
-    }
+void i2c_master_lock(void) {
 }
 
-void i2c_unlock_sync_obj(void) {
+void i2c_master_unlock(void) {
+}
 
-    i2c_dev_enable = 1;
+void i2c_master_create_sync(void) {
+
+    i2c_master_sync = false;
+}
+
+void i2c_master_delete_sync(void) {
+}
+
+void i2c_master_sync_set_isr(void) {
+
+    i2c_master_sync = true;
+}
+
+void i2c_master_sync_wait(void) {
+
+    while(!i2c_master_sync);
+    i2c_master_sync = false;
 }

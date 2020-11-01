@@ -14,25 +14,39 @@
 
 
 #include "hwctl_os_dep.h"
-#include "stm32f4xx_conf.h"
-
-static volatile uint8_t hwctl_tx_complete = 0;  /* operation complete semaphore */
+#include <stdbool.h>
 
 
-void hwctl_post_sync_obj(void) {
+static volatile bool hwctl_sync = false;
 
-    hwctl_tx_complete = 1;
+
+void hwctl_create_lock(void) {
 }
 
-void hwctl_pend_sync_obj(void) {
+void hwctl_delete_lock(void) {
+}
 
-    for(;;) {
-        uint8_t val = __LDREXB(&hwctl_tx_complete);
-        if(val) {
-            if(!__STREXB(0, &hwctl_tx_complete)) {
-                __DMB();
-                break;
-            }
-        }
-    }
+void hwctl_lock(void) {
+}
+
+void hwctl_unlock(void) {
+}
+
+void hwctl_create_sync(void) {
+
+    hwctl_sync = false;
+}
+
+void hwctl_delete_sync(void) {
+}
+
+void hwctl_sync_set_isr(void) {
+
+    hwctl_sync = true;
+}
+
+void hwctl_sync_wait(void) {
+
+    while(!hwctl_sync);
+    hwctl_sync = false;
 }

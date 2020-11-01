@@ -63,7 +63,7 @@
 
 void ft813_qspi_start(void) {
 
-    ft813_lock_sync_obj();
+    ft813_qspi_create_sync();
 
     RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_QSPI, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
@@ -123,16 +123,12 @@ void ft813_qspi_start(void) {
     NVIC_SetPriority(QUADSPI_IRQn, UI_FT813_QSPI_IRQ_PRIO);
     NVIC_EnableIRQ(QUADSPI_IRQn);
 
-    ft813_qspi_post_sync_obj();
-
-    ft813_unlock_sync_obj();
+    ft813_qspi_sync_set();
 }
 
 void ft813_qspi_stop(void) {
 
-    ft813_lock_sync_obj();
-
-    ft813_qspi_pend_sync_obj();
+    ft813_qspi_sync_wait();
 
     DMA_Cmd(DMA2_Stream7, DISABLE);
     DMA_DeInit(DMA2_Stream7);
@@ -174,14 +170,12 @@ void ft813_qspi_stop(void) {
 
     RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_QSPI, DISABLE);
 
-    ft813_unlock_sync_obj();
+    ft813_qspi_delete_sync();
 }
 
 void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
 
-    ft813_lock_sync_obj();
-
-    ft813_qspi_pend_sync_obj();
+    ft813_qspi_sync_wait();
 
     DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
@@ -197,8 +191,6 @@ void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x) {
     com.QSPI_ComConfig_ABSize = QSPI_ComConfig_ABSize_16bit;
     QSPI_SetAlternateByte((uint16_t)arg << 8);
     QSPI_ComConfig_Init(&com);
-
-    ft813_unlock_sync_obj();
 }
 
 void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x) {
@@ -209,9 +201,7 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_WR;
 
-    ft813_lock_sync_obj();
-
-    ft813_qspi_pend_sync_obj();
+    ft813_qspi_sync_wait();
 
     DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
@@ -248,8 +238,6 @@ void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x
     dma.DMA_PeripheralInc = DMA_PeripheralInc_Enable;
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
-
-    ft813_unlock_sync_obj();
 }
 
 void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
@@ -260,9 +248,7 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     addr &= FT813_ADDRESS_MASK;
     addr |= FT813_OPERATION_RD;
 
-    ft813_lock_sync_obj();
-
-    ft813_qspi_pend_sync_obj();
+    ft813_qspi_sync_wait();
 
     DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7 | DMA_FLAG_HTIF7 | DMA_FLAG_TEIF7 | DMA_FLAG_DMEIF7 | DMA_FLAG_FEIF7);
     while(QSPI_GetFlagStatus(QSPI_FLAG_BUSY) != RESET) {
@@ -302,27 +288,23 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     DMA_Init(DMA2_Stream7, &dma);
     DMA_Cmd(DMA2_Stream7, ENABLE);
 
-    ft813_qspi_pend_sync_obj();
-    ft813_qspi_post_sync_obj();
-
-    ft813_unlock_sync_obj();
-
-    return;
+    ft813_qspi_sync_wait();
+    ft813_qspi_sync_set();
 }
 
 void QUADSPI_IRQHandler(void) {
     if(QSPI_GetFlagStatus(QSPI_FLAG_TC) == SET) {
         QSPI_ClearITPendingBit(QSPI_IT_TC);
 
-        ft813_qspi_post_sync_obj();
+        ft813_qspi_sync_set_isr();
     }
     if(QSPI_GetFlagStatus(QSPI_FLAG_TE) == SET) {
         QSPI_ClearITPendingBit(QSPI_IT_TE);
         /* we're in indirect mode, so error is caused by outta address space condition */
         /* the QSPI transfer function are unblocked. but check code. which addresses are accessed */
-        ft813_qspi_post_sync_obj();
         DMA_Cmd(DMA2_Stream7, DISABLE);
         QSPI_ClearFlag(QSPI_FLAG_TE);
         QSPI_AbortRequest();
+        ft813_qspi_sync_set_isr();
     }
 }

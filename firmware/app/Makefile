@@ -38,9 +38,9 @@ PROJECT_INC := \
 PROJECT_LIB := \
 
 PROJECT_STYLE := \
-  ${wildcard src/*.[c,cpp]} \
+  ${wildcard src/*.[h,c,cpp]} \
+  ${wildcard src/widgets/*.[h,c,cpp]} \
   ${wildcard config/*.h} \
-  ${wildcard src/*.h} \
 
 
 include ../bsp/codec/unit.mk
@@ -179,7 +179,7 @@ debug:
   fi
 
 style:
-	${STYLE} --style=google --suffix=none ${PROJECT_STYLE}
+	${STYLE} --style=google --convert-tabs --lineend=linux --suffix=none ${PROJECT_STYLE}
 
 check:
 	${CHECK} -q --enable=style,performance,portability,information              \

@@ -116,26 +116,28 @@ date_time_t rtc_get_time(void) {
 
 void rtc_set_time(const date_time_t * time) {
 
-    RTC_TimeTypeDef rtc_time = {
-        .RTC_Hours   = time->hours,
-        .RTC_Minutes = time->minutes,
-        .RTC_Seconds = time->seconds,
-        .RTC_H12     = RTC_H12_AM
-    };
-    RTC_DateTypeDef rtc_date = {
-        .RTC_WeekDay = rtc_get_weekday(time->year, time->month, time->day),
-        .RTC_Month   = time->month,
-        .RTC_Date    = time->day,
-        .RTC_Year    = time->year - RTC_YEAR_MIN
-    };
-    if(!rtc_date.RTC_WeekDay) {
-        rtc_date.RTC_WeekDay = 7;
-    }
+    if(rtc_is_inited()) {
+        RTC_TimeTypeDef rtc_time = {
+            .RTC_Hours   = time->hours,
+            .RTC_Minutes = time->minutes,
+            .RTC_Seconds = time->seconds,
+            .RTC_H12     = RTC_H12_AM
+        };
+        RTC_DateTypeDef rtc_date = {
+            .RTC_WeekDay = rtc_get_weekday(time->year, time->month, time->day),
+            .RTC_Month   = time->month,
+            .RTC_Date    = time->day,
+            .RTC_Year    = time->year - RTC_YEAR_MIN
+        };
+        if(!rtc_date.RTC_WeekDay) {
+            rtc_date.RTC_WeekDay = 7;
+        }
 
-    PWR_BackupAccessCmd(ENABLE);
-    RTC_SetTime(RTC_Format_BIN, &rtc_time);
-    RTC_SetDate(RTC_Format_BIN, &rtc_date);
-    PWR_BackupAccessCmd(DISABLE);
+        PWR_BackupAccessCmd(ENABLE);
+        RTC_SetTime(RTC_Format_BIN, &rtc_time);
+        RTC_SetDate(RTC_Format_BIN, &rtc_date);
+        PWR_BackupAccessCmd(DISABLE);
+    }
 }
 
 uint8_t rtc_sram_write(uint8_t offset, const void * data, uint8_t size) {

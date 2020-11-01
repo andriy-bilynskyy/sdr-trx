@@ -18,13 +18,16 @@
 #include <stdint.h>
 
 
-void ft813_lock_sync_obj(void)                          __attribute__((weak));
-void ft813_unlock_sync_obj(void)                        __attribute__((weak));
-void ft813_qspi_post_sync_obj(void)                     __attribute__((weak));
-void ft813_qspi_pend_sync_obj(void)                     __attribute__((weak));
+void ft813_qspi_create_sync(void)               __attribute__((weak));
+void ft813_qspi_delete_sync(void)               __attribute__((weak));
+void ft813_qspi_sync_set(void)                  __attribute__((weak));
+void ft813_qspi_sync_set_isr(void)              __attribute__((weak));
+void ft813_qspi_sync_wait(void)                 __attribute__((weak));
 
-void ft813_interrupt_post_sync_obj(void)                __attribute__((weak));
-void ft813_interrupt_pend_sync_obj(uint32_t timeout_ms) __attribute__((weak));
+void ft813_int_create_sync(void)                __attribute__((weak));
+void ft813_int_delete_sync(void)                __attribute__((weak));
+void ft813_int_sync_set_isr(void)               __attribute__((weak));
+void ft813_int_sync_wait(uint32_t timeout_ms)   __attribute__((weak));
 
 
 #endif

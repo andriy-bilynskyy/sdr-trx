@@ -24,7 +24,7 @@
 #define WIDGET_MAIN_TAG_AUDIO           4
 
 
-void * widget_main(void * parent){
+void * widget_main(void * parent) {
 
     widget_t next_widget = parent;
     bool init = true;

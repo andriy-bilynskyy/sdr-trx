@@ -37,7 +37,7 @@
 #define ADC_VBAT_ID             0
 /* Common ADC data */
 #define ADC_NUM_CH              5
-#define ADC_DMA_PRIO            DMA_Priority_Medium
+#define ADC_DMA_PRIO            DMA_Priority_Low
 #define ADC_FILTER_ORDER        8
 
 /*******************************************************************************

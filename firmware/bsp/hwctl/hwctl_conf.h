@@ -33,7 +33,7 @@
 #define HWCTL_SPI_CLK_AF        GPIO_AF6_SPI5
 /* SPI interrupt */
 #define HWCTL_SPI_IRQ           SPI5_IRQn
-#define HWCTL_SPI_IRQ_PRIO      12
+#define HWCTL_SPI_IRQ_PRIO      10
 #define HWCTL_SPI_IRQ_HANDLER   SPI5_IRQHandler
 
 

@@ -17,7 +17,7 @@
 /******************************************************************************
  * F813 QSPI misc
  ******************************************************************************/
-#define UI_FT813_QSPI_IRQ_PRIO      10
+#define UI_FT813_QSPI_IRQ_PRIO      6
 #define UI_FT813_QSPI_DMA_PRIO      DMA_Priority_High
 
 /******************************************************************************
@@ -29,7 +29,7 @@
 #define UI_FT813_INT_PIN_SRC        EXTI_PinSource9
 #define UI_FT813_INT_LINE           EXTI_Line9
 #define UI_FT813_INT_IRQ            EXTI9_5_IRQn
-#define UI_FT813_INT_IRQ_PRIO       10
+#define UI_FT813_INT_IRQ_PRIO       7
 #define UI_FT813_INT_IRQ_HANDL      EXTI9_5_IRQHandler
 
 #define UI_ENGINE_TOUCH_UNBLOCK_MS  100

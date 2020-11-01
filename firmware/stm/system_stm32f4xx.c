@@ -129,6 +129,9 @@ extern void system_hse_failed(void);
 #define PLLI2S_R   2
 
 
+uint32_t SystemCoreClock = HSI_VALUE;
+
+
 void system_init(void) {
     /* FPU settings */
 #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
@@ -192,13 +195,13 @@ void system_set_clock(void) {
         RCC->APB1ENR |= RCC_APB1ENR_PWREN;
         PWR->CR |= PWR_CR_VOS;
 
-        /* HCLK = SYSCLK / 1*/
+        /* HCLK = SYSCLK / 1 */
         RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
 
-        /* PCLK2 = HCLK / 1*/
+        /* PCLK2 = HCLK / 1 */
         RCC->CFGR |= RCC_CFGR_PPRE2_DIV1;
 
-        /* PCLK1 = HCLK / 2*/
+        /* PCLK1 = HCLK / 2 */
         RCC->CFGR |= RCC_CFGR_PPRE1_DIV2;
 
         /* Configure the main PLL */
@@ -221,6 +224,10 @@ void system_set_clock(void) {
         /* Wait till the main PLL is used as system clock source */
         while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS ) != RCC_CFGR_SWS_PLL) {
         }
+
+        /* Update System Core Clock value */
+        /* cppcheck-suppress ConfigurationNotChecked */
+        SystemCoreClock = (HSE_VALUE * PLL_N) / (PLL_M * PLL_P);
 
         /* Configure PLLI2S */
         RCC->PLLI2SCFGR = PLLI2S_M | (PLLI2S_N << 6) | (PLLI2S_Q << 24) | (PLLI2S_R << 28);

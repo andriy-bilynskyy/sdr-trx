@@ -26,6 +26,8 @@ int main(void) {
 
     DBG_OUT("main start");
 
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1 | RCC_AHB1Periph_DMA2, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_BKPSRAM, ENABLE);

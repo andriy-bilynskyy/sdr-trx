@@ -14,16 +14,21 @@
 #include "i2c_master_conf.h"
 #include "i2c_master_os_dep.h"
 #include "stm32f4xx_conf.h"
+#include <stdbool.h>
 
 
-static uint8_t  i2c_master_started = 0;
-static uint8_t  i2c_master_address = 0;
+static volatile bool     i2c_master_started = false;
+static volatile uint8_t  i2c_master_address = 0;
 
 
 void i2c_master_start(void) {
 
-    i2c_lock_sync_obj();
+    i2c_master_create_lock();
+    i2c_master_lock();
     if(!i2c_master_started) {
+        i2c_master_create_sync();
+        i2c_master_started = true;
+
         I2C_APB_CMD(I2C_PERIPH, ENABLE);
         I2C_APB_DMA_CMD(I2C_DMA_PERIPH, ENABLE);
 
@@ -60,15 +65,13 @@ void i2c_master_start(void) {
         NVIC_EnableIRQ(I2C_EV_IRQn);
         NVIC_EnableIRQ(I2C_ER_IRQn);
         NVIC_EnableIRQ(I2C_RC_IRQn);
-
-        i2c_master_started = 1;
     }
-    i2c_unlock_sync_obj();
+    i2c_master_unlock();
 }
 
 void i2c_master_stop(void) {
 
-    i2c_lock_sync_obj();
+    i2c_master_lock();
     if(i2c_master_started) {
         DMA_Cmd(I2C_DMA_RX_STREAM, DISABLE);
         DMA_Cmd(I2C_DMA_TX_STREAM, DISABLE);
@@ -101,16 +104,18 @@ void i2c_master_stop(void) {
 
         I2C_APB_CMD(I2C_PERIPH, DISABLE);
 
-        i2c_master_started = 0;
+        i2c_master_started = false;
+        i2c_master_delete_sync();
     }
-    i2c_unlock_sync_obj();
+    i2c_master_unlock();
+    i2c_master_delete_lock();
 }
 
 uint32_t i2c_master_write(uint8_t dev_addr, const void * data, uint32_t size) {
 
     uint32_t result = 0;
 
-    i2c_lock_sync_obj();
+    i2c_master_lock();
     if(data && size && i2c_master_started) {
         DMA_ClearFlag(I2C_DMA_TX_STREAM, I2C_DMA_TX_FLAGS);
         DMA_InitTypeDef dma;
@@ -128,10 +133,10 @@ uint32_t i2c_master_write(uint8_t dev_addr, const void * data, uint32_t size) {
 
         I2C_ITConfig(I2C_I2C, I2C_IT_EVT, ENABLE);
         I2C_GenerateSTART(I2C_I2C, ENABLE);
-        i2c_pend_sync_obj();
+        i2c_master_sync_wait();
         result = size - DMA_GetCurrDataCounter(I2C_DMA_TX_STREAM);
     }
-    i2c_unlock_sync_obj();
+    i2c_master_unlock();
 
     return result;
 }
@@ -140,7 +145,7 @@ uint32_t i2c_master_read(uint8_t dev_addr, void * data, uint32_t size) {
 
     uint32_t result = 0;
 
-    i2c_lock_sync_obj();
+    i2c_master_lock();
     if(data && size && i2c_master_started) {
         DMA_ClearFlag(I2C_DMA_RX_STREAM, I2C_DMA_RX_FLAGS);
         DMA_InitTypeDef dma;
@@ -159,10 +164,10 @@ uint32_t i2c_master_read(uint8_t dev_addr, void * data, uint32_t size) {
         I2C_AcknowledgeConfig(I2C_I2C, size > 1 ? ENABLE : DISABLE);
         I2C_ITConfig(I2C_I2C, I2C_IT_EVT, ENABLE);
         I2C_GenerateSTART(I2C_I2C, ENABLE);
-        i2c_pend_sync_obj();
+        i2c_master_sync_wait();
         result = size - DMA_GetCurrDataCounter(I2C_DMA_RX_STREAM);
     }
-    i2c_unlock_sync_obj();
+    i2c_master_unlock();
 
     return result;
 }
@@ -182,7 +187,7 @@ void I2C_EV_IRQ_HANDLER(void) {
     case I2C_EVENT_MASTER_BYTE_TRANSMITTED:
         I2C_ITConfig(I2C_I2C, I2C_IT_EVT, DISABLE);
         I2C_GenerateSTOP(I2C_I2C, ENABLE);
-        i2c_post_sync_obj();
+        i2c_master_sync_set_isr();
         break;
     default:
         break;
@@ -196,12 +201,12 @@ void I2C_ER_IRQ_HANDLER(void) {
         I2C_GenerateSTOP(I2C_I2C, ENABLE);
     }
     I2C_ClearITPendingBit(I2C_I2C, I2C_IT_ARLO | I2C_IT_BERR);
-    i2c_post_sync_obj();
+    i2c_master_sync_set_isr();
 }
 /* RX complete */
 void I2C_RC_IRQ_HANDLER(void) {
 
     DMA_ClearITPendingBit(I2C_DMA_RX_STREAM, I2C_DMA_RX_TCIF);
     I2C_GenerateSTOP(I2C_I2C, ENABLE);
-    i2c_post_sync_obj();
+    i2c_master_sync_set_isr();
 }
