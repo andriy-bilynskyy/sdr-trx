@@ -50,6 +50,7 @@ void task_system(void * param) {
     i2c_master_start();
 
     (void)xTaskCreate(task_rtc_start, TASK_RTC_START_NAME, TASK_RTC_START_STACK, (void *)&app_hnd, TASK_RTC_START_PRIO, NULL);
+    (void)xTaskCreate(task_dsp,       TASK_DSP_NAME,       TASK_DSP_STACK,       (void *)&app_hnd, TASK_DSP_PRIO,       NULL);
     (void)xTaskCreate(task_ui,        TASK_UI_NAME,        TASK_UI_STACK,        (void *)&app_hnd, TASK_UI_PRIO,        NULL);
 
     TickType_t wake_time = xTaskGetTickCount();

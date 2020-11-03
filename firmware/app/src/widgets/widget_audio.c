@@ -16,6 +16,7 @@
 #include "codec.h"
 #include "hwctl.h"
 #include "trxctl.h"
+#include "tasks_app.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -35,7 +36,6 @@
 
 
 static void widget_audio_codec_error(void);
-static void widget_audio_data_ready(void);
 
 
 void * widget_audio(void * parent) {
@@ -48,8 +48,8 @@ void * widget_audio(void * parent) {
     bool ext_mic = false;
     hwctl_ext_mic(ext_mic);
 
-    if(codec_start(CODEC_SR_96K)) {
-        codec_set_callback(widget_audio_data_ready);
+    if(codec_start(CODEC_SR_96K, false)) {
+        dsp_proc = dsp_proc_copy;
     } else {
         widget_audio_codec_error();
     }
@@ -178,12 +178,4 @@ static void widget_audio_codec_error(void) {
 
     const char * argv[] = {"Codec error"};
     ui_notify(1, argv, "Ok");
-}
-
-/******************************************************************************
- * Echo from line input for test
- ******************************************************************************/
-static void widget_audio_data_ready(void) {
-
-    memcpy(codec_get_output_buf(), codec_get_input_buf(), codec_buf_elements * sizeof(uint16_t));
 }

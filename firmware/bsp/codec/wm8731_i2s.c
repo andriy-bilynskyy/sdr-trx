@@ -70,7 +70,7 @@ static volatile uint8_t         wm8731_active_buf = 1;
 static codec_data_ready_cb_t    wm8731_data_ready_cb = NULL;
 
 
-void wm8731_i2s_start(codec_sample_rate_t sr) {
+void wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb) {
 
     CODEC_I2S_APB_CMD(CODEC_I2S_PERIPH, ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
@@ -140,7 +140,9 @@ void wm8731_i2s_start(codec_sample_rate_t sr) {
         wm8731_dac_buffer[1][i] = 0;
     }
     wm8731_active_buf = 1;
-    wm8731_data_ready_cb = NULL;
+    if(reset_cb) {
+        wm8731_data_ready_cb = NULL;
+    }
 
     DMA_InitTypeDef dma;
     DMA_StructInit(&dma);

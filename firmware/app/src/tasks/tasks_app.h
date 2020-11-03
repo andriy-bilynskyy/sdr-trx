@@ -15,6 +15,7 @@
 
 #include "task_system.h"
 #include "task_rtc_start.h"
+#include "task_dsp.h"
 #include "task_ui.h"
 
 
