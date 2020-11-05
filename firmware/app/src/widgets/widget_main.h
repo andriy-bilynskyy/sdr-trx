@@ -13,7 +13,7 @@
 #define __WIDGET_MAIN_H
 
 
-void * widget_main(void * parent);
+void widget_main(void);
 
 
 #endif

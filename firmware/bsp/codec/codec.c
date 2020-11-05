@@ -21,22 +21,31 @@
 const uint16_t codec_buf_elements = CODEC_BUF_SIZE;
 
 
+static volatile bool codec_started  = false;
+
+
 bool codec_start(codec_sample_rate_t sr, bool reset_cb) {
 
-    hwctl_start();
-    bool result = wm8731_ctl_start(sr);
+    if(!codec_started) {
+        hwctl_start();
 
-    if(result) {
-        wm8731_i2s_start(sr, reset_cb);
+        if(wm8731_ctl_start(sr)) {
+            wm8731_i2s_start(sr, reset_cb);
+            codec_started = true;
+        } else {
+            wm8731_ctl_stop();
+        }
     }
-
-    return result;
+    return codec_started;
 }
 
 void codec_stop(void) {
 
-    wm8731_i2s_stop();
-    wm8731_ctl_stop();
+    if(codec_started) {
+        codec_started = false;
+        wm8731_i2s_stop();
+        wm8731_ctl_stop();
+    }
 }
 
 codec_volume_t codec_get_headphone_volume(void) {
@@ -51,12 +60,12 @@ codec_volume_t codec_get_speaker_volume(void) {
 
 bool codec_set_headphone_volume(codec_volume_t volume) {
 
-    return wm8731_ctl_set_output_volume_r(volume);
+    return codec_started ? wm8731_ctl_set_output_volume_r(volume) : false;
 }
 
 bool codec_set_speaker_volume(codec_volume_t volume) {
 
-    return wm8731_ctl_set_output_volume_l(volume);
+    return codec_started ? wm8731_ctl_set_output_volume_l(volume) : false;
 }
 
 codec_volume_t codec_get_input_volume(void) {
@@ -66,7 +75,7 @@ codec_volume_t codec_get_input_volume(void) {
 
 bool codec_set_input_volume(codec_volume_t volume) {
 
-    return wm8731_ctl_set_input_volume(volume);
+    return codec_started ? wm8731_ctl_set_input_volume(volume) : false;
 }
 
 codec_volume_t codec_get_mic_volume(void) {
@@ -76,7 +85,7 @@ codec_volume_t codec_get_mic_volume(void) {
 
 bool codec_set_mic_volume(codec_volume_t volume) {
 
-    return wm8731_ctl_set_mic_volume(volume);
+    return codec_started ? wm8731_ctl_set_mic_volume(volume) : false;
 }
 
 codec_out_src_t codec_get_out_src() {
@@ -86,7 +95,7 @@ codec_out_src_t codec_get_out_src() {
 
 bool codec_set_out_src(codec_out_src_t out_src) {
 
-    return wm8731_ctl_set_out_src(out_src);
+    return codec_started ? wm8731_ctl_set_out_src(out_src) : false;
 }
 
 codec_inp_src_t codec_get_inp_src() {
@@ -96,7 +105,7 @@ codec_inp_src_t codec_get_inp_src() {
 
 bool codec_set_inp_src(codec_inp_src_t inp_src) {
 
-    return wm8731_ctl_set_inp_src(inp_src);
+    return codec_started ? wm8731_ctl_set_inp_src(inp_src) : false;
 }
 
 void codec_set_callback(codec_data_ready_cb_t adc_data_ready) {

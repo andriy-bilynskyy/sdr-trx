@@ -29,7 +29,7 @@
 static void widget_sensors_rf_amp_error(void);
 
 
-void * widget_sensors(void * parent) {
+void widget_sensors(void) {
 
     bool init = true;
     bool touched = false;
@@ -92,7 +92,12 @@ void * widget_sensors(void * parent) {
 
         ui_engine_draw_end();
 
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
+        uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
+        if(widget_event(event_flg)) {
+            init = true;
+        }
+
+        ui_engine_touch_t touch = ui_engine_get_touch();
 
         if(init) {
             if(!touch.tag) {
@@ -113,10 +118,12 @@ void * widget_sensors(void * parent) {
                     if(rf_amp_on) {
                         if(!rf_amp_bias1(rf_amp_value) || !rf_amp_bias2(rf_amp_value)) {
                             widget_sensors_rf_amp_error();
+                            init = true;
                         }
                     } else {
                         if(!rf_amp_off()) {
                             widget_sensors_rf_amp_error();
+                            init = true;
                         }
                     }
                 }
@@ -126,6 +133,7 @@ void * widget_sensors(void * parent) {
                 if(rf_amp_on) {
                     if(!rf_amp_bias1(rf_amp_value) || !rf_amp_bias2(rf_amp_value)) {
                         widget_sensors_rf_amp_error();
+                        init = true;
                     }
                 }
             }
@@ -133,8 +141,6 @@ void * widget_sensors(void * parent) {
         }
     }
     rf_amp_stop();
-
-    return parent;
 }
 
 

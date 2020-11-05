@@ -27,12 +27,10 @@
 #define WIDGET_TRX_FREQUENCY          10000000UL
 
 
-static uint32_t widget_trx_inc_frequency(uint32_t value, uint32_t increment);
-static uint32_t widget_trx_dec_frequency(uint32_t value, uint32_t decrement);
 static void widget_trx_dco_error(void);
 
 
-void * widget_trx(void * parent) {
+void widget_trx(void) {
 
     uint32_t frequency     = WIDGET_TRX_FREQUENCY;
     uint8_t  frequency_pos = 2;
@@ -77,7 +75,12 @@ void * widget_trx(void * parent) {
 
         ui_engine_draw_end();
 
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
+        uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
+        if(widget_event(event_flg)) {
+            init = true;
+        }
+
+        ui_engine_touch_t touch = ui_engine_get_touch();
 
         if(init) {
             if(!touch.tag) {
@@ -95,10 +98,36 @@ void * widget_trx(void * parent) {
                     break;
                 }
                 if(touch.tag == WIDGET_TRX_TAG_UP_F) {
-                    frequency = widget_trx_inc_frequency(frequency, f_grid[frequency_pos]);
+                    uint32_t new_frequency = frequency;
+                    if(frequency + f_grid[frequency_pos] <= DCO_MAX_FREQUENCY) {
+                        new_frequency += f_grid[frequency_pos];
+                    } else {
+                        new_frequency = DCO_MAX_FREQUENCY;
+                    }
+                    if(new_frequency != frequency) {
+                        if(!dco_set_frequency(new_frequency)) {
+                            widget_trx_dco_error();
+                            init = true;
+                        } else {
+                            frequency = new_frequency;
+                        }
+                    }
                 }
                 if(touch.tag == WIDGET_TRX_TAG_DOWN_F) {
-                    frequency = widget_trx_dec_frequency(frequency, f_grid[frequency_pos]);
+                    uint32_t new_frequency = frequency;
+                    if(frequency - f_grid[frequency_pos] >= DCO_MIN_FREQUENCY) {
+                        new_frequency -= f_grid[frequency_pos];
+                    } else {
+                        new_frequency = DCO_MIN_FREQUENCY;
+                    }
+                    if(new_frequency != frequency) {
+                        if(!dco_set_frequency(new_frequency)) {
+                            widget_trx_dco_error();
+                            init = true;
+                        } else {
+                            frequency = new_frequency;
+                        }
+                    }
                 }
                 if(touch.tag > 0 && touch.tag <= 8) {
                     frequency_pos = touch.tag - 1;
@@ -113,42 +142,8 @@ void * widget_trx(void * parent) {
     dco_stop();
     hwctl_rx_power(false);
     hwctl_tx_power(false);
-
-    return parent;
 }
 
-
-static uint32_t widget_trx_inc_frequency(uint32_t value, uint32_t increment) {
-
-    uint32_t result = value;
-    if(result + increment <= DCO_MAX_FREQUENCY) {
-        result += increment;
-    } else {
-        result = DCO_MAX_FREQUENCY;
-    }
-    if(result != value) {
-        if(!dco_set_frequency(result)) {
-            widget_trx_dco_error();
-        }
-    }
-    return result;
-}
-
-static uint32_t widget_trx_dec_frequency(uint32_t value, uint32_t decrement) {
-
-    uint32_t result = value;
-    if(result - decrement >= DCO_MIN_FREQUENCY) {
-        result -= decrement;
-    } else {
-        result = DCO_MIN_FREQUENCY;
-    }
-    if(result != value) {
-        if(!dco_set_frequency(result)) {
-            widget_trx_dco_error();
-        }
-    }
-    return result;
-}
 
 static void widget_trx_dco_error(void) {
 

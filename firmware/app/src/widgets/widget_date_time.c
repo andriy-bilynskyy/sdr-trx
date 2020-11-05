@@ -31,7 +31,10 @@
 #define WIDGET_DATE_TIME_TOUCH_SKIP_CNT 5
 
 
-void * widget_date_time(void * parent) {
+void widget_date_time_lse_fail();
+
+
+void widget_date_time(void) {
 
     bool    init = true;
     bool    touched = false;
@@ -80,7 +83,12 @@ void * widget_date_time(void * parent) {
         }
         ui_engine_draw_end();
 
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
+        uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
+        if(widget_event(event_flg)) {
+            init = true;
+        }
+
+        ui_engine_touch_t touch = ui_engine_get_touch();
 
         if(init) {
             if(!touch.tag) {
@@ -100,7 +108,10 @@ void * widget_date_time(void * parent) {
                         while(ti.day > rtc_days_in_month(ti.year, ti.month)) {
                             ti.day--;
                         }
-                        rtc_set_time(&ti);
+                        if(!rtc_set_time(&ti)) {
+                            widget_date_time_lse_fail();
+                            init = true;
+                        }
                     }
                 }
                 if(touch.tag == WIDGET_DATE_TIME_TAG_Y_UP) {
@@ -109,7 +120,10 @@ void * widget_date_time(void * parent) {
                         while(ti.day > rtc_days_in_month(ti.year, ti.month)) {
                             ti.day--;
                         }
-                        rtc_set_time(&ti);
+                        if(!rtc_set_time(&ti)) {
+                            widget_date_time_lse_fail();
+                            init = true;
+                        }
                     }
                 }
                 if(touch.tag == WIDGET_DATE_TIME_TAG_MON) {
@@ -121,7 +135,10 @@ void * widget_date_time(void * parent) {
                     while(ti.day > rtc_days_in_month(ti.year, ti.month)) {
                         ti.day--;
                     }
-                    rtc_set_time(&ti);
+                    if(!rtc_set_time(&ti)) {
+                        widget_date_time_lse_fail();
+                        init = true;
+                    }
                 }
                 if(touch.tag == WIDGET_DATE_TIME_TAG_HOUR) {
                     if(ti.hours < 23) {
@@ -129,7 +146,10 @@ void * widget_date_time(void * parent) {
                     } else {
                         ti.hours = 0;
                     }
-                    rtc_set_time(&ti);
+                    if(!rtc_set_time(&ti)) {
+                        widget_date_time_lse_fail();
+                        init = true;
+                    }
                 }
                 if(touch.tag == WIDGET_DATE_TIME_TAG_MIN) {
                     if(ti.minutes < 59) {
@@ -137,18 +157,27 @@ void * widget_date_time(void * parent) {
                     } else {
                         ti.minutes = 0;
                     }
-                    rtc_set_time(&ti);
+                    if(!rtc_set_time(&ti)) {
+                        widget_date_time_lse_fail();
+                        init = true;
+                    }
                 }
                 if(touch.tag == WIDGET_DATE_TIME_TAG_SEC) {
                     if(ti.seconds) {
                         ti.seconds = 0;
-                        rtc_set_time(&ti);
+                        if(!rtc_set_time(&ti)) {
+                            widget_date_time_lse_fail();
+                            init = true;
+                        }
                     }
                 }
                 if(touch.tag > 0 && touch.tag <= 31) {
                     if(ti.day != touch.tag) {
                         ti.day = touch.tag;
-                        rtc_set_time(&ti);
+                        if(!rtc_set_time(&ti)) {
+                            widget_date_time_lse_fail();
+                            init = true;
+                        }
                     }
                 }
                 if(touch.tag == WIDGET_DATE_TIME_TAG_EXIT) {
@@ -161,13 +190,10 @@ void * widget_date_time(void * parent) {
             }
         }
     }
-    return parent;
 }
 
-void * widget_date_time_lse_fail(void * parent) {
+void widget_date_time_lse_fail(void) {
 
     const char * argv[] = {"LSE Failed"};
     ui_notify(1, argv, "Ok");
-
-    return parent;
 }

@@ -13,11 +13,13 @@
 
 #include "ui_engine.h"
 #include "ui_engine_conf.h"
+#include "ui_engine_events.h"
 #include "ft813_qspi.h"
 #include "ft813_interrupt.h"
 #include "ft813_def.h"
 #include "ft813_graph.h"
 #include "nhd_43_480272ft_ctxl_ctp.h"
+#include "ui_engine_os_dep.c"
 #include "hwctl.h"
 #include "misc_hal.h"
 #include <string.h>
@@ -92,6 +94,8 @@ bool ui_engine_start(void) {
 
         if(ui_engine_started) {
 
+            ui_engine_create_sync();
+
             hwctl_start();
             hwctl_bkl_power(true);
 
@@ -145,6 +149,8 @@ void ui_engine_stop(void) {
         ft813_interrupt_stop();
         ft813_qspi_stop();
 
+        ui_engine_delete_sync();
+
         ui_engine_started = false;
     }
 }
@@ -159,12 +165,24 @@ void ui_engine_set_brightness(uint8_t brightness) {
     }
 }
 
-ui_engine_touch_t ui_engine_get_touch(bool block) {
+void ui_engine_event_set(uint32_t event_flags) {
 
-    if(block && ui_engine_started) {
-        ft813_interrupt_wait();
+    if(ui_engine_started) {
+        ui_engine_sync_set(event_flags & ~UI_ENGINE_EVENT_FLAG_TOUCH);
+    }
+}
+
+uint32_t ui_engine_event_wait(uint32_t flags) {
+
+    uint32_t result = ui_engine_started ? ui_engine_sync_wait(flags, UI_ENGINE_UNBLOCK_MS) : 0;
+    if(result & UI_ENGINE_EVENT_FLAG_TOUCH) {
         (void)ui_engine_rd8(REG_INT_FLAGS);
     }
+    return result;
+}
+
+ui_engine_touch_t ui_engine_get_touch(void) {
+
     ui_engine_touch_t touch = {
         .tag   = ui_engine_started ? ui_engine_rd8(REG_TOUCH_TAG) : 0,
         .value = ui_engine_started ? (ui_engine_rd32(REG_TRACKER) >> 16) : 0

@@ -32,7 +32,10 @@
 #define UI_FT813_INT_IRQ_PRIO       7
 #define UI_FT813_INT_IRQ_HANDL      EXTI9_5_IRQHandler
 
-#define UI_ENGINE_TOUCH_UNBLOCK_MS  100
+/******************************************************************************
+ * UI engine wait events unblock timeout
+ ******************************************************************************/
+#define UI_ENGINE_UNBLOCK_MS        100
 
 
 #endif

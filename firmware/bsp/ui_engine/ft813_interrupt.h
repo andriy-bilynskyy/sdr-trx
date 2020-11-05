@@ -16,7 +16,6 @@
 
 void ft813_interrupt_start(void);
 void ft813_interrupt_stop(void);
-void ft813_interrupt_wait(void);
 
 
 #endif

@@ -13,7 +13,7 @@
 #define __WIDGET_SENSORS_H
 
 
-void * widget_sensors(void * parent);
+void widget_sensors(void);
 
 
 #endif

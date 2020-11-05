@@ -114,8 +114,9 @@ date_time_t rtc_get_time(void) {
     return time;
 }
 
-void rtc_set_time(const date_time_t * time) {
+bool rtc_set_time(const date_time_t * time) {
 
+    bool result = false;
     if(rtc_is_inited()) {
         RTC_TimeTypeDef rtc_time = {
             .RTC_Hours   = time->hours,
@@ -137,7 +138,9 @@ void rtc_set_time(const date_time_t * time) {
         RTC_SetTime(RTC_Format_BIN, &rtc_time);
         RTC_SetDate(RTC_Format_BIN, &rtc_date);
         PWR_BackupAccessCmd(DISABLE);
+        result = true;
     }
+    return result;
 }
 
 uint8_t rtc_sram_write(uint8_t offset, const void * data, uint8_t size) {

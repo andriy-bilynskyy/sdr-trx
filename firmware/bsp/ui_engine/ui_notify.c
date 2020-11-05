@@ -12,13 +12,14 @@
 
 #include "ui_notify.h"
 #include "ui_engine.h"
+#include "ui_engine_events.h"
 #include <stdbool.h>
 
 
 void ui_notify(uint8_t argc, const char * argv[], const char * button) {
 
     if(argc) {
-        bool init = false;
+        bool init = true;
         for(;;) {
             ui_engine_draw_start(0, 0, 0);
             ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
@@ -33,7 +34,8 @@ void ui_notify(uint8_t argc, const char * argv[], const char * button) {
             ui_engine_button(1, (ui_engine_xsize - 120) / 2, ui_engine_ysize - 50, 120, 40, UI_ENGINE_FONT28, button);
             ui_engine_draw_end();
 
-            ui_engine_touch_t touch = ui_engine_get_touch(true);
+            (void)ui_engine_event_wait(UI_ENGINE_EVENT_FLAG_TOUCH);
+            ui_engine_touch_t touch = ui_engine_get_touch();
 
             if(init) {
                 if(!touch.tag) {

@@ -24,9 +24,8 @@
 #define WIDGET_MAIN_TAG_AUDIO           4
 
 
-void * widget_main(void * parent) {
+void widget_main(void) {
 
-    widget_t next_widget = parent;
     bool init = true;
 
     for(;;) {
@@ -44,7 +43,11 @@ void * widget_main(void * parent) {
 
         ui_engine_draw_end();
 
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
+        uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
+        if(widget_event(event_flg)) {
+            init = true;
+        }
+        ui_engine_touch_t touch = ui_engine_get_touch();
 
         if(init) {
             if(!touch.tag) {
@@ -54,22 +57,20 @@ void * widget_main(void * parent) {
         }
 
         if(touch.tag == WIDGET_MAIN_TAG_DATE_TIME) {
-            next_widget = widget_date_time;
-            break;
+            widget_date_time();
+            init = true;
         }
         if(touch.tag == WIDGET_MAIN_TAG_SENSORS) {
-            next_widget = widget_sensors;
-            break;
+            widget_sensors();
+            init = true;
         }
         if(touch.tag == WIDGET_MAIN_TAG_TRX) {
-            next_widget = widget_trx;
-            break;
+            widget_trx();
+            init = true;
         }
         if(touch.tag == WIDGET_MAIN_TAG_AUDIO) {
-            next_widget = widget_audio;
-            break;
+            widget_audio();
+            init = true;
         }
     }
-
-    return next_widget;
 }

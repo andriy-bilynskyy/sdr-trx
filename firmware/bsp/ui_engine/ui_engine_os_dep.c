@@ -17,8 +17,8 @@
 #include <stdbool.h>
 
 
-static volatile bool ft813_qspi_sync = false;
-static volatile bool ft813_int_sync  = false;
+static volatile bool        ft813_qspi_sync = false;
+static volatile uint32_t    ui_engine_sync  = 0;
 
 
 void ft813_qspi_create_sync(void) {
@@ -45,24 +45,31 @@ void ft813_qspi_sync_wait(void) {
     ft813_qspi_sync = false;
 }
 
-void ft813_int_create_sync(void) {
+void ui_engine_create_sync(void) {
 
-    ft813_int_sync = false;
+    ui_engine_sync = 0;
 }
 
-void ft813_int_delete_sync(void) {
+void ui_engine_delete_sync(void) {
 }
 
-void ft813_int_sync_set_isr(void) {
+void ui_engine_sync_set(uint32_t flags) {
 
-    ft813_int_sync = true;
+    ui_engine_sync = flags;
 }
 
-void ft813_int_sync_wait(uint32_t timeout_ms) {
+void ui_engine_sync_set_isr(uint32_t flags) {
 
-    while(!ft813_int_sync && timeout_ms) {
+    ui_engine_sync = flags;
+}
+
+uint32_t ui_engine_sync_wait(uint32_t flags, uint32_t timeout_ms) {
+
+    while(!(ui_engine_sync & flags) && timeout_ms) {
         misc_hal_sleep_ms(1);
         timeout_ms--;
     }
-    ft813_int_sync = false;
+    uint32_t result = ui_engine_sync & flags;
+    ui_engine_sync &= ~flags;
+    return result;
 }

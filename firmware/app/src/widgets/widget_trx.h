@@ -13,7 +13,7 @@
 #define __WIDGET_TRX_H
 
 
-void * widget_trx(void * parent);
+void widget_trx(void);
 
 
 #endif

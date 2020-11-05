@@ -21,39 +21,67 @@
 #define POTENTIOMETER_ADDR      0x2F
 
 
+static volatile bool rf_amp_started  = false;
+
+
 bool rf_amp_start(void) {
 
-    hwctl_start();
-    i2c_master_start();
+    if(!rf_amp_started) {
+        hwctl_start();
+        i2c_master_start();
 
-    hwctl_tx_power(true);
-    misc_hal_sleep_ms(10);      /* power stabilization */
-    return rf_amp_off();
+        hwctl_tx_power(true);
+        misc_hal_sleep_ms(10);      /* power stabilization */
+
+        uint8_t bt1[] = {0x40, 0x00};
+        uint8_t bt2[] = {0xC0, 0x00};
+        rf_amp_started = ((i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1)) &&
+                          (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2)));
+        if(!rf_amp_started) {
+            hwctl_tx_power(false);
+        }
+    }
+    return rf_amp_started;
 }
 
 void rf_amp_stop(void) {
 
-    rf_amp_off();
-    hwctl_tx_power(false);
+    if(rf_amp_started) {
+        rf_amp_started = false;
+        rf_amp_off();
+        hwctl_tx_power(false);
+    }
 }
 
 bool rf_amp_off(void) {
 
-    uint8_t bt1[] = {0x40, 0x00};
-    uint8_t bt2[] = {0xC0, 0x00};
+    bool result = false;
+    if(rf_amp_started) {
+        uint8_t bt1[] = {0x40, 0x00};
+        uint8_t bt2[] = {0xC0, 0x00};
 
-    return ((i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1)) &&
-            (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2)));
+        result = ((i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1)) &&
+                  (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2)));
+    }
+    return result;
 }
 
 bool rf_amp_bias1(uint8_t bias) {
 
-    uint8_t bt1[] = {0x00, bias};
-    return (i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1));
+    bool result = false;
+    if(rf_amp_started) {
+        uint8_t bt1[] = {0x00, bias};
+        result = (i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1));
+    }
+    return result;
 }
 
 bool rf_amp_bias2(uint8_t bias) {
 
-    uint8_t bt2[] = {0x80, bias};
-    return (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2));
+    bool result = false;
+    if(rf_amp_started) {
+        uint8_t bt2[] = {0x80, bias};
+        result = (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2));
+    }
+    return result;
 }

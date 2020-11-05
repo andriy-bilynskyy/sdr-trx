@@ -13,7 +13,7 @@
 #define __WIDGET_AUDIO_H
 
 
-void * widget_audio(void * parent);
+void widget_audio(void);
 
 
 #endif

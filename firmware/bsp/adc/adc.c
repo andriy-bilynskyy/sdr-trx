@@ -12,11 +12,18 @@
 #include "adc.h"
 #include "adc_conf.h"
 #include "stm32f4xx_conf.h"
+#include <stdbool.h>
 #include <math.h>
 
 
-static volatile uint16_t adc_data[ADC_FILTER_ORDER][ADC_NUM_CH] = {0};
+const uint16_t adc_batt_lo_voltage_warn_value  = (uint16_t)(ADC_VBAT_LO_V_WARN / ADC_VBAT_SCALING);
+const uint16_t adc_temperature_high_warn_value =
+    (uint16_t)((expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_WARN) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_WARN + 273))) * 4095) /
+               (expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_WARN) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_WARN + 273))) + 1));
 
+
+static volatile uint16_t adc_data[ADC_FILTER_ORDER][ADC_NUM_CH] = {0};
+static volatile bool     adc_started  = false;
 
 static float       adc_ntc_temperature(float r);
 static swr_meter_t adc_swr_meter(uint16_t adc_fwd, uint16_t adc_rev);
@@ -24,140 +31,168 @@ static swr_meter_t adc_swr_meter(uint16_t adc_fwd, uint16_t adc_rev);
 
 void adc_start(void) {
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);    /* See RM p218 */
+    if(!adc_started) {
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+        RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);    /* See RM p218 */
 
-    GPIO_WriteBit(ADC_PORT, ADC_VBAT_PIN,         Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE1_PIN, Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE2_PIN, Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_PWR_FWD_PIN,      Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_PWR_REV_PIN,      Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_VBAT_PIN,         Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE1_PIN, Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE2_PIN, Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_PWR_FWD_PIN,      Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_PWR_REV_PIN,      Bit_RESET);
 
-    GPIO_InitTypeDef  gpio = {
-        .GPIO_Pin = ADC_VBAT_PIN | ADC_TEMPERATURE1_PIN | ADC_TEMPERATURE2_PIN | ADC_PWR_FWD_PIN | ADC_PWR_REV_PIN,
-        .GPIO_Mode = GPIO_Mode_AN,
-        .GPIO_OType = GPIO_OType_PP,
-        .GPIO_PuPd = GPIO_PuPd_NOPULL,
-        .GPIO_Speed = GPIO_Low_Speed
-    };
-    GPIO_Init(ADC_PORT, &gpio);
+        GPIO_InitTypeDef  gpio = {
+            .GPIO_Pin = ADC_VBAT_PIN | ADC_TEMPERATURE1_PIN | ADC_TEMPERATURE2_PIN | ADC_PWR_FWD_PIN | ADC_PWR_REV_PIN,
+            .GPIO_Mode = GPIO_Mode_AN,
+            .GPIO_OType = GPIO_OType_PP,
+            .GPIO_PuPd = GPIO_PuPd_NOPULL,
+            .GPIO_Speed = GPIO_Low_Speed
+        };
+        GPIO_Init(ADC_PORT, &gpio);
 
-    ADC_CommonInitTypeDef adc_com;
-    ADC_CommonStructInit(&adc_com);
-    adc_com.ADC_Prescaler = ADC_Prescaler_Div8;
-    ADC_CommonInit(&adc_com);
+        ADC_CommonInitTypeDef adc_com;
+        ADC_CommonStructInit(&adc_com);
+        adc_com.ADC_Prescaler = ADC_Prescaler_Div8;
+        ADC_CommonInit(&adc_com);
 
-    ADC_InitTypeDef adc;
-    ADC_StructInit(&adc);
-    adc.ADC_ScanConvMode = ENABLE;
-    adc.ADC_ContinuousConvMode = ENABLE;
-    adc.ADC_NbrOfConversion = ADC_NUM_CH;
-    ADC_Init(ADC1, &adc);
+        ADC_InitTypeDef adc;
+        ADC_StructInit(&adc);
+        adc.ADC_ScanConvMode = ENABLE;
+        adc.ADC_ContinuousConvMode = ENABLE;
+        adc.ADC_NbrOfConversion = ADC_NUM_CH;
+        ADC_Init(ADC1, &adc);
 
-    ADC_RegularChannelConfig(ADC1, ADC_VBAT_CH,         ADC_VBAT_ID + 1,         ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, ADC_TEMPERATURE1_CH, ADC_TEMPERATURE1_ID + 1, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, ADC_TEMPERATURE2_CH, ADC_TEMPERATURE2_ID + 1, ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, ADC_PWR_FWD_CH,      ADC_PWR_FWD_ID + 1,      ADC_SampleTime_480Cycles);
-    ADC_RegularChannelConfig(ADC1, ADC_PWR_REV_CH,      ADC_PWR_REV_ID + 1,      ADC_SampleTime_480Cycles);
+        ADC_RegularChannelConfig(ADC1, ADC_VBAT_CH,         ADC_VBAT_ID + 1,         ADC_SampleTime_480Cycles);
+        ADC_RegularChannelConfig(ADC1, ADC_TEMPERATURE1_CH, ADC_TEMPERATURE1_ID + 1, ADC_SampleTime_480Cycles);
+        ADC_RegularChannelConfig(ADC1, ADC_TEMPERATURE2_CH, ADC_TEMPERATURE2_ID + 1, ADC_SampleTime_480Cycles);
+        ADC_RegularChannelConfig(ADC1, ADC_PWR_FWD_CH,      ADC_PWR_FWD_ID + 1,      ADC_SampleTime_480Cycles);
+        ADC_RegularChannelConfig(ADC1, ADC_PWR_REV_CH,      ADC_PWR_REV_ID + 1,      ADC_SampleTime_480Cycles);
 
-    ADC_Cmd(ADC1, ENABLE);
-    ADC_DMACmd(ADC1, ENABLE);
-    ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);
+        ADC_Cmd(ADC1, ENABLE);
+        ADC_DMACmd(ADC1, ENABLE);
+        ADC_DMARequestAfterLastTransferCmd(ADC1, ENABLE);
 
-    DMA_InitTypeDef dma;
-    DMA_StructInit(&dma);
-    dma.DMA_Channel = DMA_Channel_0;
-    dma.DMA_Priority = ADC_DMA_PRIO;
-    dma.DMA_DIR = DMA_DIR_PeripheralToMemory;
-    dma.DMA_PeripheralBaseAddr = (uint32_t)&(ADC1->DR);
-    dma.DMA_Memory0BaseAddr = (uint32_t)adc_data;
-    dma.DMA_BufferSize = ADC_FILTER_ORDER * ADC_NUM_CH;
-    dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-    dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-    dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-    dma.DMA_Mode = DMA_Mode_Circular;
-    DMA_Init(DMA2_Stream0, &dma);
-    DMA_Cmd(DMA2_Stream0, ENABLE);
+        DMA_InitTypeDef dma;
+        DMA_StructInit(&dma);
+        dma.DMA_Channel = DMA_Channel_0;
+        dma.DMA_Priority = ADC_DMA_PRIO;
+        dma.DMA_DIR = DMA_DIR_PeripheralToMemory;
+        dma.DMA_PeripheralBaseAddr = (uint32_t)&(ADC1->DR);
+        dma.DMA_Memory0BaseAddr = (uint32_t)adc_data;
+        dma.DMA_BufferSize = ADC_FILTER_ORDER * ADC_NUM_CH;
+        dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
+        dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
+        dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
+        dma.DMA_Mode = DMA_Mode_Circular;
+        DMA_Init(DMA2_Stream0, &dma);
+        DMA_Cmd(DMA2_Stream0, ENABLE);
 
-    ADC_SoftwareStartConv(ADC1);
+        ADC_SoftwareStartConv(ADC1);
+        adc_started = true;
+    }
 }
 
 void adc_stop(void) {
 
-    DMA_Cmd(DMA2_Stream0, DISABLE);
-    DMA_DeInit(DMA2_Stream0);
+    if(adc_started) {
+        adc_started = false;
 
-    ADC_DMARequestAfterLastTransferCmd(ADC1, DISABLE);
-    ADC_DMACmd(ADC1, DISABLE);
-    ADC_Cmd(ADC1, DISABLE);
+        DMA_Cmd(DMA2_Stream0, DISABLE);
+        DMA_DeInit(DMA2_Stream0);
 
-    ADC_DeInit();
+        ADC_DMARequestAfterLastTransferCmd(ADC1, DISABLE);
+        ADC_DMACmd(ADC1, DISABLE);
+        ADC_Cmd(ADC1, DISABLE);
 
-    ADC_CommonInitTypeDef adc_com;
-    ADC_CommonStructInit(&adc_com);
-    ADC_CommonInit(&adc_com);
+        ADC_DeInit();
 
-    GPIO_InitTypeDef  gpio = {
-        .GPIO_Pin = ADC_VBAT_PIN | ADC_TEMPERATURE1_PIN | ADC_TEMPERATURE2_PIN | ADC_PWR_FWD_PIN | ADC_PWR_REV_PIN,
-        .GPIO_Mode = GPIO_Mode_IN,
-        .GPIO_OType = GPIO_OType_PP,
-        .GPIO_PuPd = GPIO_PuPd_NOPULL,
-        .GPIO_Speed = GPIO_Low_Speed
-    };
-    GPIO_Init(ADC_PORT, &gpio);
+        ADC_CommonInitTypeDef adc_com;
+        ADC_CommonStructInit(&adc_com);
+        ADC_CommonInit(&adc_com);
 
-    GPIO_WriteBit(ADC_PORT, ADC_VBAT_PIN,         Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE1_PIN, Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE2_PIN, Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_PWR_FWD_PIN,      Bit_RESET);
-    GPIO_WriteBit(ADC_PORT, ADC_PWR_REV_PIN,      Bit_RESET);
+        GPIO_InitTypeDef  gpio = {
+            .GPIO_Pin = ADC_VBAT_PIN | ADC_TEMPERATURE1_PIN | ADC_TEMPERATURE2_PIN | ADC_PWR_FWD_PIN | ADC_PWR_REV_PIN,
+            .GPIO_Mode = GPIO_Mode_IN,
+            .GPIO_OType = GPIO_OType_PP,
+            .GPIO_PuPd = GPIO_PuPd_NOPULL,
+            .GPIO_Speed = GPIO_Low_Speed
+        };
+        GPIO_Init(ADC_PORT, &gpio);
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, DISABLE);
+        GPIO_WriteBit(ADC_PORT, ADC_VBAT_PIN,         Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE1_PIN, Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_TEMPERATURE2_PIN, Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_PWR_FWD_PIN,      Bit_RESET);
+        GPIO_WriteBit(ADC_PORT, ADC_PWR_REV_PIN,      Bit_RESET);
+
+        RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, DISABLE);
+    }
+}
+
+uint16_t adc_batt_voltage_value(void) {
+
+    uint32_t acc = 0;
+    if(adc_started) {
+        for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
+            acc += adc_data[i][ADC_VBAT_ID];
+        }
+        acc /= ADC_FILTER_ORDER;
+    }
+    return (uint16_t)acc;
 }
 
 float adc_batt_voltage(void) {
 
-    uint32_t acc = 0;
-    for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
-        acc += adc_data[i][ADC_VBAT_ID];
-    }
-    acc /= ADC_FILTER_ORDER;
+    return ADC_VBAT_SCALING * adc_batt_voltage_value();
+}
 
-    return ADC_VBAT_SCALING * acc;
+uint16_t adc_temperature1_value(void) {
+
+    uint32_t acc = 0;
+    if(adc_started) {
+        for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
+            acc += adc_data[i][ADC_TEMPERATURE1_ID];
+        }
+        acc /= ADC_FILTER_ORDER;
+    }
+    return (uint16_t)acc;
 }
 
 float adc_temperature1(void) {
 
-    uint32_t acc = 0;
-    for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
-        acc += adc_data[i][ADC_TEMPERATURE1_ID];
-    }
-    acc /= ADC_FILTER_ORDER;
+    uint16_t val = adc_temperature1_value();
+    return adc_ntc_temperature((ADC_TEMPERATURE_R * val) / (4095 - val));
+}
 
-    return adc_ntc_temperature((ADC_TEMPERATURE_R * acc) / (4095 - acc));
+uint16_t adc_temperature2_value(void) {
+
+    uint32_t acc = 0;
+    if(adc_started) {
+        for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
+            acc += adc_data[i][ADC_TEMPERATURE2_ID];
+        }
+        acc /= ADC_FILTER_ORDER;
+    }
+    return (uint16_t)acc;
 }
 
 float adc_temperature2(void) {
 
-    uint32_t acc = 0;
-    for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
-        acc += adc_data[i][ADC_TEMPERATURE2_ID];
-    }
-    acc /= ADC_FILTER_ORDER;
-
-    return adc_ntc_temperature((ADC_TEMPERATURE_R * acc) / (4095 - acc));
+    uint16_t val = adc_temperature2_value();
+    return adc_ntc_temperature((ADC_TEMPERATURE_R * val) / (4095 - val));
 }
 
 swr_meter_t adc_swr(void) {
 
     uint32_t acc_f = 0, acc_r = 0;
-    for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
-        acc_f += adc_data[i][ADC_PWR_FWD_ID];
-        acc_r += adc_data[i][ADC_PWR_REV_ID];
+    if(adc_started) {
+        for(uint8_t i = 0; i < ADC_FILTER_ORDER; i++) {
+            acc_f += adc_data[i][ADC_PWR_FWD_ID];
+            acc_r += adc_data[i][ADC_PWR_REV_ID];
+        }
+        acc_f /= ADC_FILTER_ORDER;
+        acc_r /= ADC_FILTER_ORDER;
     }
-    acc_f /= ADC_FILTER_ORDER;
-    acc_r /= ADC_FILTER_ORDER;
-
     return adc_swr_meter(acc_f, acc_r);
 }
 

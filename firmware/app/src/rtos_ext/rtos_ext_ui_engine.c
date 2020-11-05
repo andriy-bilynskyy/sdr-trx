@@ -12,14 +12,16 @@
 
 #include "FreeRTOS.h"
 #include "semphr.h"
+#include "event_groups.h"
 #include "misc_hal.h"
+#include <stdint.h>
 #include <stdbool.h>
 
 
-static volatile bool     ft813_qspi_sync     = false;
-static SemaphoreHandle_t ft813_qspi_sync_sem = NULL;
-static volatile bool     ft813_int_sync      = false;
-static SemaphoreHandle_t ft813_int_sync_sem  = NULL;
+static volatile bool      ft813_qspi_sync     = false;
+static SemaphoreHandle_t  ft813_qspi_sync_sem = NULL;
+static volatile uint32_t  ui_engine_sync      = 0;
+static EventGroupHandle_t ui_engine_sync_flg  = NULL;
 
 
 void ft813_qspi_create_sync(void) {
@@ -69,43 +71,57 @@ void ft813_qspi_sync_wait(void) {
     }
 }
 
-void ft813_int_create_sync(void) {
+void ui_engine_create_sync(void) {
 
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        ft813_int_sync_sem = xSemaphoreCreateBinary();
+        ui_engine_sync_flg = xEventGroupCreate();
     } else {
-        ft813_int_sync = false;
+        ui_engine_sync = 0;
     }
 }
 
-void ft813_int_delete_sync(void) {
+void ui_engine_delete_sync(void) {
 
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        vSemaphoreDelete(ft813_int_sync_sem);
-        ft813_int_sync_sem = NULL;
+        vEventGroupDelete(ui_engine_sync_flg);
+        ui_engine_sync_flg = NULL;
     }
 }
 
-void ft813_int_sync_set_isr(void) {
+void ui_engine_sync_set(uint32_t flags) {
+
+    if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
+        if(ui_engine_sync_flg) {
+            (void)xEventGroupSetBits(ui_engine_sync_flg, flags);
+        }
+    } else {
+        ui_engine_sync = flags;
+    }
+}
+
+void ui_engine_sync_set_isr(uint32_t flags) {
 
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
         BaseType_t hprio;
-        (void)xSemaphoreGiveFromISR(ft813_int_sync_sem, &hprio);
+        (void)xEventGroupSetBitsFromISR(ui_engine_sync_flg, flags, &hprio);
         portYIELD_FROM_ISR(hprio);
     } else {
-        ft813_int_sync = true;
+        ui_engine_sync = flags;
     }
 }
 
-void ft813_int_sync_wait(uint32_t timeout_ms) {
+uint32_t ui_engine_sync_wait(uint32_t flags, uint32_t timeout_ms) {
 
+    uint32_t result = 0;
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        (void)xSemaphoreTake(ft813_int_sync_sem, timeout_ms);
+        result = xEventGroupWaitBits(ui_engine_sync_flg, flags, pdTRUE, pdFALSE, timeout_ms);
     } else {
-        while(!ft813_int_sync && timeout_ms) {
+        while(!(ui_engine_sync & flags) && timeout_ms) {
             misc_hal_sleep_ms(1);
             timeout_ms--;
         }
-        ft813_int_sync = false;
+        result = ui_engine_sync & flags;
+        ui_engine_sync &= ~flags;
     }
+    return result;
 }

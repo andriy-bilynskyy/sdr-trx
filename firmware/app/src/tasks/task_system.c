@@ -22,8 +22,10 @@
 #include "i2c_master.h"
 
 
-#define TASK_SYSTEM_PERIOD_MS       1000
-#define TASK_SYSTEM_JOIN_MS         5
+#define TASK_SYSTEM_PERIOD_MS                     1000
+#define TASK_SYSTEM_JOIN_MS                       5
+#define TASK_SYSTEM_NOTIFY_LO_VOLTAGE_MS          (5UL * 60 * 1000)
+#define TASK_SYSTEM_NOTIFY_HIGH_TEMPERATURE_MS    (1UL * 60 * 1000)
 
 
 static volatile tasks_app_handle_t app_hnd = {
@@ -54,10 +56,38 @@ void task_system(void * param) {
     (void)xTaskCreate(task_ui,        TASK_UI_NAME,        TASK_UI_STACK,        (void *)&app_hnd, TASK_UI_PRIO,        NULL);
 
     TickType_t wake_time = xTaskGetTickCount();
+
+    bool       low_voltage_warn           = false;
+    TickType_t low_voltage_warn_time      = xTaskGetTickCount();
+
+    bool       high_temperature_warn      = false;
+    TickType_t high_temperature_warn_time = xTaskGetTickCount();
+
     for(; app_hnd.system_ctive;) {
 
         vTaskDelayUntil(&wake_time, TASK_SYSTEM_PERIOD_MS);
+
         critical_err_stack_check();
+
+        if(adc_batt_voltage_value() < adc_batt_lo_voltage_warn_value) {
+            if(!low_voltage_warn || (xTaskGetTickCount() - low_voltage_warn_time > TASK_SYSTEM_NOTIFY_LO_VOLTAGE_MS)) {
+                low_voltage_warn_time = xTaskGetTickCount();
+                task_ui_notify_low_voltage();
+            }
+            low_voltage_warn = true;
+        } else {
+            low_voltage_warn = false;
+        }
+
+        if(adc_temperature1_value() < adc_temperature_high_warn_value || adc_temperature2_value() < adc_temperature_high_warn_value) {
+            if(!high_temperature_warn || (xTaskGetTickCount() - high_temperature_warn_time > TASK_SYSTEM_NOTIFY_HIGH_TEMPERATURE_MS)) {
+                high_temperature_warn_time = xTaskGetTickCount();
+                task_ui_notify_overheat();
+            }
+            high_temperature_warn = true;
+        } else {
+            high_temperature_warn = false;
+        }
     }
 
     for(; app_hnd.running_tasks_cnt ;) {

@@ -38,7 +38,7 @@
 static void widget_audio_codec_error(void);
 
 
-void * widget_audio(void * parent) {
+void widget_audio(void) {
 
     bool init = true;
     bool touched = false;
@@ -90,7 +90,12 @@ void * widget_audio(void * parent) {
 
         ui_engine_draw_end();
 
-        ui_engine_touch_t touch = ui_engine_get_touch(true);
+        uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
+        if(widget_event(event_flg)) {
+            init = true;
+        }
+
+        ui_engine_touch_t touch = ui_engine_get_touch();
 
         if(init) {
             if(!touch.tag) {
@@ -110,30 +115,35 @@ void * widget_audio(void * parent) {
                     speaker.mute = !speaker.mute;
                     if(!codec_set_speaker_volume(speaker)) {
                         widget_audio_codec_error();
+                        init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_HPON) {
                     headphone.mute = !headphone.mute;
                     if(!codec_set_headphone_volume(headphone)) {
                         widget_audio_codec_error();
+                        init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_LINEON) {
                     line.mute = !line.mute;
                     if(!codec_set_input_volume(line)) {
                         widget_audio_codec_error();
+                        init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICON) {
                     mic.mute = !mic.mute;
                     if(!codec_set_mic_volume(mic)) {
                         widget_audio_codec_error();
+                        init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICVOL) {
                     mic.volume = mic.volume ? 0 : CODEC_MIC_MAX_VOLUME;
                     if(!codec_set_mic_volume(mic)) {
                         widget_audio_codec_error();
+                        init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_EXTMIC) {
@@ -144,6 +154,7 @@ void * widget_audio(void * parent) {
                     src = ((src == CODEC_OUT_DAC) ? CODEC_OUT_MUTE : (codec_out_src_t)(src + 1));
                     if(!codec_set_out_src(src)) {
                         widget_audio_codec_error();
+                        init = true;
                     }
                 }
             }
@@ -151,26 +162,27 @@ void * widget_audio(void * parent) {
                 speaker.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
                 if(!codec_set_speaker_volume(speaker)) {
                     widget_audio_codec_error();
+                    init = true;
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_HPVOL) {
                 headphone.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
                 if(!codec_set_headphone_volume(headphone)) {
                     widget_audio_codec_error();
+                    init = true;
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_LINEVOL) {
                 line.volume = ((uint32_t)touch.value  * CODEC_INPUT_MAX_VOLUME) / 0xFFFF;
                 if(!codec_set_input_volume(line)) {
                     widget_audio_codec_error();
+                    init = true;
                 }
             }
             touched = true;
         }
     }
     codec_stop();
-
-    return parent;
 }
 
 

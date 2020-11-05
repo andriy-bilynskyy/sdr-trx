@@ -6,14 +6,17 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widget date time header file
+    UI engine events definition file
 */
 
-#ifndef __WIDGET_DATE_TIME_H
-#define __WIDGET_DATE_TIME_H
+#ifndef __UI_ENGINE_EVENTS_H
+#define __UI_ENGINE_EVENTS_H
 
 
-void widget_date_time(void);
+#include <stdint.h>
+
+
+#define UI_ENGINE_EVENT_FLAG_TOUCH           (uint32_t)1
 
 
 #endif
