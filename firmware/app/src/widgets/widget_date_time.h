@@ -13,7 +13,10 @@
 #define __WIDGET_DATE_TIME_H
 
 
-void widget_date_time(void);
+#include "app_data_types.h"
+
+
+void widget_date_time(app_handle_t * app_handle);
 
 
 #endif

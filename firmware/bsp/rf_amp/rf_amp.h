@@ -21,8 +21,9 @@
 #include <stdbool.h>
 
 
-#define RF_AMP_MIN      (uint8_t)((RF_AMP_MINV * 256) / 5.0f)
-#define RF_AMP_MAX      (uint8_t)((RF_AMP_MAXV * 256) / 5.0f)
+#define RF_AMP_VAL(x)   (uint8_t)(((float)(x) * 256) / 5.0f)
+#define RF_AMP_MIN      RF_AMP_VAL(RF_AMP_MINV)
+#define RF_AMP_MAX      RF_AMP_VAL(RF_AMP_MAXV)
 
 
 bool rf_amp_start(void);

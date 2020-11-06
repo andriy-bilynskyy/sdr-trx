@@ -13,7 +13,10 @@
 #define __WIDGET_AUDIO_H
 
 
-void widget_audio(void);
+#include "app_data_types.h"
+
+
+void widget_audio(app_handle_t * app_handle);
 
 
 #endif

@@ -32,14 +32,14 @@ static void task_dsp_data_ready(void);
 
 void task_dsp(void * param) {
 
-    tasks_app_handle_t * app_hnd = (tasks_app_handle_t *)param;
-    (void)Atomic_Increment_u32(&app_hnd->running_tasks_cnt);
+    app_handle_t * app_handdle = (app_handle_t *)param;
+    (void)Atomic_Increment_u32(&app_handdle->running_tasks_cnt);
     DBG_OUT("audio task started");
 
     task_audio_sync_sem = xSemaphoreCreateBinary();
     codec_set_callback(task_dsp_data_ready);
 
-    for(; app_hnd->system_ctive;) {
+    for(; app_handdle->system_ctive;) {
 
         if(xSemaphoreTake(task_audio_sync_sem, TASK_DSP_PERIOD_MS) == pdTRUE) {
             if(dsp_proc) {
@@ -55,7 +55,7 @@ void task_dsp(void * param) {
     task_audio_sync_sem = NULL;
 
     DBG_OUT("audio task stopped");
-    (void)Atomic_Decrement_u32(&app_hnd->running_tasks_cnt);
+    (void)Atomic_Decrement_u32(&app_handdle->running_tasks_cnt);
 
     vTaskDelete(NULL);
 }

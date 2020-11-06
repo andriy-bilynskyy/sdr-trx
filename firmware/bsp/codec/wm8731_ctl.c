@@ -169,12 +169,12 @@ bool wm8731_ctl_set_output_volume_l(codec_volume_t volume) {
     return result;
 }
 
-codec_volume_t wm8731_ctl_get_input_volume(void) {
+codec_volume_t wm8731_ctl_get_line_sensivity(void) {
 
     return wm8731_ctl_data.inp;
 }
 
-bool wm8731_ctl_set_input_volume(codec_volume_t volume) {
+bool wm8731_ctl_set_line_sensivity(codec_volume_t volume) {
 
     if(volume.volume > CODEC_INPUT_MAX_VOLUME) {
         volume.volume = CODEC_INPUT_MAX_VOLUME;
@@ -195,12 +195,12 @@ bool wm8731_ctl_set_input_volume(codec_volume_t volume) {
     return result;
 }
 
-codec_volume_t wm8731_ctl_get_mic_volume(void) {
+codec_volume_t wm8731_ctl_get_mic_sensivity(void) {
 
     return wm8731_ctl_data.mic;
 }
 
-bool wm8731_ctl_set_mic_volume(codec_volume_t volume) {
+bool wm8731_ctl_set_mic_sensivity(codec_volume_t volume) {
 
     if(volume.volume > CODEC_MIC_MAX_VOLUME) {
         volume.volume = CODEC_MIC_MAX_VOLUME;

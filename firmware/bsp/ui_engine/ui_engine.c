@@ -167,9 +167,7 @@ void ui_engine_set_brightness(uint8_t brightness) {
 
 void ui_engine_event_set(uint32_t event_flags) {
 
-    if(ui_engine_started) {
-        ui_engine_sync_set(event_flags & ~UI_ENGINE_EVENT_FLAG_TOUCH);
-    }
+    ui_engine_sync_set(event_flags & ~UI_ENGINE_EVENT_FLAG_TOUCH);
 }
 
 uint32_t ui_engine_event_wait(uint32_t flags) {

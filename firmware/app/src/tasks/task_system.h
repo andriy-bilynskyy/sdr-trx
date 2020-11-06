@@ -16,12 +16,6 @@
 #include <stdint.h>
 
 
-typedef struct {
-    bool        system_ctive;
-    uint32_t    running_tasks_cnt;
-} tasks_app_handle_t;
-
-
 void task_system(void * param);
 
 

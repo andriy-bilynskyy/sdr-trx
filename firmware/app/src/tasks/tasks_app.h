@@ -13,6 +13,7 @@
 #define __TASKS_APP_H
 
 
+#include "app_data_types.h"
 #include "task_system.h"
 #include "task_rtc_start.h"
 #include "task_dsp.h"

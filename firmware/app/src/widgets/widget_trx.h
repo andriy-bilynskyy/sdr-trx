@@ -13,7 +13,10 @@
 #define __WIDGET_TRX_H
 
 
-void widget_trx(void);
+#include "app_data_types.h"
+
+
+void widget_trx(app_handle_t * app_handle);
 
 
 #endif

@@ -13,6 +13,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "tasks_app.h"
+#include "app_data.h"
 #include "debug.h"
 
 
@@ -22,7 +23,7 @@ int main(void) {
 
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 
-    xTaskCreate(task_system, TASK_SYSTEM_NAME, TASK_SYSTEM_STACK, NULL, TASK_SYSTEM_PRIO, NULL);
+    xTaskCreate(task_system, TASK_SYSTEM_NAME, TASK_SYSTEM_STACK, (void *)&app_handle, TASK_SYSTEM_PRIO, NULL);
     vTaskStartScheduler();
     for(;;);
 

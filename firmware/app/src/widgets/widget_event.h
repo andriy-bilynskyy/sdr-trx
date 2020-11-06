@@ -25,6 +25,8 @@
  ******************************************************************************/
 #define WIDGET_EVENT_LOW_BATT       (1<<1)
 #define WIDGET_EVENT_OVER_HEAT      (1<<2)
+#define WIDGET_EVENT_STORAGE_FAIL   (1<<3)
+#define WIDGET_EVENT_RTC_FAIL       (1<<4)
 
 
 bool widget_event(uint32_t event_flg);

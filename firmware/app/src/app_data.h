@@ -6,20 +6,22 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widgets header file
+    Application data header file
 */
 
-#ifndef __WIDGETS_H
-#define __WIDGETS_H
+#ifndef __APP_DATA_H
+#define __APP_DATA_H
 
 
-#include "widget_event.h"
-#include "widget_main.h"
-#include "widget_date_time.h"
-#include "widget_sensors.h"
-#include "widget_trx.h"
-#include "widget_audio.h"
-#include "widget_ui.h"
+#include "app_data_types.h"
+#include <stdbool.h>
+
+
+extern volatile app_handle_t app_handle;
+
+
+bool app_settings_load(void);
+bool app_setting_save(void);
 
 
 #endif

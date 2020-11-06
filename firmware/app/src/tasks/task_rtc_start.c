@@ -20,15 +20,16 @@
 
 void task_rtc_start(void * param) {
 
-    tasks_app_handle_t * app_hnd = (tasks_app_handle_t *)param;
-    (void)Atomic_Increment_u32(&app_hnd->running_tasks_cnt);
+    app_handle_t * app_handle = (app_handle_t *)param;
+    (void)Atomic_Increment_u32(&app_handle->running_tasks_cnt);
     DBG_OUT("rtc startup task started");
 
-    if(rtc_init()) {
-        DBG_OUT("rtc Ok");
+    if(!rtc_init()) {
+        task_ui_notify_rtc_fail();
+        DBG_OUT("rtc failed");
     }
 
     DBG_OUT("rtc startup task stopped");
-    (void)Atomic_Decrement_u32(&app_hnd->running_tasks_cnt);
+    (void)Atomic_Decrement_u32(&app_handle->running_tasks_cnt);
     vTaskDelete(NULL);
 }

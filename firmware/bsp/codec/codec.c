@@ -68,24 +68,24 @@ bool codec_set_speaker_volume(codec_volume_t volume) {
     return codec_started ? wm8731_ctl_set_output_volume_l(volume) : false;
 }
 
-codec_volume_t codec_get_input_volume(void) {
+codec_volume_t codec_get_line_sensivity(void) {
 
-    return wm8731_ctl_get_input_volume();
+    return wm8731_ctl_get_line_sensivity();
 }
 
-bool codec_set_input_volume(codec_volume_t volume) {
+bool codec_set_line_sensivity(codec_volume_t volume) {
 
-    return codec_started ? wm8731_ctl_set_input_volume(volume) : false;
+    return codec_started ? wm8731_ctl_set_line_sensivity(volume) : false;
 }
 
-codec_volume_t codec_get_mic_volume(void) {
+codec_volume_t codec_get_mic_sensivity(void) {
 
-    return wm8731_ctl_get_mic_volume();
+    return wm8731_ctl_get_mic_sensivity();
 }
 
-bool codec_set_mic_volume(codec_volume_t volume) {
+bool codec_set_mic_sensivity(codec_volume_t volume) {
 
-    return codec_started ? wm8731_ctl_set_mic_volume(volume) : false;
+    return codec_started ? wm8731_ctl_set_mic_sensivity(volume) : false;
 }
 
 codec_out_src_t codec_get_out_src() {

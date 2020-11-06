@@ -74,7 +74,13 @@ void ft813_qspi_sync_wait(void) {
 void ui_engine_create_sync(void) {
 
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        ui_engine_sync_flg = xEventGroupCreate();
+        if(!ui_engine_sync_flg) {
+            taskENTER_CRITICAL();
+            if(!ui_engine_sync_flg) {
+                ui_engine_sync_flg = xEventGroupCreate();
+            }
+            taskEXIT_CRITICAL();
+        }
     } else {
         ui_engine_sync = 0;
     }
@@ -83,17 +89,28 @@ void ui_engine_create_sync(void) {
 void ui_engine_delete_sync(void) {
 
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        vEventGroupDelete(ui_engine_sync_flg);
-        ui_engine_sync_flg = NULL;
+        if(ui_engine_sync_flg) {
+            taskENTER_CRITICAL();
+            if(ui_engine_sync_flg) {
+                vEventGroupDelete(ui_engine_sync_flg);
+                ui_engine_sync_flg = NULL;
+            }
+            taskEXIT_CRITICAL();
+        }
     }
 }
 
 void ui_engine_sync_set(uint32_t flags) {
 
     if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-        if(ui_engine_sync_flg) {
-            (void)xEventGroupSetBits(ui_engine_sync_flg, flags);
+        if(!ui_engine_sync_flg) {
+            taskENTER_CRITICAL();
+            if(!ui_engine_sync_flg) {
+                ui_engine_sync_flg = xEventGroupCreate();
+            }
+            taskEXIT_CRITICAL();
         }
+        (void)xEventGroupSetBits(ui_engine_sync_flg, flags);
     } else {
         ui_engine_sync = flags;
     }

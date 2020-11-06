@@ -6,20 +6,17 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widgets header file
+    Widget UI header file
 */
 
-#ifndef __WIDGETS_H
-#define __WIDGETS_H
+#ifndef __WIDGET_UI_H
+#define __WIDGET_UI_H
 
 
-#include "widget_event.h"
-#include "widget_main.h"
-#include "widget_date_time.h"
-#include "widget_sensors.h"
-#include "widget_trx.h"
-#include "widget_audio.h"
-#include "widget_ui.h"
+#include "app_data_types.h"
+
+
+void widget_ui(app_handle_t * app_handle);
 
 
 #endif

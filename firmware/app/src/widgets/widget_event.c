@@ -56,5 +56,17 @@ bool widget_event(uint32_t event_flg) {
         result = true;
     }
 
+    if(event_flg & WIDGET_EVENT_STORAGE_FAIL) {
+        const char * argv[] = {"Storage failed"};
+        ui_notify(1, argv, "Ok");
+        result = true;
+    }
+
+    if(event_flg & WIDGET_EVENT_RTC_FAIL) {
+        const char * argv[] = {"RTC failed"};
+        ui_notify(1, argv, "Ok");
+        result = true;
+    }
+
     return result;
 }

@@ -13,7 +13,10 @@
 #define __WIDGET_SENSORS_H
 
 
-void widget_sensors(void);
+#include "app_data_types.h"
+
+
+void widget_sensors(app_handle_t * app_handle);
 
 
 #endif

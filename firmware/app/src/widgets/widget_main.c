@@ -22,24 +22,30 @@
 #define WIDGET_MAIN_TAG_SENSORS         2
 #define WIDGET_MAIN_TAG_TRX             3
 #define WIDGET_MAIN_TAG_AUDIO           4
+#define WIDGET_MAIN_TAG_UI              5
+#define WIDGET_MAIN_TAG_SHUTDOWN        6
 
 
-void widget_main(void) {
+void widget_main(app_handle_t * app_handle) {
 
     bool init = true;
 
-    for(;;) {
+    for(; app_handle->system_ctive;) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
         ui_engine_set_fgcolor(31, 31, 255);
         /* Time date */
-        ui_engine_button(WIDGET_MAIN_TAG_DATE_TIME, 20, 50,  180, 40, UI_ENGINE_FONT30, "Date Time");
+        ui_engine_button(WIDGET_MAIN_TAG_DATE_TIME, 20,                    50,  180, 40, UI_ENGINE_FONT30, "Date Time");
         /* Sensors */
-        ui_engine_button(WIDGET_MAIN_TAG_SENSORS,   20, 100, 180, 40, UI_ENGINE_FONT30, "Sensors");
+        ui_engine_button(WIDGET_MAIN_TAG_SENSORS,   20,                    100, 180, 40, UI_ENGINE_FONT30, "Sensors");
         /* Sensors */
-        ui_engine_button(WIDGET_MAIN_TAG_TRX,       20, 150, 180, 40, UI_ENGINE_FONT30, "Transceiver");
+        ui_engine_button(WIDGET_MAIN_TAG_TRX,       20,                    150, 180, 40, UI_ENGINE_FONT30, "Transceiver");
         /* Audio */
-        ui_engine_button(WIDGET_MAIN_TAG_AUDIO,     20, 200, 180, 40, UI_ENGINE_FONT30, "Audio");
+        ui_engine_button(WIDGET_MAIN_TAG_AUDIO,     20,                    200, 180, 40, UI_ENGINE_FONT30, "Audio");
+        /* Interface */
+        ui_engine_button(WIDGET_MAIN_TAG_UI,        ui_engine_xsize - 200, 50,  180, 40, UI_ENGINE_FONT30, "Interface");
+        /* Reboot */
+        ui_engine_button(WIDGET_MAIN_TAG_SHUTDOWN,  ui_engine_xsize - 200, 100, 180, 40, UI_ENGINE_FONT30, "Shutdown");
 
         ui_engine_draw_end();
 
@@ -57,20 +63,27 @@ void widget_main(void) {
         }
 
         if(touch.tag == WIDGET_MAIN_TAG_DATE_TIME) {
-            widget_date_time();
+            widget_date_time(app_handle);
             init = true;
         }
         if(touch.tag == WIDGET_MAIN_TAG_SENSORS) {
-            widget_sensors();
+            widget_sensors(app_handle);
             init = true;
         }
         if(touch.tag == WIDGET_MAIN_TAG_TRX) {
-            widget_trx();
+            widget_trx(app_handle);
             init = true;
         }
         if(touch.tag == WIDGET_MAIN_TAG_AUDIO) {
-            widget_audio();
+            widget_audio(app_handle);
             init = true;
+        }
+        if(touch.tag == WIDGET_MAIN_TAG_UI) {
+            widget_ui(app_handle);
+            init = true;
+        }
+        if(touch.tag == WIDGET_MAIN_TAG_SHUTDOWN) {
+            app_handle->system_ctive = false;
         }
     }
 }

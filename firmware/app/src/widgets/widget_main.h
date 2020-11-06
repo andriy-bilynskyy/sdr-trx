@@ -13,7 +13,10 @@
 #define __WIDGET_MAIN_H
 
 
-void widget_main(void);
+#include "app_data_types.h"
+
+
+void widget_main(app_handle_t * app_handle);
 
 
 #endif

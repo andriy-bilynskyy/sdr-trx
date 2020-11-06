@@ -19,6 +19,9 @@
 #include <time.h>
 
 
+#define UI_ENGINE_MAX_BRIGHTNESS        128
+
+
 typedef struct {
     uint8_t     tag;
     uint16_t    value;

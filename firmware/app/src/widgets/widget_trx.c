@@ -30,9 +30,8 @@
 static void widget_trx_dco_error(void);
 
 
-void widget_trx(void) {
+void widget_trx(app_handle_t * app_handle) {
 
-    uint32_t frequency     = WIDGET_TRX_FREQUENCY;
     uint8_t  frequency_pos = 2;
 
     bool init = true;
@@ -43,11 +42,11 @@ void widget_trx(void) {
     hwctl_tx_power(true);
     hwctl_rx_power(true);
 
-    if(!dco_start(frequency)) {
+    if(!dco_start(app_handle->settings->dco_frequency)) {
         widget_trx_dco_error();
     }
 
-    for(;;) {
+    for(; app_handle->system_ctive;) {
 
         static const uint32_t f_grid[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000};
 
@@ -60,7 +59,7 @@ void widget_trx(void) {
         /* Frequency bar */
         for(uint8_t i = 0; i < 8; i++) {
             char buf[2] = {0};
-            buf[0] = (frequency / f_grid[i]) % 10 + '0';
+            buf[0] = (app_handle->settings->dco_frequency / f_grid[i]) % 10 + '0';
             if(i == frequency_pos) {
                 ui_engine_set_fgcolor(31, 128, 31);
             }
@@ -98,34 +97,34 @@ void widget_trx(void) {
                     break;
                 }
                 if(touch.tag == WIDGET_TRX_TAG_UP_F) {
-                    uint32_t new_frequency = frequency;
-                    if(frequency + f_grid[frequency_pos] <= DCO_MAX_FREQUENCY) {
+                    uint32_t new_frequency = app_handle->settings->dco_frequency;
+                    if(app_handle->settings->dco_frequency + f_grid[frequency_pos] <= DCO_MAX_FREQUENCY) {
                         new_frequency += f_grid[frequency_pos];
                     } else {
                         new_frequency = DCO_MAX_FREQUENCY;
                     }
-                    if(new_frequency != frequency) {
+                    if(new_frequency != app_handle->settings->dco_frequency) {
                         if(!dco_set_frequency(new_frequency)) {
                             widget_trx_dco_error();
                             init = true;
                         } else {
-                            frequency = new_frequency;
+                            app_handle->settings->dco_frequency = new_frequency;
                         }
                     }
                 }
                 if(touch.tag == WIDGET_TRX_TAG_DOWN_F) {
-                    uint32_t new_frequency = frequency;
-                    if(frequency - f_grid[frequency_pos] >= DCO_MIN_FREQUENCY) {
+                    uint32_t new_frequency = app_handle->settings->dco_frequency;
+                    if(app_handle->settings->dco_frequency - f_grid[frequency_pos] >= DCO_MIN_FREQUENCY) {
                         new_frequency -= f_grid[frequency_pos];
                     } else {
                         new_frequency = DCO_MIN_FREQUENCY;
                     }
-                    if(new_frequency != frequency) {
+                    if(new_frequency != app_handle->settings->dco_frequency) {
                         if(!dco_set_frequency(new_frequency)) {
                             widget_trx_dco_error();
                             init = true;
                         } else {
-                            frequency = new_frequency;
+                            app_handle->settings->dco_frequency = new_frequency;
                         }
                     }
                 }

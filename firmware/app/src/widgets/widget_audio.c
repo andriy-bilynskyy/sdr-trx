@@ -38,22 +38,25 @@
 static void widget_audio_codec_error(void);
 
 
-void widget_audio(void) {
+void widget_audio(app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;
 
     trxctl_transmit(true);
 
-    bool ext_mic = false;
-    hwctl_ext_mic(ext_mic);
+    hwctl_ext_mic(app_handle->settings->hwctl_ext_mic);
 
     if(codec_start(CODEC_SR_96K, false)) {
         dsp_proc = dsp_proc_copy;
+        (void)codec_set_speaker_volume(app_handle->settings->codec_spk_volume);
+        (void)codec_set_headphone_volume(app_handle->settings->codec_hp_volume);
+        (void)codec_set_line_sensivity(app_handle->settings->codec_line_sensivity);
+        (void)codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity);
     } else {
         widget_audio_codec_error();
     }
-    for(;;) {
+    for(; app_handle->system_ctive;) {
 
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
@@ -62,26 +65,26 @@ void widget_audio(void) {
         ui_engine_button(WIDGET_AUDIO_TAG_EXIT,    5,    5,  20, 20, UI_ENGINE_FONT26, "-");
         ui_engine_text(0,                          30,   0,          UI_ENGINE_FONT29, "Audio", false);
         /* speaker volume */
-        codec_volume_t speaker = codec_get_speaker_volume();
+        app_handle->settings->codec_spk_volume = codec_get_speaker_volume();
         ui_engine_text(  0,                        20,   35,         UI_ENGINE_FONT27, "Speaker:", false);
-        ui_engine_toggle(WIDGET_AUDIO_TAG_SPKON,   20,   65, 50,     UI_ENGINE_FONT27, speaker.mute, "On", "Off");
-        ui_engine_slider(WIDGET_AUDIO_TAG_SPKVOL,  110,  65, ui_engine_xsize - 140, 15, ((uint32_t)(speaker.volume) * 0xFFFF) / CODEC_OUTPUT_MAX_VOLUME);
+        ui_engine_toggle(WIDGET_AUDIO_TAG_SPKON,   20,   65, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_spk_volume.mute, "On", "Off");
+        ui_engine_slider(WIDGET_AUDIO_TAG_SPKVOL,  110,  65, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->codec_spk_volume.volume) * 0xFFFF) / CODEC_OUTPUT_MAX_VOLUME);
         /* headphone volume */
-        codec_volume_t headphone = codec_get_headphone_volume();
+        app_handle->settings->codec_hp_volume = codec_get_headphone_volume();
         ui_engine_text(  0,                        20,   90,          UI_ENGINE_FONT27, "Headphone:", false);
-        ui_engine_toggle(WIDGET_AUDIO_TAG_HPON,    20,   120, 50,     UI_ENGINE_FONT27, headphone.mute, "On", "Off");
-        ui_engine_slider(WIDGET_AUDIO_TAG_HPVOL,   110,  120, ui_engine_xsize - 140, 15, ((uint32_t)(headphone.volume) * 0xFFFF) / CODEC_OUTPUT_MAX_VOLUME);
+        ui_engine_toggle(WIDGET_AUDIO_TAG_HPON,    20,   120, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_hp_volume.mute, "On", "Off");
+        ui_engine_slider(WIDGET_AUDIO_TAG_HPVOL,   110,  120, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->codec_hp_volume.volume) * 0xFFFF) / CODEC_OUTPUT_MAX_VOLUME);
         /* line input sensitivity */
-        codec_volume_t line = codec_get_input_volume();
+        app_handle->settings->codec_line_sensivity = codec_get_line_sensivity();
         ui_engine_text(  0,                        20,   145,         UI_ENGINE_FONT27, "Line input:", false);
-        ui_engine_toggle(WIDGET_AUDIO_TAG_LINEON,  20,   175, 50,     UI_ENGINE_FONT27, line.mute, "On", "Off");
-        ui_engine_slider(WIDGET_AUDIO_TAG_LINEVOL, 110,  175, ui_engine_xsize - 140, 15, ((uint32_t)(line.volume) * 0xFFFF) / CODEC_INPUT_MAX_VOLUME);
+        ui_engine_toggle(WIDGET_AUDIO_TAG_LINEON,  20,   175, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_line_sensivity.mute, "On", "Off");
+        ui_engine_slider(WIDGET_AUDIO_TAG_LINEVOL, 110,  175, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->codec_line_sensivity.volume) * 0xFFFF) / CODEC_INPUT_MAX_VOLUME);
         /* microphone sensitivity */
-        codec_volume_t mic = codec_get_mic_volume();
+        app_handle->settings->codec_mic_sensivity = codec_get_mic_sensivity();
         ui_engine_text(  0,                        20,   200,         UI_ENGINE_FONT27, "Microphone:", false);
-        ui_engine_toggle(WIDGET_AUDIO_TAG_MICON,   20,   230, 50,     UI_ENGINE_FONT27, mic.mute, "On", "Off");
-        ui_engine_toggle(WIDGET_AUDIO_TAG_MICVOL,  100,  230, 50,     UI_ENGINE_FONT27, mic.volume, "Norm", "Boost");
-        ui_engine_toggle(WIDGET_AUDIO_TAG_EXTMIC,  180,  230, 50,     UI_ENGINE_FONT27, ext_mic, "Int.", "Ext.");
+        ui_engine_toggle(WIDGET_AUDIO_TAG_MICON,   20,   230, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_mic_sensivity.mute, "On", "Off");
+        ui_engine_toggle(WIDGET_AUDIO_TAG_MICVOL,  100,  230, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_mic_sensivity.volume, "Norm", "Boost");
+        ui_engine_toggle(WIDGET_AUDIO_TAG_EXTMIC,  180,  230, 50,     UI_ENGINE_FONT27, app_handle->settings->hwctl_ext_mic, "Int.", "Ext.");
         /* source */
         codec_out_src_t src = codec_get_out_src();
         static const char * sources[] = {"None", "Mic.", "Line", "DAC"};
@@ -112,43 +115,43 @@ void widget_audio(void) {
                     break;
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_SPKON) {
-                    speaker.mute = !speaker.mute;
-                    if(!codec_set_speaker_volume(speaker)) {
+                    app_handle->settings->codec_spk_volume.mute = !app_handle->settings->codec_spk_volume.mute;
+                    if(!codec_set_speaker_volume(app_handle->settings->codec_spk_volume)) {
                         widget_audio_codec_error();
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_HPON) {
-                    headphone.mute = !headphone.mute;
-                    if(!codec_set_headphone_volume(headphone)) {
+                    app_handle->settings->codec_hp_volume.mute = !app_handle->settings->codec_hp_volume.mute;
+                    if(!codec_set_headphone_volume(app_handle->settings->codec_hp_volume)) {
                         widget_audio_codec_error();
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_LINEON) {
-                    line.mute = !line.mute;
-                    if(!codec_set_input_volume(line)) {
+                    app_handle->settings->codec_line_sensivity.mute = !app_handle->settings->codec_line_sensivity.mute;
+                    if(!codec_set_line_sensivity(app_handle->settings->codec_line_sensivity)) {
                         widget_audio_codec_error();
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICON) {
-                    mic.mute = !mic.mute;
-                    if(!codec_set_mic_volume(mic)) {
+                    app_handle->settings->codec_mic_sensivity.mute = !app_handle->settings->codec_mic_sensivity.mute;
+                    if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity)) {
                         widget_audio_codec_error();
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICVOL) {
-                    mic.volume = mic.volume ? 0 : CODEC_MIC_MAX_VOLUME;
-                    if(!codec_set_mic_volume(mic)) {
+                    app_handle->settings->codec_mic_sensivity.volume = app_handle->settings->codec_mic_sensivity.volume ? 0 : CODEC_MIC_MAX_VOLUME;
+                    if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity)) {
                         widget_audio_codec_error();
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_EXTMIC) {
-                    ext_mic = !ext_mic;
-                    hwctl_ext_mic(ext_mic);
+                    app_handle->settings->hwctl_ext_mic = !app_handle->settings->hwctl_ext_mic;
+                    hwctl_ext_mic(app_handle->settings->hwctl_ext_mic);
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_SRC) {
                     src = ((src == CODEC_OUT_DAC) ? CODEC_OUT_MUTE : (codec_out_src_t)(src + 1));
@@ -159,22 +162,22 @@ void widget_audio(void) {
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_SPKVOL) {
-                speaker.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
-                if(!codec_set_speaker_volume(speaker)) {
+                app_handle->settings->codec_spk_volume.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
+                if(!codec_set_speaker_volume(app_handle->settings->codec_spk_volume)) {
                     widget_audio_codec_error();
                     init = true;
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_HPVOL) {
-                headphone.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
-                if(!codec_set_headphone_volume(headphone)) {
+                app_handle->settings->codec_hp_volume.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
+                if(!codec_set_headphone_volume(app_handle->settings->codec_hp_volume)) {
                     widget_audio_codec_error();
                     init = true;
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_LINEVOL) {
-                line.volume = ((uint32_t)touch.value  * CODEC_INPUT_MAX_VOLUME) / 0xFFFF;
-                if(!codec_set_input_volume(line)) {
+                app_handle->settings->codec_line_sensivity.volume = ((uint32_t)touch.value  * CODEC_INPUT_MAX_VOLUME) / 0xFFFF;
+                if(!codec_set_line_sensivity(app_handle->settings->codec_line_sensivity)) {
                     widget_audio_codec_error();
                     init = true;
                 }

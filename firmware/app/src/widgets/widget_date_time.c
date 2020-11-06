@@ -34,13 +34,13 @@
 void widget_date_time_lse_fail();
 
 
-void widget_date_time(void) {
+void widget_date_time(app_handle_t * app_handle) {
 
     bool    init = true;
     bool    touched = false;
     uint8_t touched_cnt = WIDGET_DATE_TIME_TOUCH_SKIP_CNT;
 
-    for(;;) {
+    for(; app_handle->system_ctive;) {
         date_time_t ti = rtc_get_time();
         char buf[5];
 

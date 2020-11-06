@@ -29,18 +29,20 @@
 static void widget_sensors_rf_amp_error(void);
 
 
-void widget_sensors(void) {
+void widget_sensors(app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;
 
     bool rf_amp_on = false;
-    uint8_t rf_amp_value = RF_AMP_MIN;
 
     if(!rf_amp_start()) {
         widget_sensors_rf_amp_error();
+    } else if(rf_amp_on) {
+        rf_amp_bias1(app_handle->settings->rf_amp_bias);
+        rf_amp_bias1(app_handle->settings->rf_amp_bias);
     }
-    for(;;) {
+    for(; app_handle->system_ctive;) {
 
         char buf[16];
         uint8_t pos;
@@ -88,7 +90,7 @@ void widget_sensors(void) {
         /* RF amp button */
         ui_engine_button(WIDGET_SENSORS_TAG_PAON,  20,  ui_engine_ysize - 45, 50, 30, UI_ENGINE_FONT28, rf_amp_on ? "ON" : "OFF");
         /* RF amp slider */
-        ui_engine_slider(WIDGET_SENSORS_TAG_PAVAL, 110, ui_engine_ysize - 37, ui_engine_xsize - 140, 15, ((uint32_t)(rf_amp_value - RF_AMP_MIN) * 0xFFFF) / (RF_AMP_MAX - RF_AMP_MIN));
+        ui_engine_slider(WIDGET_SENSORS_TAG_PAVAL, 110, ui_engine_ysize - 37, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->rf_amp_bias - RF_AMP_MIN) * 0xFFFF) / (RF_AMP_MAX - RF_AMP_MIN));
 
         ui_engine_draw_end();
 
@@ -116,7 +118,7 @@ void widget_sensors(void) {
                 if(touch.tag == WIDGET_SENSORS_TAG_PAON) {
                     rf_amp_on = !rf_amp_on;
                     if(rf_amp_on) {
-                        if(!rf_amp_bias1(rf_amp_value) || !rf_amp_bias2(rf_amp_value)) {
+                        if(!rf_amp_bias1(app_handle->settings->rf_amp_bias) || !rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
                             widget_sensors_rf_amp_error();
                             init = true;
                         }
@@ -129,9 +131,9 @@ void widget_sensors(void) {
                 }
             }
             if(touch.tag == WIDGET_SENSORS_TAG_PAVAL) {
-                rf_amp_value = ((uint32_t)touch.value  * (RF_AMP_MAX - RF_AMP_MIN)) / 0xFFFF + RF_AMP_MIN;
+                app_handle->settings->rf_amp_bias = ((uint32_t)touch.value  * (RF_AMP_MAX - RF_AMP_MIN)) / 0xFFFF + RF_AMP_MIN;
                 if(rf_amp_on) {
-                    if(!rf_amp_bias1(rf_amp_value) || !rf_amp_bias2(rf_amp_value)) {
+                    if(!rf_amp_bias1(app_handle->settings->rf_amp_bias) || !rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
                         widget_sensors_rf_amp_error();
                         init = true;
                     }

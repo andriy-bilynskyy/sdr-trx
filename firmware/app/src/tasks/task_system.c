@@ -20,23 +20,18 @@
 #include "trxctl.h"
 #include "adc.h"
 #include "i2c_master.h"
+#include "app_data.h"
 
 
 #define TASK_SYSTEM_PERIOD_MS                     1000
-#define TASK_SYSTEM_JOIN_MS                       5
+#define TASK_SYSTEM_JOIN_MS                       50
 #define TASK_SYSTEM_NOTIFY_LO_VOLTAGE_MS          (5UL * 60 * 1000)
 #define TASK_SYSTEM_NOTIFY_HIGH_TEMPERATURE_MS    (1UL * 60 * 1000)
 
 
-static volatile tasks_app_handle_t app_hnd = {
-    .system_ctive = true,
-    .running_tasks_cnt = 0
-};
-
-
 void task_system(void * param) {
 
-    (void)param;
+    app_handle_t * app_handle = (app_handle_t *)param;
     DBG_OUT("system task started");
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
@@ -51,9 +46,13 @@ void task_system(void * param) {
     adc_start();
     i2c_master_start();
 
-    (void)xTaskCreate(task_rtc_start, TASK_RTC_START_NAME, TASK_RTC_START_STACK, (void *)&app_hnd, TASK_RTC_START_PRIO, NULL);
-    (void)xTaskCreate(task_dsp,       TASK_DSP_NAME,       TASK_DSP_STACK,       (void *)&app_hnd, TASK_DSP_PRIO,       NULL);
-    (void)xTaskCreate(task_ui,        TASK_UI_NAME,        TASK_UI_STACK,        (void *)&app_hnd, TASK_UI_PRIO,        NULL);
+    if(!app_settings_load()) {
+        task_ui_notify_storage_fail();
+    }
+
+    (void)xTaskCreate(task_rtc_start, TASK_RTC_START_NAME, TASK_RTC_START_STACK, param, TASK_RTC_START_PRIO, NULL);
+    (void)xTaskCreate(task_dsp,       TASK_DSP_NAME,       TASK_DSP_STACK,       param, TASK_DSP_PRIO,       NULL);
+    (void)xTaskCreate(task_ui,        TASK_UI_NAME,        TASK_UI_STACK,        param, TASK_UI_PRIO,        NULL);
 
     TickType_t wake_time = xTaskGetTickCount();
 
@@ -63,7 +62,7 @@ void task_system(void * param) {
     bool       high_temperature_warn      = false;
     TickType_t high_temperature_warn_time = xTaskGetTickCount();
 
-    for(; app_hnd.system_ctive;) {
+    for(; app_handle->system_ctive;) {
 
         vTaskDelayUntil(&wake_time, TASK_SYSTEM_PERIOD_MS);
 
@@ -90,9 +89,11 @@ void task_system(void * param) {
         }
     }
 
-    for(; app_hnd.running_tasks_cnt ;) {
+    for(; app_handle->running_tasks_cnt ;) {
         vTaskDelay(TASK_SYSTEM_JOIN_MS);
     }
+
+    (void)app_setting_save();
 
     i2c_master_stop();
     adc_stop();
