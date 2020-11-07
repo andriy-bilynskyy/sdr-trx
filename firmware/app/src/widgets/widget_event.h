@@ -14,6 +14,7 @@
 #define __WIDGET_EVENT_H
 
 
+#include "app_data_types.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -27,9 +28,10 @@
 #define WIDGET_EVENT_OVER_HEAT      (1<<2)
 #define WIDGET_EVENT_STORAGE_FAIL   (1<<3)
 #define WIDGET_EVENT_RTC_FAIL       (1<<4)
+#define WIDGET_EVENT_PWR_MENU       (1<<5)
 
 
-bool widget_event(uint32_t event_flg);
+bool widget_event(app_handle_t * app_handle, uint32_t event_flg);
 
 
 #endif

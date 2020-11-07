@@ -6,21 +6,17 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    Widgets header file
+    Widget power menu header file
 */
 
-#ifndef __WIDGETS_H
-#define __WIDGETS_H
+#ifndef __WIDGET_PWR_MENU_H
+#define __WIDGET_PWR_MENU_H
 
 
-#include "widget_event.h"
-#include "widget_pwr_menu.h"
-#include "widget_main.h"
-#include "widget_date_time.h"
-#include "widget_sensors.h"
-#include "widget_trx.h"
-#include "widget_audio.h"
-#include "widget_ui.h"
+#include "app_data_types.h"
+
+
+void widget_pwr_menu(app_handle_t * app_handle);
 
 
 #endif

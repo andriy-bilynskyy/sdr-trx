@@ -27,7 +27,7 @@
 #define WIDGET_TRX_FREQUENCY          10000000UL
 
 
-static void widget_trx_dco_error(void);
+static void widget_trx_dco_error(app_handle_t * app_handle);
 
 
 void widget_trx(app_handle_t * app_handle) {
@@ -43,7 +43,7 @@ void widget_trx(app_handle_t * app_handle) {
     hwctl_rx_power(true);
 
     if(!dco_start(app_handle->settings->dco_frequency)) {
-        widget_trx_dco_error();
+        widget_trx_dco_error(app_handle);
     }
 
     for(; app_handle->system_ctive;) {
@@ -75,7 +75,7 @@ void widget_trx(app_handle_t * app_handle) {
         ui_engine_draw_end();
 
         uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
-        if(widget_event(event_flg)) {
+        if(widget_event(app_handle, event_flg)) {
             init = true;
         }
 
@@ -105,7 +105,7 @@ void widget_trx(app_handle_t * app_handle) {
                     }
                     if(new_frequency != app_handle->settings->dco_frequency) {
                         if(!dco_set_frequency(new_frequency)) {
-                            widget_trx_dco_error();
+                            widget_trx_dco_error(app_handle);
                             init = true;
                         } else {
                             app_handle->settings->dco_frequency = new_frequency;
@@ -121,7 +121,7 @@ void widget_trx(app_handle_t * app_handle) {
                     }
                     if(new_frequency != app_handle->settings->dco_frequency) {
                         if(!dco_set_frequency(new_frequency)) {
-                            widget_trx_dco_error();
+                            widget_trx_dco_error(app_handle);
                             init = true;
                         } else {
                             app_handle->settings->dco_frequency = new_frequency;
@@ -144,8 +144,8 @@ void widget_trx(app_handle_t * app_handle) {
 }
 
 
-static void widget_trx_dco_error(void) {
+static void widget_trx_dco_error(app_handle_t * app_handle) {
 
     const char * argv[] = {"DCO failed"};
-    ui_notify(1, argv, "Ok");
+    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }

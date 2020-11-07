@@ -23,7 +23,6 @@
 #define WIDGET_MAIN_TAG_TRX             3
 #define WIDGET_MAIN_TAG_AUDIO           4
 #define WIDGET_MAIN_TAG_UI              5
-#define WIDGET_MAIN_TAG_SHUTDOWN        6
 
 
 void widget_main(app_handle_t * app_handle) {
@@ -44,13 +43,11 @@ void widget_main(app_handle_t * app_handle) {
         ui_engine_button(WIDGET_MAIN_TAG_AUDIO,     20,                    200, 180, 40, UI_ENGINE_FONT30, "Audio");
         /* Interface */
         ui_engine_button(WIDGET_MAIN_TAG_UI,        ui_engine_xsize - 200, 50,  180, 40, UI_ENGINE_FONT30, "Interface");
-        /* Reboot */
-        ui_engine_button(WIDGET_MAIN_TAG_SHUTDOWN,  ui_engine_xsize - 200, 100, 180, 40, UI_ENGINE_FONT30, "Shutdown");
 
         ui_engine_draw_end();
 
         uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
-        if(widget_event(event_flg)) {
+        if(widget_event(app_handle, event_flg)) {
             init = true;
         }
         ui_engine_touch_t touch = ui_engine_get_touch();
@@ -81,9 +78,6 @@ void widget_main(app_handle_t * app_handle) {
         if(touch.tag == WIDGET_MAIN_TAG_UI) {
             widget_ui(app_handle);
             init = true;
-        }
-        if(touch.tag == WIDGET_MAIN_TAG_SHUTDOWN) {
-            app_handle->system_ctive = false;
         }
     }
 }

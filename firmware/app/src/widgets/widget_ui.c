@@ -38,7 +38,7 @@ void widget_ui(app_handle_t * app_handle) {
         ui_engine_draw_end();
 
         uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
-        if(widget_event(event_flg)) {
+        if(widget_event(app_handle, event_flg)) {
             init = true;
         }
 

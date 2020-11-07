@@ -10,16 +10,21 @@
 */
 
 
-#include "widget_event.h"
+#include "widgets.h"
 #include "ui_notify.h"
 #include "adc.h"
 #include "misc_func.h"
 #include <string.h>
 
 
-bool widget_event(uint32_t event_flg) {
+bool widget_event(app_handle_t * app_handle, uint32_t event_flg) {
 
     bool result = false;
+
+    if(event_flg & WIDGET_EVENT_PWR_MENU) {
+        widget_pwr_menu(app_handle);
+        result = true;
+    }
 
     if(event_flg & WIDGET_EVENT_LOW_BATT) {
         char buf[20] = "V = ";
@@ -31,7 +36,7 @@ bool widget_event(uint32_t event_flg) {
                                "", "",
                                buf
                               };
-        ui_notify(4, argv, "Ok");
+        ui_notify(4, argv, "Ok", &app_handle->system_ctive);
         result = true;
     }
 
@@ -52,19 +57,19 @@ bool widget_event(uint32_t event_flg) {
                                buf1,
                                buf2
                               };
-        ui_notify(5, argv, "Ok");
+        ui_notify(5, argv, "Ok", &app_handle->system_ctive);
         result = true;
     }
 
     if(event_flg & WIDGET_EVENT_STORAGE_FAIL) {
         const char * argv[] = {"Storage failed"};
-        ui_notify(1, argv, "Ok");
+        ui_notify(1, argv, "Ok", &app_handle->system_ctive);
         result = true;
     }
 
     if(event_flg & WIDGET_EVENT_RTC_FAIL) {
         const char * argv[] = {"RTC failed"};
-        ui_notify(1, argv, "Ok");
+        ui_notify(1, argv, "Ok", &app_handle->system_ctive);
         result = true;
     }
 

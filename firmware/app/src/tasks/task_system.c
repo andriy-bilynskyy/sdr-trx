@@ -15,12 +15,14 @@
 #include "task.h"
 #include "debug.h"
 #include "stm32f4xx_conf.h"
+#include "system.h"
 #include "critical_err.h"
 #include "hwctl.h"
 #include "trxctl.h"
 #include "adc.h"
 #include "i2c_master.h"
 #include "app_data.h"
+#include "rf_amp.h"
 
 
 #define TASK_SYSTEM_PERIOD_MS                     1000
@@ -41,6 +43,7 @@ void task_system(void * param) {
                             RCC_AHB1Periph_GPIOB |
                             RCC_AHB1Periph_GPIOC |
                             RCC_AHB1Periph_GPIOD, ENABLE);
+    system_pwr_hold_on();
     hwctl_start();
     trxctl_start();
     adc_start();
@@ -62,6 +65,8 @@ void task_system(void * param) {
     bool       high_temperature_warn      = false;
     TickType_t high_temperature_warn_time = xTaskGetTickCount();
 
+    bool       temperature_protection = false;
+
     for(; app_handle->system_ctive;) {
 
         vTaskDelayUntil(&wake_time, TASK_SYSTEM_PERIOD_MS);
@@ -77,6 +82,9 @@ void task_system(void * param) {
         } else {
             low_voltage_warn = false;
         }
+        if(adc_batt_voltage_value() < adc_batt_lo_voltage_min_value) {
+            app_handle->system_ctive = false;
+        }
 
         if(adc_temperature1_value() < adc_temperature_high_warn_value || adc_temperature2_value() < adc_temperature_high_warn_value) {
             if(!high_temperature_warn || (xTaskGetTickCount() - high_temperature_warn_time > TASK_SYSTEM_NOTIFY_HIGH_TEMPERATURE_MS)) {
@@ -87,6 +95,21 @@ void task_system(void * param) {
         } else {
             high_temperature_warn = false;
         }
+        if(temperature_protection) {
+            if(adc_temperature1_value() > adc_temperature_high_back_value && adc_temperature2_value() > adc_temperature_high_back_value) {
+                temperature_protection = false;
+                (void)rf_amp_bias1(app_handle->settings->rf_amp_bias);
+                (void)rf_amp_bias2(app_handle->settings->rf_amp_bias);
+                DBG_OUT("RF amplifier on");
+            }
+        } else {
+            if(adc_temperature1_value() < adc_temperature_high_max_value || adc_temperature2_value() < adc_temperature_high_max_value) {
+                temperature_protection = true;
+                (void)rf_amp_off();
+                DBG_OUT("RF amplifier off");
+            }
+        }
+
     }
 
     for(; app_handle->running_tasks_cnt ;) {
@@ -99,6 +122,7 @@ void task_system(void * param) {
     adc_stop();
     trxctl_stop();
     hwctl_stop();
+    system_pwr_hold_off();
     RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA |
                             RCC_AHB1Periph_GPIOB |
                             RCC_AHB1Periph_GPIOC |

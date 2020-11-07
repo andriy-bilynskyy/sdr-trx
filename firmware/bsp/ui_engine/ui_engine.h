@@ -14,6 +14,7 @@
 #define __UI_ENGINE_H
 
 
+#include "ui_engine_events.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <time.h>

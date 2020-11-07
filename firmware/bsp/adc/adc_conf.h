@@ -58,7 +58,10 @@
 /*******************************************************************************
  * Critical values
  ******************************************************************************/
-#define ADC_VBAT_LO_V_WARN          8.7f
-#define ADC_TEMPERATURE_HIGH_WARN   100
+#define ADC_VBAT_LO_V_WARN          (3.0f*3)
+#define ADC_VBAT_LO_V_MIN           (2.8f*3)
+#define ADC_TEMPERATURE_HIGH_WARN   75
+#define ADC_TEMPERATURE_HIGH_MAX    90
+#define ADC_TEMPERATURE_HIGH_BACK   60
 
 #endif

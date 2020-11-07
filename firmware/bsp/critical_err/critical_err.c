@@ -12,6 +12,7 @@
 
 #include "critical_err.h"
 #include "stm32f4xx_conf.h"
+#include "system.h"
 #include "hwctl.h"
 #include "ui_engine.h"
 #include "ui_notify.h"
@@ -115,7 +116,7 @@ void critical_err_mode(void) {
                             RCC_AHB1Periph_GPIOB |
                             RCC_AHB1Periph_GPIOC |
                             RCC_AHB1Periph_GPIOD, ENABLE);
-
+    system_pwr_hold_on();
     hwctl_start();
     hwctl_bkl_power(true);
     if(ui_engine_start()) {
@@ -153,6 +154,7 @@ void critical_err_mode(void) {
     hwctl_bkl_power(false);
     hwctl_stop();
     hwctl_stop();
+    system_pwr_hold_off();
     RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA |
                             RCC_AHB1Periph_GPIOB |
                             RCC_AHB1Periph_GPIOC |
@@ -353,7 +355,7 @@ void critical_err_malloc_failed(void) {
 static void critical_err_widget_default(void) {
 
     const char * argv[] = {"Unknown critical error"};
-    ui_notify(1, argv, "Reboot");
+    ui_notify(1, argv, "Reboot", NULL);
 }
 
 static void critical_err_widget_hardfault(void) {
@@ -378,7 +380,7 @@ static void critical_err_widget_hardfault(void) {
                            regs_str[4], regs_str[5], regs_str[6], regs_str[7]
                           };
 
-    ui_notify(9, argv, "Reboot");
+    ui_notify(9, argv, "Reboot", NULL);
 }
 
 static void critical_err_widget_unhandledint(void) {
@@ -390,13 +392,13 @@ static void critical_err_widget_unhandledint(void) {
                            buf
                           };
 
-    ui_notify(4, argv, "Reboot");
+    ui_notify(4, argv, "Reboot", NULL);
 }
 
 static void critical_err_widget_hsefail(void) {
 
     const char * argv[] = {"HSE Failed"};
-    ui_notify(1, argv, "Reboot");
+    ui_notify(1, argv, "Reboot", NULL);
 }
 
 #ifdef USE_FULL_ASSERT
@@ -409,14 +411,14 @@ static void critical_err_widget_assert(void) {
                            critical_err_data.file, buf
                           };
 
-    ui_notify(5, argv, "Reboot");
+    ui_notify(5, argv, "Reboot", NULL);
 }
 #endif
 
 static void critical_err_widget_stackoverflowed(void) {
 
     const char * argv[] = {"System stack overflowed"};
-    ui_notify(1, argv, "Reboot");
+    ui_notify(1, argv, "Reboot", NULL);
 }
 
 static void critical_err_widget_taskstackoverflowed(void) {
@@ -426,11 +428,11 @@ static void critical_err_widget_taskstackoverflowed(void) {
                            (char *)critical_err_data.task_name
                           };
 
-    ui_notify(4, argv, "Reboot");
+    ui_notify(4, argv, "Reboot", NULL);
 }
 
 static void critical_err_widget_mallocfailed(void) {
 
     const char * argv[] = {"Malloc failed"};
-    ui_notify(1, argv, "Reboot");
+    ui_notify(1, argv, "Reboot", NULL);
 }

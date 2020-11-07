@@ -35,7 +35,7 @@
 #define WIDGET_AUDIO_TAG_SRC          11
 
 
-static void widget_audio_codec_error(void);
+static void widget_audio_codec_error(app_handle_t * app_handle);
 
 
 void widget_audio(app_handle_t * app_handle) {
@@ -54,7 +54,7 @@ void widget_audio(app_handle_t * app_handle) {
         (void)codec_set_line_sensivity(app_handle->settings->codec_line_sensivity);
         (void)codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity);
     } else {
-        widget_audio_codec_error();
+        widget_audio_codec_error(app_handle);
     }
     for(; app_handle->system_ctive;) {
 
@@ -94,7 +94,7 @@ void widget_audio(app_handle_t * app_handle) {
         ui_engine_draw_end();
 
         uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
-        if(widget_event(event_flg)) {
+        if(widget_event(app_handle, event_flg)) {
             init = true;
         }
 
@@ -117,35 +117,35 @@ void widget_audio(app_handle_t * app_handle) {
                 if(touch.tag == WIDGET_AUDIO_TAG_SPKON) {
                     app_handle->settings->codec_spk_volume.mute = !app_handle->settings->codec_spk_volume.mute;
                     if(!codec_set_speaker_volume(app_handle->settings->codec_spk_volume)) {
-                        widget_audio_codec_error();
+                        widget_audio_codec_error(app_handle);
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_HPON) {
                     app_handle->settings->codec_hp_volume.mute = !app_handle->settings->codec_hp_volume.mute;
                     if(!codec_set_headphone_volume(app_handle->settings->codec_hp_volume)) {
-                        widget_audio_codec_error();
+                        widget_audio_codec_error(app_handle);
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_LINEON) {
                     app_handle->settings->codec_line_sensivity.mute = !app_handle->settings->codec_line_sensivity.mute;
                     if(!codec_set_line_sensivity(app_handle->settings->codec_line_sensivity)) {
-                        widget_audio_codec_error();
+                        widget_audio_codec_error(app_handle);
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICON) {
                     app_handle->settings->codec_mic_sensivity.mute = !app_handle->settings->codec_mic_sensivity.mute;
                     if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity)) {
-                        widget_audio_codec_error();
+                        widget_audio_codec_error(app_handle);
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICVOL) {
                     app_handle->settings->codec_mic_sensivity.volume = app_handle->settings->codec_mic_sensivity.volume ? 0 : CODEC_MIC_MAX_VOLUME;
                     if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity)) {
-                        widget_audio_codec_error();
+                        widget_audio_codec_error(app_handle);
                         init = true;
                     }
                 }
@@ -156,7 +156,7 @@ void widget_audio(app_handle_t * app_handle) {
                 if(touch.tag == WIDGET_AUDIO_TAG_SRC) {
                     src = ((src == CODEC_OUT_DAC) ? CODEC_OUT_MUTE : (codec_out_src_t)(src + 1));
                     if(!codec_set_out_src(src)) {
-                        widget_audio_codec_error();
+                        widget_audio_codec_error(app_handle);
                         init = true;
                     }
                 }
@@ -164,21 +164,21 @@ void widget_audio(app_handle_t * app_handle) {
             if(touch.tag == WIDGET_AUDIO_TAG_SPKVOL) {
                 app_handle->settings->codec_spk_volume.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
                 if(!codec_set_speaker_volume(app_handle->settings->codec_spk_volume)) {
-                    widget_audio_codec_error();
+                    widget_audio_codec_error(app_handle);
                     init = true;
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_HPVOL) {
                 app_handle->settings->codec_hp_volume.volume = ((uint32_t)touch.value  * CODEC_OUTPUT_MAX_VOLUME) / 0xFFFF;
                 if(!codec_set_headphone_volume(app_handle->settings->codec_hp_volume)) {
-                    widget_audio_codec_error();
+                    widget_audio_codec_error(app_handle);
                     init = true;
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_LINEVOL) {
                 app_handle->settings->codec_line_sensivity.volume = ((uint32_t)touch.value  * CODEC_INPUT_MAX_VOLUME) / 0xFFFF;
                 if(!codec_set_line_sensivity(app_handle->settings->codec_line_sensivity)) {
-                    widget_audio_codec_error();
+                    widget_audio_codec_error(app_handle);
                     init = true;
                 }
             }
@@ -189,8 +189,8 @@ void widget_audio(app_handle_t * app_handle) {
 }
 
 
-static void widget_audio_codec_error(void) {
+static void widget_audio_codec_error(app_handle_t * app_handle) {
 
     const char * argv[] = {"Codec error"};
-    ui_notify(1, argv, "Ok");
+    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }

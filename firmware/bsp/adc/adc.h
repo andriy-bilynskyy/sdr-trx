@@ -23,7 +23,11 @@ typedef struct {
 
 
 extern const uint16_t adc_batt_lo_voltage_warn_value;
+extern const uint16_t adc_batt_lo_voltage_min_value;
+
 extern const uint16_t adc_temperature_high_warn_value;
+extern const uint16_t adc_temperature_high_max_value;
+extern const uint16_t adc_temperature_high_back_value;
 
 
 void        adc_start(void);

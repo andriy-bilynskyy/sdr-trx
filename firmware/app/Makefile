@@ -65,6 +65,7 @@ include ../bsp/hwctl/unit.mk
 include ../bsp/led/unit.mk
 include ../bsp/critical_err/unit.mk
 include ../bsp/misc/unit.mk
+include ../bsp/system/unit.mk
 include ../common/misc/unit.mk
 include ../common/dbg/unit.mk
 include ../stm/unit.mk

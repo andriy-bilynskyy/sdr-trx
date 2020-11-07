@@ -31,7 +31,7 @@
 #define WIDGET_DATE_TIME_TOUCH_SKIP_CNT 5
 
 
-void widget_date_time_lse_fail();
+void widget_date_time_lse_fail(app_handle_t * app_handle);
 
 
 void widget_date_time(app_handle_t * app_handle) {
@@ -84,7 +84,7 @@ void widget_date_time(app_handle_t * app_handle) {
         ui_engine_draw_end();
 
         uint32_t event_flg = ui_engine_event_wait(WIDGET_EVENT_MASK);
-        if(widget_event(event_flg)) {
+        if(widget_event(app_handle, event_flg)) {
             init = true;
         }
 
@@ -109,7 +109,7 @@ void widget_date_time(app_handle_t * app_handle) {
                             ti.day--;
                         }
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail();
+                            widget_date_time_lse_fail(app_handle);
                             init = true;
                         }
                     }
@@ -121,7 +121,7 @@ void widget_date_time(app_handle_t * app_handle) {
                             ti.day--;
                         }
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail();
+                            widget_date_time_lse_fail(app_handle);
                             init = true;
                         }
                     }
@@ -136,7 +136,7 @@ void widget_date_time(app_handle_t * app_handle) {
                         ti.day--;
                     }
                     if(!rtc_set_time(&ti)) {
-                        widget_date_time_lse_fail();
+                        widget_date_time_lse_fail(app_handle);
                         init = true;
                     }
                 }
@@ -147,7 +147,7 @@ void widget_date_time(app_handle_t * app_handle) {
                         ti.hours = 0;
                     }
                     if(!rtc_set_time(&ti)) {
-                        widget_date_time_lse_fail();
+                        widget_date_time_lse_fail(app_handle);
                         init = true;
                     }
                 }
@@ -158,7 +158,7 @@ void widget_date_time(app_handle_t * app_handle) {
                         ti.minutes = 0;
                     }
                     if(!rtc_set_time(&ti)) {
-                        widget_date_time_lse_fail();
+                        widget_date_time_lse_fail(app_handle);
                         init = true;
                     }
                 }
@@ -166,7 +166,7 @@ void widget_date_time(app_handle_t * app_handle) {
                     if(ti.seconds) {
                         ti.seconds = 0;
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail();
+                            widget_date_time_lse_fail(app_handle);
                             init = true;
                         }
                     }
@@ -175,7 +175,7 @@ void widget_date_time(app_handle_t * app_handle) {
                     if(ti.day != touch.tag) {
                         ti.day = touch.tag;
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail();
+                            widget_date_time_lse_fail(app_handle);
                             init = true;
                         }
                     }
@@ -192,8 +192,8 @@ void widget_date_time(app_handle_t * app_handle) {
     }
 }
 
-void widget_date_time_lse_fail(void) {
+void widget_date_time_lse_fail(app_handle_t * app_handle) {
 
     const char * argv[] = {"LSE Failed"};
-    ui_notify(1, argv, "Ok");
+    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }

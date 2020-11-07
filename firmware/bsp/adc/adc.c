@@ -17,9 +17,17 @@
 
 
 const uint16_t adc_batt_lo_voltage_warn_value  = (uint16_t)(ADC_VBAT_LO_V_WARN / ADC_VBAT_SCALING);
+const uint16_t adc_batt_lo_voltage_min_value   = (uint16_t)(ADC_VBAT_LO_V_MIN / ADC_VBAT_SCALING);
+
 const uint16_t adc_temperature_high_warn_value =
     (uint16_t)((expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_WARN) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_WARN + 273))) * 4095) /
                (expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_WARN) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_WARN + 273))) + 1));
+const uint16_t adc_temperature_high_max_value =
+    (uint16_t)((expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_MAX) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_MAX + 273))) * 4095) /
+               (expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_MAX) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_MAX + 273))) + 1));
+const uint16_t adc_temperature_high_back_value =
+    (uint16_t)((expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_BACK) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_BACK + 273))) * 4095) /
+               (expf((((float)ADC_TEMPERATURE_T0 - ADC_TEMPERATURE_HIGH_BACK) * ADC_TEMPERATURE_B) / ((ADC_TEMPERATURE_T0 + 273) * (ADC_TEMPERATURE_HIGH_BACK + 273))) + 1));
 
 
 static volatile uint16_t adc_data[ADC_FILTER_ORDER][ADC_NUM_CH] = {0};
