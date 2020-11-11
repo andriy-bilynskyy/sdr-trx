@@ -12,7 +12,6 @@
 
 #include "widgets.h"
 #include "ui_engine.h"
-#include "ui_notify.h"
 #include "misc_func.h"
 #include "adc.h"
 #include "rf_amp.h"
@@ -26,9 +25,6 @@
 #define WIDGET_SENSORS_TAG_PAVAL      3
 
 
-static void widget_sensors_rf_amp_error(app_handle_t * app_handle);
-
-
 void widget_sensors(app_handle_t * app_handle) {
 
     bool init = true;
@@ -37,7 +33,7 @@ void widget_sensors(app_handle_t * app_handle) {
     bool rf_amp_on = false;
 
     if(!rf_amp_start()) {
-        widget_sensors_rf_amp_error(app_handle);
+        widget_error_rf_amp(app_handle);
     } else if(rf_amp_on) {
         rf_amp_bias1(app_handle->settings->rf_amp_bias);
         rf_amp_bias1(app_handle->settings->rf_amp_bias);
@@ -119,12 +115,12 @@ void widget_sensors(app_handle_t * app_handle) {
                     rf_amp_on = !rf_amp_on;
                     if(rf_amp_on) {
                         if(!rf_amp_bias1(app_handle->settings->rf_amp_bias) || !rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
-                            widget_sensors_rf_amp_error(app_handle);
+                            widget_error_rf_amp(app_handle);
                             init = true;
                         }
                     } else {
                         if(!rf_amp_off()) {
-                            widget_sensors_rf_amp_error(app_handle);
+                            widget_error_rf_amp(app_handle);
                             init = true;
                         }
                     }
@@ -134,7 +130,7 @@ void widget_sensors(app_handle_t * app_handle) {
                 app_handle->settings->rf_amp_bias = ((uint32_t)touch.value  * (RF_AMP_MAX - RF_AMP_MIN)) / 0xFFFF + RF_AMP_MIN;
                 if(rf_amp_on) {
                     if(!rf_amp_bias1(app_handle->settings->rf_amp_bias) || !rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
-                        widget_sensors_rf_amp_error(app_handle);
+                        widget_error_rf_amp(app_handle);
                         init = true;
                     }
                 }
@@ -143,11 +139,4 @@ void widget_sensors(app_handle_t * app_handle) {
         }
     }
     rf_amp_stop();
-}
-
-
-static void widget_sensors_rf_amp_error(app_handle_t * app_handle) {
-
-    const char * argv[] = {"RF amplifier error"};
-    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }

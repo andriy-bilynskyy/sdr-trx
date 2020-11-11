@@ -33,29 +33,37 @@ static struct {
 
     .header   = {
         .marker                 = 0xAD0CC0DE,
-        .version                = 0                     /* !!! <- Increment on each app_settings_t modification */
+        .version                = 1                     /* !!! <- Increment on each app_settings_t modification */
     },
     /**************************************************************************
      * Default application settings
      **************************************************************************/
     .settings = {
-        .ui_engine_brightness   = 100,
-        .codec_spk_volume       = {.mute = false, .volume = 0x49},
-        .codec_hp_volume        = {.mute = false, .volume = 0x49},
-        .codec_line_sensivity   = {.mute = false, .volume = 0x17},
-        .codec_mic_sensivity    = {.mute = false, .volume = 0x01},
-        .hwctl_ext_mic          = false,
-        .dco_frequency          = 10000000,
-        .rf_amp_bias            = RF_AMP_VAL(3.3f)
+        .ui_engine_brightness       = 100,
+        .codec_samplerate           = CODEC_SR_96K,
+        .codec_spk_volume           = {.mute = false, .volume = 0x49},
+        .codec_hp_volume            = {.mute = false, .volume = 0x49},
+        .codec_tx_line_sensivity    = {.mute = false, .volume = 0x17},
+        .codec_mic_sensivity        = {.mute = false, .volume = 0x01},
+        .hwctl_ext_mic              = false,
+        .dco_frequency              = 10000000,
+        .rf_amp_bias                = RF_AMP_VAL(3.3f),
+        .transmission_inp_src       = CODEC_INP_MIC
     }
 
+};
+
+static app_ctl_state_t app_ctl_state = {
+    .transmission                   = false,                           /* PTT pressed */
+    .rx_line_sensivity              = {.mute = false, .volume = 0x17}  /* adjustment during reception DSP process */
 };
 
 
 volatile app_handle_t app_handle = {
     .system_ctive = true,
     .running_tasks_cnt = 0,
-    .settings = &app_settings.settings
+    .settings = &app_settings.settings,
+    .ctl_state = &app_ctl_state
 };
 
 

@@ -15,6 +15,7 @@
 
 #include "widget_event.h"
 #include "widget_pwr_menu.h"
+#include "widget_errors.h"
 #include "widget_main.h"
 #include "widget_date_time.h"
 #include "widget_sensors.h"

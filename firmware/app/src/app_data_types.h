@@ -32,14 +32,24 @@
  ******************************************************************************/
 typedef struct {
     uint8_t             ui_engine_brightness;
+    codec_sample_rate_t codec_samplerate;
     codec_volume_t      codec_spk_volume;
     codec_volume_t      codec_hp_volume;
-    codec_volume_t      codec_line_sensivity;
+    codec_volume_t      codec_tx_line_sensivity;
     codec_volume_t      codec_mic_sensivity;
     bool                hwctl_ext_mic;
     uint32_t            dco_frequency;
     uint8_t             rf_amp_bias;
+    codec_inp_src_t     transmission_inp_src;
 } app_settings_t;
+
+/******************************************************************************
+ * Current application non-persist controls and states
+ ******************************************************************************/
+typedef struct {
+    bool                transmission;
+    codec_volume_t      rx_line_sensivity;
+} app_ctl_state_t;
 
 /******************************************************************************
  * Application handler
@@ -48,6 +58,7 @@ typedef struct {
     bool                system_ctive;
     uint32_t            running_tasks_cnt;
     app_settings_t *    settings;
+    app_ctl_state_t *   ctl_state;
 } app_handle_t;
 
 

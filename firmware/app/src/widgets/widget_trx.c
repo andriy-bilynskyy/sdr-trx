@@ -12,22 +12,19 @@
 
 #include "widgets.h"
 #include "ui_engine.h"
-#include "ui_notify.h"
-#include "hwctl.h"
-#include "dco.h"
+#include "rf_unit.h"
 
 
 /* active widgets tags definitions */
 #define WIDGET_TRX_TAG_EXIT           50
 #define WIDGET_TRX_TAG_UP_F           51
 #define WIDGET_TRX_TAG_DOWN_F         52
+#define WIDGET_TRX_TAG_PTT            53
 /* continue touch reporting after first touch */
 #define WIDGET_TRX_TOUCH_SKIP_CNT     5
-/* initial frequency */
-#define WIDGET_TRX_FREQUENCY          10000000UL
 
 
-static void widget_trx_dco_error(app_handle_t * app_handle);
+static bool widget_trx_show_errors(app_handle_t * app_handle, rf_unit_state_t state);
 
 
 void widget_trx(app_handle_t * app_handle) {
@@ -38,13 +35,7 @@ void widget_trx(app_handle_t * app_handle) {
     bool touched = false;
     uint8_t touched_cnt = WIDGET_TRX_TOUCH_SKIP_CNT;
 
-    hwctl_start();
-    hwctl_tx_power(true);
-    hwctl_rx_power(true);
-
-    if(!dco_start(app_handle->settings->dco_frequency)) {
-        widget_trx_dco_error(app_handle);
-    }
+    (void)widget_trx_show_errors(app_handle, rf_unit_start(app_handle));
 
     for(; app_handle->system_ctive;) {
 
@@ -69,8 +60,11 @@ void widget_trx(app_handle_t * app_handle) {
             }
         }
         /* Frequency control buttons */
-        ui_engine_button(WIDGET_TRX_TAG_UP_F,   300,  50, 70, 30, UI_ENGINE_FONT28, "UP");
-        ui_engine_button(WIDGET_TRX_TAG_DOWN_F, 380,  50, 70, 30, UI_ENGINE_FONT28, "DOWN");
+        ui_engine_button(WIDGET_TRX_TAG_UP_F,   300, 50,                   70, 30, UI_ENGINE_FONT28, "UP");
+        ui_engine_button(WIDGET_TRX_TAG_DOWN_F, 380, 50,                   70, 30, UI_ENGINE_FONT28, "DOWN");
+
+        /* PTT button */
+        ui_engine_button(WIDGET_TRX_TAG_PTT,    20,  ui_engine_ysize - 50, 80, 30, UI_ENGINE_FONT27, app_handle->ctl_state->transmission ? "Transmit" : "Receive");
 
         ui_engine_draw_end();
 
@@ -104,12 +98,8 @@ void widget_trx(app_handle_t * app_handle) {
                         new_frequency = DCO_MAX_FREQUENCY;
                     }
                     if(new_frequency != app_handle->settings->dco_frequency) {
-                        if(!dco_set_frequency(new_frequency)) {
-                            widget_trx_dco_error(app_handle);
-                            init = true;
-                        } else {
-                            app_handle->settings->dco_frequency = new_frequency;
-                        }
+                        app_handle->settings->dco_frequency = new_frequency;
+                        init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
                     }
                 }
                 if(touch.tag == WIDGET_TRX_TAG_DOWN_F) {
@@ -120,13 +110,13 @@ void widget_trx(app_handle_t * app_handle) {
                         new_frequency = DCO_MIN_FREQUENCY;
                     }
                     if(new_frequency != app_handle->settings->dco_frequency) {
-                        if(!dco_set_frequency(new_frequency)) {
-                            widget_trx_dco_error(app_handle);
-                            init = true;
-                        } else {
-                            app_handle->settings->dco_frequency = new_frequency;
-                        }
+                        app_handle->settings->dco_frequency = new_frequency;
+                        init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
                     }
+                }
+                if(!touched && touch.tag == WIDGET_TRX_TAG_PTT) {
+                    app_handle->ctl_state->transmission = !app_handle->ctl_state->transmission;
+                    init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
                 }
                 if(touch.tag > 0 && touch.tag <= 8) {
                     frequency_pos = touch.tag - 1;
@@ -138,14 +128,32 @@ void widget_trx(app_handle_t * app_handle) {
             }
         }
     }
-    dco_stop();
-    hwctl_rx_power(false);
-    hwctl_tx_power(false);
+    rf_unit_stop(app_handle);
 }
 
 
-static void widget_trx_dco_error(app_handle_t * app_handle) {
+static bool widget_trx_show_errors(app_handle_t * app_handle, rf_unit_state_t state) {
 
-    const char * argv[] = {"DCO failed"};
-    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
+    bool result = false;
+    switch(state) {
+    case RF_UNIT_DCO_ERROR:
+        widget_error_dco(app_handle);
+        result =  true;
+        break;
+    case RF_UNIT_FILTER_ERROR:
+        widget_error_filters(app_handle);
+        result =  true;
+        break;
+    case RF_UNIT_RF_AMP_ERROR:
+        widget_error_rf_amp(app_handle);
+        result =  true;
+        break;
+    case RF_UNIT_CODEC_ERROR:
+        widget_error_codec(app_handle);
+        result = true;
+        break;
+    default:
+        break;
+    }
+    return result;
 }

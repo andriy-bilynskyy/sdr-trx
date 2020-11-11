@@ -32,6 +32,7 @@ PROJECT_SRC := \
   ${wildcard src/rtos_ext/*.[c,cpp]} \
   ${wildcard src/tasks/*.[c,cpp]} \
   ${wildcard src/dsp_proc/*.[c,cpp]} \
+  ${wildcard src/app_hal/*.[c,cpp]} \
 
 PROJECT_INC := \
   config \
@@ -39,6 +40,7 @@ PROJECT_INC := \
   src/widgets \
   src/tasks \
   src/dsp_proc \
+  src/app_hal \
 
 PROJECT_LIB := \
 
@@ -48,6 +50,7 @@ PROJECT_STYLE := \
   ${wildcard src/rtos_ext/*.[c,cpp]} \
   ${wildcard src/tasks/*.[h,c,cpp]} \
   ${wildcard src/dsp_proc/*.[h,c,cpp]} \
+  ${wildcard src/app_hal/*.[h,c,cpp]} \
   ${wildcard config/*.h} \
 
 

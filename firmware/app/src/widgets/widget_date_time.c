@@ -12,7 +12,6 @@
 
 #include "widgets.h"
 #include "ui_engine.h"
-#include "ui_notify.h"
 #include "misc_func.h"
 #include "rtc.h"
 #include <stdbool.h>
@@ -29,9 +28,6 @@
 #define WIDGET_DATE_TIME_TAG_EXIT       56
 /* continue touch reporting after first touch */
 #define WIDGET_DATE_TIME_TOUCH_SKIP_CNT 5
-
-
-void widget_date_time_lse_fail(app_handle_t * app_handle);
 
 
 void widget_date_time(app_handle_t * app_handle) {
@@ -109,7 +105,7 @@ void widget_date_time(app_handle_t * app_handle) {
                             ti.day--;
                         }
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail(app_handle);
+                            widget_error_rtc(app_handle);
                             init = true;
                         }
                     }
@@ -121,7 +117,7 @@ void widget_date_time(app_handle_t * app_handle) {
                             ti.day--;
                         }
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail(app_handle);
+                            widget_error_rtc(app_handle);
                             init = true;
                         }
                     }
@@ -136,7 +132,7 @@ void widget_date_time(app_handle_t * app_handle) {
                         ti.day--;
                     }
                     if(!rtc_set_time(&ti)) {
-                        widget_date_time_lse_fail(app_handle);
+                        widget_error_rtc(app_handle);
                         init = true;
                     }
                 }
@@ -147,7 +143,7 @@ void widget_date_time(app_handle_t * app_handle) {
                         ti.hours = 0;
                     }
                     if(!rtc_set_time(&ti)) {
-                        widget_date_time_lse_fail(app_handle);
+                        widget_error_rtc(app_handle);
                         init = true;
                     }
                 }
@@ -158,7 +154,7 @@ void widget_date_time(app_handle_t * app_handle) {
                         ti.minutes = 0;
                     }
                     if(!rtc_set_time(&ti)) {
-                        widget_date_time_lse_fail(app_handle);
+                        widget_error_rtc(app_handle);
                         init = true;
                     }
                 }
@@ -166,7 +162,7 @@ void widget_date_time(app_handle_t * app_handle) {
                     if(ti.seconds) {
                         ti.seconds = 0;
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail(app_handle);
+                            widget_error_rtc(app_handle);
                             init = true;
                         }
                     }
@@ -175,7 +171,7 @@ void widget_date_time(app_handle_t * app_handle) {
                     if(ti.day != touch.tag) {
                         ti.day = touch.tag;
                         if(!rtc_set_time(&ti)) {
-                            widget_date_time_lse_fail(app_handle);
+                            widget_error_rtc(app_handle);
                             init = true;
                         }
                     }
@@ -190,10 +186,4 @@ void widget_date_time(app_handle_t * app_handle) {
             }
         }
     }
-}
-
-void widget_date_time_lse_fail(app_handle_t * app_handle) {
-
-    const char * argv[] = {"LSE Failed"};
-    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }
