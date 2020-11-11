@@ -15,7 +15,8 @@
 #include <string.h>
 
 
-void dsp_proc_copy(void) {
+void dsp_proc_copy(app_handle_t * app_handle) {
 
+    (void)app_handle;
     memcpy(codec_get_output_buf(), codec_get_input_buf(), codec_buf_elements * sizeof(uint16_t));
 }

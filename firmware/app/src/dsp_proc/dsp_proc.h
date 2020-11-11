@@ -17,7 +17,7 @@
 #include "dsp_proc_copy.h"
 
 
-typedef void (*dsp_proc_t)(void);
+typedef void (*dsp_proc_t)(app_handle_t * app_handle);
 
 
 #endif

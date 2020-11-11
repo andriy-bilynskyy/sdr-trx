@@ -14,7 +14,10 @@
 #define __DSP_PROC_COPY_H
 
 
-void dsp_proc_copy(void);
+#include "app_data_types.h"
+
+
+void dsp_proc_copy(app_handle_t * app_handle);
 
 
 #endif

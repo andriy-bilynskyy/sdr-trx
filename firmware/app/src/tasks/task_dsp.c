@@ -43,7 +43,7 @@ void task_dsp(void * param) {
 
         if(xSemaphoreTake(task_audio_sync_sem, TASK_DSP_PERIOD_MS) == pdTRUE) {
             if(dsp_proc) {
-                dsp_proc();
+                dsp_proc(app_handdle);
             } else {
                 memset(codec_get_output_buf(), 0, codec_buf_elements * sizeof(uint16_t));
             }
