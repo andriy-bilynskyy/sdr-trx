@@ -28,7 +28,7 @@ static struct {
     codec_volume_t          hp_volume;
     codec_volume_t          tx_line_sensivity;
     codec_inp_src_t         tx_inp_src;
-    codec_volume_t          rx_line_sensivity;
+    codec_volume_t          codec_rx_line_sensivity;
     codec_volume_t          mic_sensivity;
     bool                    ext_mic;
 
@@ -59,7 +59,7 @@ rf_unit_state_t rf_unit_start(app_handle_t * app_handle) {
                         (void)codec_set_out_src(CODEC_OUT_DAC);
                         (void)codec_set_speaker_volume(app_handle->settings->codec_spk_volume);
                         (void)codec_set_headphone_volume(app_handle->settings->codec_hp_volume);
-                        (void)codec_set_line_sensivity(app_handle->ctl_state->rx_line_sensivity);
+                        (void)codec_set_line_sensivity(app_handle->ctl_state->codec_rx_line_sensivity);
                         (void)codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity);
                         hwctl_ext_mic(app_handle->settings->hwctl_ext_mic);
 
@@ -74,8 +74,8 @@ rf_unit_state_t rf_unit_start(app_handle_t * app_handle) {
                         rf_unit.spk_volume          = app_handle->settings->codec_spk_volume;
                         rf_unit.hp_volume           = app_handle->settings->codec_hp_volume;
                         rf_unit.tx_line_sensivity   = app_handle->settings->codec_tx_line_sensivity;
-                        rf_unit.tx_inp_src          = app_handle->settings->transmission_inp_src;
-                        rf_unit.rx_line_sensivity   = app_handle->ctl_state->rx_line_sensivity;
+                        rf_unit.tx_inp_src          = app_handle->settings->codec_tx_inp_src;
+                        rf_unit.codec_rx_line_sensivity   = app_handle->ctl_state->codec_rx_line_sensivity;
                         rf_unit.mic_sensivity       = app_handle->settings->codec_mic_sensivity;
                         rf_unit.ext_mic             = app_handle->settings->hwctl_ext_mic;
                     } else {
@@ -99,6 +99,7 @@ void rf_unit_stop(app_handle_t * app_handle) {
     (void)app_handle;
     rf_unit.state = RF_UNIT_NOT_INITED;
 
+    hwctl_set_band(0);
     trxctl_receive(false);
     trxctl_transmit(false);
 
@@ -133,7 +134,7 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
         if(rf_unit.transmission != app_handle->ctl_state->transmission) {
             trxctl_transmit(app_handle->ctl_state->transmission);
             if(codec_set_inp_src(app_handle->ctl_state->transmission ? rf_unit.tx_inp_src : CODEC_INP_LINE)) {
-                (void)codec_set_line_sensivity(app_handle->ctl_state->transmission ? rf_unit.tx_line_sensivity : rf_unit.rx_line_sensivity);
+                (void)codec_set_line_sensivity(app_handle->ctl_state->transmission ? rf_unit.tx_line_sensivity : rf_unit.codec_rx_line_sensivity);
                 rf_unit.transmission = app_handle->ctl_state->transmission;
             } else {
                 rf_unit.state = RF_UNIT_CODEC_ERROR;
@@ -146,7 +147,7 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
                 (void)codec_set_out_src(CODEC_OUT_DAC);
                 (void)codec_set_speaker_volume(rf_unit.spk_volume);
                 (void)codec_set_headphone_volume(rf_unit.hp_volume);
-                (void)codec_set_line_sensivity(rf_unit.transmission? rf_unit.tx_line_sensivity : rf_unit.rx_line_sensivity);
+                (void)codec_set_line_sensivity(rf_unit.transmission? rf_unit.tx_line_sensivity : rf_unit.codec_rx_line_sensivity);
                 (void)codec_set_mic_sensivity(rf_unit.mic_sensivity);
                 rf_unit.samplerate = app_handle->settings->codec_samplerate;
             } else {
@@ -181,27 +182,27 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
                 rf_unit.tx_line_sensivity = app_handle->settings->codec_tx_line_sensivity;
             }
         }
-        if(rf_unit.tx_inp_src != app_handle->settings->transmission_inp_src) {
+        if(rf_unit.tx_inp_src != app_handle->settings->codec_tx_inp_src) {
             if(rf_unit.transmission) {
-                if(codec_set_inp_src(app_handle->settings->transmission_inp_src)) {
-                    rf_unit.tx_inp_src = app_handle->settings->transmission_inp_src;
+                if(codec_set_inp_src(app_handle->settings->codec_tx_inp_src)) {
+                    rf_unit.tx_inp_src = app_handle->settings->codec_tx_inp_src;
                 } else {
                     rf_unit.state = RF_UNIT_CODEC_ERROR;
                 }
             } else {
-                rf_unit.tx_inp_src = app_handle->settings->transmission_inp_src;
+                rf_unit.tx_inp_src = app_handle->settings->codec_tx_inp_src;
             }
         }
-        if(rf_unit.rx_line_sensivity.mute != app_handle->ctl_state->rx_line_sensivity.mute ||
-                rf_unit.rx_line_sensivity.volume != app_handle->ctl_state->rx_line_sensivity.volume) {
+        if(rf_unit.codec_rx_line_sensivity.mute != app_handle->ctl_state->codec_rx_line_sensivity.mute ||
+                rf_unit.codec_rx_line_sensivity.volume != app_handle->ctl_state->codec_rx_line_sensivity.volume) {
             if(!rf_unit.transmission) {
-                if(codec_set_line_sensivity(app_handle->ctl_state->rx_line_sensivity)) {
-                    rf_unit.rx_line_sensivity = app_handle->ctl_state->rx_line_sensivity;
+                if(codec_set_line_sensivity(app_handle->ctl_state->codec_rx_line_sensivity)) {
+                    rf_unit.codec_rx_line_sensivity = app_handle->ctl_state->codec_rx_line_sensivity;
                 } else {
                     rf_unit.state = RF_UNIT_CODEC_ERROR;
                 }
             } else {
-                rf_unit.rx_line_sensivity = app_handle->ctl_state->rx_line_sensivity;
+                rf_unit.codec_rx_line_sensivity = app_handle->ctl_state->codec_rx_line_sensivity;
             }
         }
         if(rf_unit.mic_sensivity.mute != app_handle->settings->codec_mic_sensivity.mute ||

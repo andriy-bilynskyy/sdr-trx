@@ -22,6 +22,7 @@
 #include "widget_trx.h"
 #include "widget_audio.h"
 #include "widget_ui.h"
+#include "widget_settings.h"
 
 
 #endif

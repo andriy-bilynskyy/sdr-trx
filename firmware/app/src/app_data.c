@@ -33,7 +33,7 @@ static struct {
 
     .header   = {
         .marker                 = 0xAD0CC0DE,
-        .version                = 1                     /* !!! <- Increment on each app_settings_t modification */
+        .version                = 2                     /* !!! <- Increment on each app_settings_t modification */
     },
     /**************************************************************************
      * Default application settings
@@ -48,14 +48,15 @@ static struct {
         .hwctl_ext_mic              = false,
         .dco_frequency              = 10000000,
         .rf_amp_bias                = RF_AMP_VAL(3.3f),
-        .transmission_inp_src       = CODEC_INP_MIC
+        .codec_tx_inp_src           = CODEC_INP_MIC,
+        .system_ptt_button          = APP_SETTINGS_PTT_SW
     }
 
 };
 
 static app_ctl_state_t app_ctl_state = {
     .transmission                   = false,                           /* PTT pressed */
-    .rx_line_sensivity              = {.mute = false, .volume = 0x17}  /* adjustment during reception DSP process */
+    .codec_rx_line_sensivity        = {.mute = false, .volume = 0x17}  /* adjustment during reception DSP process */
 };
 
 

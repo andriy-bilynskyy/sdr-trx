@@ -96,6 +96,7 @@ void task_ui_notify_rtc_fail(void) {
 static void task_ui_hw_buttons_check(TimerHandle_t xTimer) {
 
     app_handle_t * app_handle = (app_handle_t *)pvTimerGetTimerID(xTimer);
+    /* Power button */
     static uint32_t cnt = TASK_UI_BUTTON_SHUTDOWN_MS / TASK_UI_BUTTONS_PERIOD_MS + 1;
     if(system_hw_key_pressed(SYSTEM_HW_KEY_PWR)) {
         if(!cnt) {
@@ -109,5 +110,22 @@ static void task_ui_hw_buttons_check(TimerHandle_t xTimer) {
         }
     } else {
         cnt = 0;
+    }
+    /* PTT button */
+    if(app_handle->settings->system_ptt_button == APP_SETTINGS_PTT_HW) {
+        static bool ptt_pressed = false;
+        if(system_hw_key_pressed(SYSTEM_HW_KEY_PTT)) {
+            if(!ptt_pressed) {
+                app_handle->ctl_state->transmission = true;
+                ui_engine_event_set(WIDGET_EVENT_PTT_CHANGE);
+                ptt_pressed = true;
+            }
+        } else {
+            if(ptt_pressed) {
+                app_handle->ctl_state->transmission = false;
+                ui_engine_event_set(WIDGET_EVENT_PTT_CHANGE);
+                ptt_pressed = false;
+            }
+        }
     }
 }

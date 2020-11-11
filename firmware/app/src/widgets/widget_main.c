@@ -23,6 +23,7 @@
 #define WIDGET_MAIN_TAG_TRX             3
 #define WIDGET_MAIN_TAG_AUDIO           4
 #define WIDGET_MAIN_TAG_UI              5
+#define WIDGET_MAIN_TAG_SETTINGS        6
 
 
 void widget_main(app_handle_t * app_handle) {
@@ -43,6 +44,8 @@ void widget_main(app_handle_t * app_handle) {
         ui_engine_button(WIDGET_MAIN_TAG_AUDIO,     20,                    200, 180, 40, UI_ENGINE_FONT30, "Audio");
         /* Interface */
         ui_engine_button(WIDGET_MAIN_TAG_UI,        ui_engine_xsize - 200, 50,  180, 40, UI_ENGINE_FONT30, "Interface");
+        /* Settings */
+        ui_engine_button(WIDGET_MAIN_TAG_SETTINGS,  ui_engine_xsize - 200, 100, 180, 40, UI_ENGINE_FONT30, "Settings");
 
         ui_engine_draw_end();
 
@@ -77,6 +80,10 @@ void widget_main(app_handle_t * app_handle) {
         }
         if(touch.tag == WIDGET_MAIN_TAG_UI) {
             widget_ui(app_handle);
+            init = true;
+        }
+        if(touch.tag == WIDGET_MAIN_TAG_SETTINGS) {
+            widget_settings(app_handle);
             init = true;
         }
     }

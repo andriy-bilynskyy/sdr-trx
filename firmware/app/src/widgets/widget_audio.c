@@ -43,7 +43,7 @@ void widget_audio(app_handle_t * app_handle) {
 
     hwctl_ext_mic(app_handle->settings->hwctl_ext_mic);
 
-    if(codec_start(CODEC_SR_96K, false)) {
+    if(codec_start(app_handle->settings->codec_samplerate, false)) {
         dsp_proc = dsp_proc_copy;
         (void)codec_set_speaker_volume(app_handle->settings->codec_spk_volume);
         (void)codec_set_headphone_volume(app_handle->settings->codec_hp_volume);

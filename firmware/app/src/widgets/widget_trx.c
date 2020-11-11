@@ -72,6 +72,9 @@ void widget_trx(app_handle_t * app_handle) {
         if(widget_event(app_handle, event_flg)) {
             init = true;
         }
+        if(event_flg & WIDGET_EVENT_PTT_CHANGE) {
+            init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
+        }
 
         ui_engine_touch_t touch = ui_engine_get_touch();
 
@@ -114,7 +117,7 @@ void widget_trx(app_handle_t * app_handle) {
                         init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
                     }
                 }
-                if(!touched && touch.tag == WIDGET_TRX_TAG_PTT) {
+                if(!touched && app_handle->settings->system_ptt_button == APP_SETTINGS_PTT_SW && touch.tag == WIDGET_TRX_TAG_PTT) {
                     app_handle->ctl_state->transmission = !app_handle->ctl_state->transmission;
                     init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
                 }

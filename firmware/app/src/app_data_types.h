@@ -19,6 +19,14 @@
 
 
 /******************************************************************************
+ * PTT button mode
+ ******************************************************************************/
+typedef enum {
+    APP_SETTINGS_PTT_SW,
+    APP_SETTINGS_PTT_HW
+} ptt_button_t;
+
+/******************************************************************************
  * Application settings data
  * !!! if you make any changes inside of this structure
  * !!! also increment app_settings.header.version
@@ -40,7 +48,8 @@ typedef struct {
     bool                hwctl_ext_mic;
     uint32_t            dco_frequency;
     uint8_t             rf_amp_bias;
-    codec_inp_src_t     transmission_inp_src;
+    codec_inp_src_t     codec_tx_inp_src;
+    ptt_button_t        system_ptt_button;
 } app_settings_t;
 
 /******************************************************************************
@@ -48,7 +57,7 @@ typedef struct {
  ******************************************************************************/
 typedef struct {
     bool                transmission;
-    codec_volume_t      rx_line_sensivity;
+    codec_volume_t      codec_rx_line_sensivity;
 } app_ctl_state_t;
 
 /******************************************************************************
