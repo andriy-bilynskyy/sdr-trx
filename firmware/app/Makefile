@@ -73,6 +73,7 @@ include ../common/misc/unit.mk
 include ../common/dbg/unit.mk
 include ../stm/unit.mk
 include ../cm/unit.mk
+include ../sw_version/unit.mk
 
 
 LD_SCRIPT := STM32F413ZH_FLASH.ld
@@ -121,7 +122,7 @@ endif
 CFLAGS  += ${addprefix -I, ${PROJECT_INC}}
 CXXFLAGS  += ${addprefix -I, ${PROJECT_INC}}
 
-.PHONY: all build clean flash erase debug style help
+.PHONY: all build clean flash erase debug style help force
 
 all: ${PROJECT}.elf
 

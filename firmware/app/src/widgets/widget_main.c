@@ -24,6 +24,7 @@
 #define WIDGET_MAIN_TAG_AUDIO           4
 #define WIDGET_MAIN_TAG_UI              5
 #define WIDGET_MAIN_TAG_SETTINGS        6
+#define WIDGET_MAIN_TAG_SW_VERSION      7
 
 
 void widget_main(app_handle_t * app_handle) {
@@ -35,17 +36,19 @@ void widget_main(app_handle_t * app_handle) {
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
         ui_engine_set_fgcolor(31, 31, 255);
         /* Time date */
-        ui_engine_button(WIDGET_MAIN_TAG_DATE_TIME, 20,                    50,  180, 40, UI_ENGINE_FONT30, "Date Time");
+        ui_engine_button(WIDGET_MAIN_TAG_DATE_TIME,  20,                    50,  180, 40, UI_ENGINE_FONT30, "Date Time");
         /* Sensors */
-        ui_engine_button(WIDGET_MAIN_TAG_SENSORS,   20,                    100, 180, 40, UI_ENGINE_FONT30, "Sensors");
+        ui_engine_button(WIDGET_MAIN_TAG_SENSORS,    20,                    100, 180, 40, UI_ENGINE_FONT30, "Sensors");
         /* Sensors */
-        ui_engine_button(WIDGET_MAIN_TAG_TRX,       20,                    150, 180, 40, UI_ENGINE_FONT30, "Transceiver");
+        ui_engine_button(WIDGET_MAIN_TAG_TRX,        20,                    150, 180, 40, UI_ENGINE_FONT30, "Transceiver");
         /* Audio */
-        ui_engine_button(WIDGET_MAIN_TAG_AUDIO,     20,                    200, 180, 40, UI_ENGINE_FONT30, "Audio");
+        ui_engine_button(WIDGET_MAIN_TAG_AUDIO,      20,                    200, 180, 40, UI_ENGINE_FONT30, "Audio");
         /* Interface */
-        ui_engine_button(WIDGET_MAIN_TAG_UI,        ui_engine_xsize - 200, 50,  180, 40, UI_ENGINE_FONT30, "Interface");
+        ui_engine_button(WIDGET_MAIN_TAG_UI,         ui_engine_xsize - 200, 50,  180, 40, UI_ENGINE_FONT30, "Interface");
         /* Settings */
-        ui_engine_button(WIDGET_MAIN_TAG_SETTINGS,  ui_engine_xsize - 200, 100, 180, 40, UI_ENGINE_FONT30, "Settings");
+        ui_engine_button(WIDGET_MAIN_TAG_SETTINGS,   ui_engine_xsize - 200, 100, 180, 40, UI_ENGINE_FONT30, "Settings");
+        /* SW version */
+        ui_engine_button(WIDGET_MAIN_TAG_SW_VERSION, ui_engine_xsize - 200, 150, 180, 40, UI_ENGINE_FONT30, "SW version");
 
         ui_engine_draw_end();
 
@@ -84,6 +87,10 @@ void widget_main(app_handle_t * app_handle) {
         }
         if(touch.tag == WIDGET_MAIN_TAG_SETTINGS) {
             widget_settings(app_handle);
+            init = true;
+        }
+        if(touch.tag == WIDGET_MAIN_TAG_SW_VERSION) {
+            widget_sw_version(app_handle);
             init = true;
         }
     }
