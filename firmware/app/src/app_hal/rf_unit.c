@@ -52,8 +52,6 @@ rf_unit_state_t rf_unit_start(app_handle_t * app_handle) {
         if(dco_start(app_handle->settings->dco_frequency)) {
             if(rf_unit_filters_adjust(app_handle->settings->dco_frequency)) {
                 if(rf_amp_start()) {
-                    (void)rf_amp_bias1(app_handle->settings->rf_amp_bias);
-                    (void)rf_amp_bias2(app_handle->settings->rf_amp_bias);
                     if(codec_start(app_handle->settings->codec_samplerate, false)) {
                         (void)codec_set_inp_src(CODEC_INP_LINE);
                         (void)codec_set_out_src(CODEC_OUT_DAC);
@@ -135,7 +133,19 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
             trxctl_transmit(app_handle->ctl_state->transmission);
             if(codec_set_inp_src(app_handle->ctl_state->transmission ? rf_unit.tx_inp_src : CODEC_INP_LINE)) {
                 (void)codec_set_line_sensivity(app_handle->ctl_state->transmission ? rf_unit.tx_line_sensivity : rf_unit.codec_rx_line_sensivity);
-                rf_unit.transmission = app_handle->ctl_state->transmission;
+                if(app_handle->ctl_state->transmission) {
+                    if(rf_amp_bias1(app_handle->settings->rf_amp_bias) && rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
+                        rf_unit.transmission = true;
+                    } else {
+                        rf_unit.state = RF_UNIT_RF_AMP_ERROR;
+                    }
+                } else {
+                    if(rf_amp_off()) {
+                        rf_unit.transmission = false;
+                    } else {
+                        rf_unit.state = RF_UNIT_RF_AMP_ERROR;
+                    }
+                }
             } else {
                 rf_unit.state = RF_UNIT_CODEC_ERROR;
             }
