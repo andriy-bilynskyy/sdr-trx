@@ -14,12 +14,6 @@
 #define __TASK_DSP_H
 
 
-#include "dsp_proc.h"
-
-
-extern dsp_proc_t dsp_proc;
-
-
 void task_dsp(void * param);
 
 

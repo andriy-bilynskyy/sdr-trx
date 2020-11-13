@@ -17,6 +17,7 @@
 #include "atomic.h"
 #include "debug.h"
 #include "codec.h"
+#include "dsp_proc.h"
 #include <string.h>
 
 

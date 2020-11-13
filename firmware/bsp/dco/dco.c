@@ -57,9 +57,6 @@ bool dco_start(uint32_t frequency) {
                       dco_setup_frequency(frequency)                                                         &&
                       (i2c_master_write(SI5351_I2C_ADDR, pll_rst, sizeof(pll_rst)) == sizeof(pll_rst))       &&
                       (i2c_master_write(SI5351_I2C_ADDR, out_en, sizeof(out_en)) == sizeof(out_en));
-        if(!dco_started) {
-            hwctl_rx_power(false);
-        }
     }
     return dco_started;
 }
@@ -73,7 +70,6 @@ void dco_stop(void) {
                               SI5351_OUTPUT_ENABLE_CTRL_CLK2 |SI5351_OUTPUT_ENABLE_CTRL_CLK1 | SI5351_OUTPUT_ENABLE_CTRL_CLK0
                              };
         (void)i2c_master_write(SI5351_I2C_ADDR, outs_dis, sizeof(outs_dis));
-        hwctl_rx_power(false);
     }
 }
 

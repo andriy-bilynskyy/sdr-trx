@@ -15,7 +15,7 @@
 #include "codec.h"
 #include "hwctl.h"
 #include "trxctl.h"
-#include "tasks_app.h"
+#include "dsp_proc.h"
 #include <stdbool.h>
 #include <string.h>
 

@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include "app_data_types.h"
 #include "dco.h"
+#include "rf_amp.h"
 
 
 typedef enum {

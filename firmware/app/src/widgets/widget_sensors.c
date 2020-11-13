@@ -14,7 +14,8 @@
 #include "ui_engine.h"
 #include "misc_func.h"
 #include "adc.h"
-#include "rf_amp.h"
+#include "rf_unit.h"
+#include "dsp_proc.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -25,19 +26,17 @@
 #define WIDGET_SENSORS_TAG_PAVAL      3
 
 
+static bool widget_sensors_show_errors(app_handle_t * app_handle, rf_unit_state_t state);
+
+
 void widget_sensors(app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;
 
-    bool rf_amp_on = false;
+    dsp_proc = NULL;
+    (void)widget_sensors_show_errors(app_handle, rf_unit_start(app_handle));
 
-    if(!rf_amp_start()) {
-        widget_error_rf_amp(app_handle);
-    } else if(rf_amp_on) {
-        rf_amp_bias1(app_handle->settings->rf_amp_bias);
-        rf_amp_bias1(app_handle->settings->rf_amp_bias);
-    }
     for(; app_handle->system_ctive;) {
 
         char buf[16];
@@ -84,7 +83,7 @@ void widget_sensors(app_handle_t * app_handle) {
         /* RF amp header */
         ui_engine_text(0,                          20,  ui_engine_ysize - 80, UI_ENGINE_FONT28,         "RF power amplifier:", false);
         /* RF amp button */
-        ui_engine_button(WIDGET_SENSORS_TAG_PAON,  20,  ui_engine_ysize - 45, 50, 30, UI_ENGINE_FONT28, rf_amp_on ? "ON" : "OFF");
+        ui_engine_button(WIDGET_SENSORS_TAG_PAON,  20,  ui_engine_ysize - 45, 50, 30, UI_ENGINE_FONT28, app_handle->ctl_state->transmission ? "ON" : "OFF");
         /* RF amp slider */
         ui_engine_slider(WIDGET_SENSORS_TAG_PAVAL, 110, ui_engine_ysize - 37, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->rf_amp_bias - RF_AMP_MIN) * 0xFFFF) / (RF_AMP_MAX - RF_AMP_MIN));
 
@@ -112,31 +111,44 @@ void widget_sensors(app_handle_t * app_handle) {
                     break;
                 }
                 if(touch.tag == WIDGET_SENSORS_TAG_PAON) {
-                    rf_amp_on = !rf_amp_on;
-                    if(rf_amp_on) {
-                        if(!rf_amp_bias1(app_handle->settings->rf_amp_bias) || !rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
-                            widget_error_rf_amp(app_handle);
-                            init = true;
-                        }
-                    } else {
-                        if(!rf_amp_off()) {
-                            widget_error_rf_amp(app_handle);
-                            init = true;
-                        }
-                    }
+                    app_handle->ctl_state->transmission = !app_handle->ctl_state->transmission;
+                    init = widget_sensors_show_errors(app_handle, rf_unit_update(app_handle));
                 }
             }
             if(touch.tag == WIDGET_SENSORS_TAG_PAVAL) {
                 app_handle->settings->rf_amp_bias = ((uint32_t)touch.value  * (RF_AMP_MAX - RF_AMP_MIN)) / 0xFFFF + RF_AMP_MIN;
-                if(rf_amp_on) {
-                    if(!rf_amp_bias1(app_handle->settings->rf_amp_bias) || !rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
-                        widget_error_rf_amp(app_handle);
-                        init = true;
-                    }
+                if(app_handle->ctl_state->transmission) {
+                    init = widget_sensors_show_errors(app_handle, rf_unit_update(app_handle));
                 }
             }
             touched = true;
         }
     }
-    rf_amp_stop();
+    rf_unit_stop(app_handle);
+}
+
+static bool widget_sensors_show_errors(app_handle_t * app_handle, rf_unit_state_t state) {
+
+    bool result = false;
+    switch(state) {
+    case RF_UNIT_DCO_ERROR:
+        widget_error_dco(app_handle);
+        result =  true;
+        break;
+    case RF_UNIT_FILTER_ERROR:
+        widget_error_filters(app_handle);
+        result =  true;
+        break;
+    case RF_UNIT_RF_AMP_ERROR:
+        widget_error_rf_amp(app_handle);
+        result =  true;
+        break;
+    case RF_UNIT_CODEC_ERROR:
+        widget_error_codec(app_handle);
+        result = true;
+        break;
+    default:
+        break;
+    }
+    return result;
 }

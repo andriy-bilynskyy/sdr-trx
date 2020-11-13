@@ -37,9 +37,6 @@ bool rf_amp_start(void) {
         uint8_t bt2[] = {0xC0, 0x00};
         rf_amp_started = ((i2c_master_write(POTENTIOMETER_ADDR, bt1, sizeof(bt1)) == sizeof(bt1)) &&
                           (i2c_master_write(POTENTIOMETER_ADDR, bt2, sizeof(bt2)) == sizeof(bt2)));
-        if(!rf_amp_started) {
-            hwctl_tx_power(false);
-        }
     }
     return rf_amp_started;
 }
@@ -49,7 +46,6 @@ void rf_amp_stop(void) {
     if(rf_amp_started) {
         rf_amp_started = false;
         rf_amp_off();
-        hwctl_tx_power(false);
     }
 }
 

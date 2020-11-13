@@ -20,4 +20,7 @@
 typedef void (*dsp_proc_t)(app_handle_t * app_handle);
 
 
+extern dsp_proc_t dsp_proc;
+
+
 #endif
