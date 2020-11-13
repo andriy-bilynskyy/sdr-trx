@@ -135,12 +135,17 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
                 (void)codec_set_line_sensivity(app_handle->ctl_state->transmission ? rf_unit.tx_line_sensivity : rf_unit.codec_rx_line_sensivity);
                 if(app_handle->ctl_state->transmission) {
                     if(rf_amp_bias1(app_handle->settings->rf_amp_bias) && rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
+                        codec_volume_t volume_none = {.mute = true, .volume = 0};
+                        (void)codec_set_speaker_volume(volume_none);
+                        (void)codec_set_headphone_volume(volume_none);
                         rf_unit.transmission = true;
                     } else {
                         rf_unit.state = RF_UNIT_RF_AMP_ERROR;
                     }
                 } else {
                     if(rf_amp_off()) {
+                        (void)codec_set_speaker_volume(app_handle->settings->codec_spk_volume);
+                        (void)codec_set_headphone_volume(app_handle->settings->codec_hp_volume);
                         rf_unit.transmission = false;
                     } else {
                         rf_unit.state = RF_UNIT_RF_AMP_ERROR;
@@ -153,11 +158,12 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
         if(rf_unit.samplerate != app_handle->settings->codec_samplerate) {
             codec_stop();
             if(codec_start(app_handle->settings->codec_samplerate, false)) {
+                codec_volume_t volume_none = {.mute = true, .volume = 0};
                 (void)codec_set_inp_src(rf_unit.transmission ? rf_unit.tx_inp_src : CODEC_INP_LINE);
                 (void)codec_set_out_src(CODEC_OUT_DAC);
-                (void)codec_set_speaker_volume(rf_unit.spk_volume);
-                (void)codec_set_headphone_volume(rf_unit.hp_volume);
-                (void)codec_set_line_sensivity(rf_unit.transmission? rf_unit.tx_line_sensivity : rf_unit.codec_rx_line_sensivity);
+                (void)codec_set_speaker_volume(rf_unit.transmission ? volume_none : rf_unit.spk_volume);
+                (void)codec_set_headphone_volume(rf_unit.transmission ? volume_none : rf_unit.hp_volume);
+                (void)codec_set_line_sensivity(rf_unit.transmission ? rf_unit.tx_line_sensivity : rf_unit.codec_rx_line_sensivity);
                 (void)codec_set_mic_sensivity(rf_unit.mic_sensivity);
                 rf_unit.samplerate = app_handle->settings->codec_samplerate;
             } else {
@@ -166,18 +172,26 @@ rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
         }
         if(rf_unit.spk_volume.mute != app_handle->settings->codec_spk_volume.mute ||
                 rf_unit.spk_volume.volume != app_handle->settings->codec_spk_volume.volume) {
-            if(codec_set_speaker_volume(app_handle->settings->codec_spk_volume)) {
-                rf_unit.spk_volume = app_handle->settings->codec_spk_volume;
+            if(!rf_unit.transmission) {
+                if(codec_set_speaker_volume(app_handle->settings->codec_spk_volume)) {
+                    rf_unit.spk_volume = app_handle->settings->codec_spk_volume;
+                } else {
+                    rf_unit.state = RF_UNIT_CODEC_ERROR;
+                }
             } else {
-                rf_unit.state = RF_UNIT_CODEC_ERROR;
+                rf_unit.spk_volume = app_handle->settings->codec_spk_volume;
             }
         }
         if(rf_unit.hp_volume.mute != app_handle->settings->codec_hp_volume.mute ||
                 rf_unit.hp_volume.volume != app_handle->settings->codec_hp_volume.volume) {
-            if(codec_set_headphone_volume(app_handle->settings->codec_hp_volume)) {
-                rf_unit.hp_volume = app_handle->settings->codec_hp_volume;
+            if(!rf_unit.transmission) {
+                if(codec_set_headphone_volume(app_handle->settings->codec_hp_volume)) {
+                    rf_unit.hp_volume = app_handle->settings->codec_hp_volume;
+                } else {
+                    rf_unit.state = RF_UNIT_CODEC_ERROR;
+                }
             } else {
-                rf_unit.state = RF_UNIT_CODEC_ERROR;
+                rf_unit.hp_volume = app_handle->settings->codec_hp_volume;
             }
         }
         if(rf_unit.tx_line_sensivity.mute != app_handle->settings->codec_tx_line_sensivity.mute ||
