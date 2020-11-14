@@ -6,22 +6,18 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    DSP header file
+    DSP SDR processing header file
 */
 
 
-#ifndef __DSP_PROC_H
-#define __DSP_PROC_H
+#ifndef __DSP_PROC_SDR_H
+#define __DSP_PROC_SDR_H
 
 
-#include "dsp_proc_copy.h"
-#include "dsp_proc_sdr.h"
+#include "app_data_types.h"
 
 
-typedef void (*dsp_proc_t)(app_handle_t * app_handle);
-
-
-extern dsp_proc_t dsp_proc;
+void dsp_proc_sdr(app_handle_t * app_handle);
 
 
 #endif

@@ -6,22 +6,18 @@
 **  This code is licensed under the GPLv3.
 **
 ********************************************************************************
-    DSP header file
+    DSP SDR process source file
 */
 
 
-#ifndef __DSP_PROC_H
-#define __DSP_PROC_H
-
-
-#include "dsp_proc_copy.h"
 #include "dsp_proc_sdr.h"
+#include "codec.h"
+#include <string.h>
 
 
-typedef void (*dsp_proc_t)(app_handle_t * app_handle);
+void dsp_proc_sdr(app_handle_t * app_handle) {
 
-
-extern dsp_proc_t dsp_proc;
-
-
-#endif
+    (void)app_handle;
+    // FFT and inverse FFT
+    //memcpy(codec_get_output_buf(), codec_get_input_buf(), codec_buf_elements * sizeof(uint16_t));
+}

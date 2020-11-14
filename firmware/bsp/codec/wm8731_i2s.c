@@ -236,12 +236,12 @@ void wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_data_ready_cb = adc_data_ready;
 }
 
-const int16_t * wm8731_i2s_get_input_buf() {
+const int16_t * wm8731_i2s_get_input_buf(void) {
 
     return wm8731_adc_buffer[wm8731_active_buf];
 }
 
-int16_t * wm8731_i2s_get_output_buf() {
+int16_t * wm8731_i2s_get_output_buf(void) {
 
     return wm8731_dac_buffer[wm8731_active_buf];
 }

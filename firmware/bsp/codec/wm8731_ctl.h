@@ -27,9 +27,9 @@ codec_volume_t  wm8731_ctl_get_line_sensivity(void);
 bool            wm8731_ctl_set_line_sensivity(codec_volume_t volume);
 codec_volume_t  wm8731_ctl_get_mic_sensivity(void);
 bool            wm8731_ctl_set_mic_sensivity(codec_volume_t volume);
-codec_out_src_t wm8731_ctl_get_out_src();
+codec_out_src_t wm8731_ctl_get_out_src(void);
 bool            wm8731_ctl_set_out_src(codec_out_src_t out_src);
-codec_inp_src_t wm8731_ctl_get_inp_src();
+codec_inp_src_t wm8731_ctl_get_inp_src(void);
 bool            wm8731_ctl_set_inp_src(codec_inp_src_t inp_src);
 
 

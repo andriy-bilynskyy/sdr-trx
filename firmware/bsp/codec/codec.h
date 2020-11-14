@@ -30,9 +30,9 @@ codec_volume_t      codec_get_line_sensivity(void);
 bool                codec_set_line_sensivity(codec_volume_t volume);
 codec_volume_t      codec_get_mic_sensivity(void);
 bool                codec_set_mic_sensivity(codec_volume_t volume);
-codec_out_src_t     codec_get_out_src();
+codec_out_src_t     codec_get_out_src(void);
 bool                codec_set_out_src(codec_out_src_t out_src);
-codec_inp_src_t     codec_get_inp_src();
+codec_inp_src_t     codec_get_inp_src(void);
 bool                codec_set_inp_src(codec_inp_src_t inp_src);
 /******************************************************************************
  * Callback is executed in interrupt context.
@@ -41,8 +41,8 @@ bool                codec_set_inp_src(codec_inp_src_t inp_src);
  * in thread unblocked by this object.
  ******************************************************************************/
 void                codec_set_callback(codec_data_ready_cb_t adc_data_ready);
-const int16_t *     codec_get_input_buf();
-int16_t *           codec_get_output_buf();
+const int16_t *     codec_get_input_buf(void);
+int16_t *           codec_get_output_buf(void);
 
 
 #endif

@@ -20,7 +20,7 @@
 void             wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb);
 void             wm8731_i2s_stop(void);
 void             wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready);
-const int16_t *  wm8731_i2s_get_input_buf();
-int16_t *        wm8731_i2s_get_output_buf();
+const int16_t *  wm8731_i2s_get_input_buf(void);
+int16_t *        wm8731_i2s_get_output_buf(void);
 
 #endif

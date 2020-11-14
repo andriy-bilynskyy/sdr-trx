@@ -36,7 +36,7 @@ void widget_trx(app_handle_t * app_handle) {
     bool touched = false;
     uint8_t touched_cnt = WIDGET_TRX_TOUCH_SKIP_CNT;
 
-    dsp_proc = NULL;
+    dsp_proc = dsp_proc_sdr;
     (void)widget_trx_show_errors(app_handle, rf_unit_start(app_handle));
 
     for(; app_handle->system_ctive;) {

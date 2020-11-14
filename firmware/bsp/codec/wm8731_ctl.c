@@ -235,7 +235,7 @@ bool wm8731_ctl_set_mic_sensivity(codec_volume_t volume) {
     return result;
 }
 
-codec_out_src_t wm8731_ctl_get_out_src() {
+codec_out_src_t wm8731_ctl_get_out_src(void) {
     return wm8731_ctl_data.out_src;
 }
 
@@ -275,7 +275,7 @@ bool wm8731_ctl_set_out_src(codec_out_src_t out_src) {
     return result;
 }
 
-codec_inp_src_t wm8731_ctl_get_inp_src() {
+codec_inp_src_t wm8731_ctl_get_inp_src(void) {
     return wm8731_ctl_data.inp_src;
 }
 

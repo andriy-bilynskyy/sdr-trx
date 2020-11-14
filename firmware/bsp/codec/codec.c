@@ -88,7 +88,7 @@ bool codec_set_mic_sensivity(codec_volume_t volume) {
     return codec_started ? wm8731_ctl_set_mic_sensivity(volume) : false;
 }
 
-codec_out_src_t codec_get_out_src() {
+codec_out_src_t codec_get_out_src(void) {
 
     return wm8731_ctl_get_out_src();
 }
@@ -98,7 +98,7 @@ bool codec_set_out_src(codec_out_src_t out_src) {
     return codec_started ? wm8731_ctl_set_out_src(out_src) : false;
 }
 
-codec_inp_src_t codec_get_inp_src() {
+codec_inp_src_t codec_get_inp_src(void) {
 
     return wm8731_ctl_get_inp_src();
 }
@@ -113,12 +113,12 @@ void codec_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_i2s_set_callback(adc_data_ready);
 }
 
-const int16_t * codec_get_input_buf() {
+const int16_t * codec_get_input_buf(void) {
 
     return wm8731_i2s_get_input_buf();
 }
 
-int16_t * codec_get_output_buf() {
+int16_t * codec_get_output_buf(void) {
 
     return wm8731_i2s_get_output_buf();
 }
