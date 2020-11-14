@@ -80,17 +80,20 @@ LD_SCRIPT := STM32F413ZH_FLASH.ld
 
 OBJECTS := ${addsuffix .o, ${PROJECT_SRC}}
 
-CFLAGS  := -Wall -Wdouble-promotion -Wno-strict-aliasing -std=c99 -fdata-sections -ffunction-sections
+CFLAGS  := -Wall -Wdouble-promotion -std=c99 -fdata-sections -ffunction-sections
 CFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -D__FPU_PRESENT -DUSE_FULL_ASSERT
+CFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT
+CFLAGS  += -DARM_MATH_CM4=1 -D__FPU_PRESENT=1 -D__FPU_USED=1U -D__VFP_FP__
 
 ASFLAGS  := -Wall -Wdouble-promotion -std=c99 -fdata-sections -ffunction-sections
 ASFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
-ASFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -D__FPU_PRESENT -DUSE_FULL_ASSERT
+ASFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT
+ASFLAGS  += -DARM_MATH_CM4=1 -D__FPU_PRESENT=1 -D__FPU_USED=1U -D__VFP_FP__
 
 CXXFLAGS  := -Wall -Wdouble-promotion -fno-exceptions -fdata-sections -ffunction-sections
 CXXFLAGS  += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CXXFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -D__FPU_PRESENT -DUSE_FULL_ASSERT
+CXXFLAGS  += -DSTM32F413_423xx -DHSE_VALUE=24000000u -DUSE_STDPERIPH_DRIVER -DUSE_FULL_ASSERT
+CXXFLAGS  += -DARM_MATH_CM4=1 -D__FPU_PRESENT=1 -D__FPU_USED=1U -D__VFP_FP__
 
 LDFLAGS := -T${LD_SCRIPT}
 LDFLAGS += -mlittle-endian -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16

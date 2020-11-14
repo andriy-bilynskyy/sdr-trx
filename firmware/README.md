@@ -32,7 +32,7 @@
 
 #### - Third party sources
 
-- **cm/** - Cortex M libraries (core and DSP). Obtained as part of [STM32F4 SPL](https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32-standard-peripheral-libraries/stsw-stm32065.html).
+- **cm/** - Cortex M libraries (core and DSP) [https://developer.arm.com/tools-and-software/embedded/cmsis](https://developer.arm.com/tools-and-software/embedded/cmsis).
 - **free_rtos/** - FreeRTOS sources [https://www.freertos.org/](https://www.freertos.org/).
 - **openocd/** - openocd configuration files [http://openocd.org/](http://openocd.org/).
 - **stm/** - STM32F4 Standard Peripheral Library and MCU startup code [https://www.st.com/content/st_com/en.html](https://www.st.com/content/st_com/en.html). Obtained as part of [STM32F4 SPL](https://www.st.com/content/st_com/en/products/embedded-software/mcu-mpu-embedded-software/stm32-embedded-software/stm32-standard-peripheral-libraries/stsw-stm32065.html).

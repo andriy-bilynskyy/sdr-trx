@@ -10,19 +10,23 @@
 CDIR = ${dir ${lastword ${MAKEFILE_LIST}}}
 
 PROJECT_SRC += \
-#   ${wildcard ${CDIR}Source/BasicMathFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/CommonTables/*.c} \
-#   ${wildcard ${CDIR}Source/ComplexMathFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/ControllerFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/FastMathFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/FilteringFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/MatrixFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/StatisticsFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/SupportFunctions/*.c} \
-#   ${wildcard ${CDIR}Source/TransformFunctions/*.[c,S]} \
+  ${CDIR}dsp/src/BasicMathFunctions/BasicMathFunctions.c \
+  ${CDIR}dsp/src/BayesFunctions/BayesFunctions.c \
+  ${CDIR}dsp/src/CommonTables/CommonTables.c \
+  ${CDIR}dsp/src/ComplexMathFunctions/ComplexMathFunctions.c \
+  ${CDIR}dsp/src/ControllerFunctions/ControllerFunctions.c \
+  ${CDIR}dsp/src/DistanceFunctions/DistanceFunctions.c \
+  ${CDIR}dsp/src/FastMathFunctions/FastMathFunctions.c \
+  ${CDIR}dsp/src/FilteringFunctions/FilteringFunctions.c \
+  ${CDIR}dsp/src/MatrixFunctions/MatrixFunctions.c \
+  ${CDIR}dsp/src/StatisticsFunctions/StatisticsFunctions.c \
+  ${CDIR}dsp/src/SupportFunctions/SupportFunctions.c \
+  ${CDIR}dsp/src/SVMFunctions/SVMFunctions.c \
+  ${CDIR}dsp/src/TransformFunctions/TransformFunctions.c \
 
 PROJECT_INC += \
-  ${CDIR}Include \
+  ${CDIR}core \
+  ${CDIR}dsp/inc \
 
 PROJECT_LIB += \
 
