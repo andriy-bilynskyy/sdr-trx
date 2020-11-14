@@ -16,6 +16,7 @@
 #include "codec_conf.h"
 #include "stm32f4xx_conf.h"
 #include <stddef.h>
+#include <string.h>
 
 
 /******************************************************************************
@@ -64,8 +65,7 @@
 #define CODEC_I2S_IRQHandler    DMA1_Stream3_IRQHandler
 
 
-static int16_t                  wm8731_dac_buffer[2][CODEC_BUF_SIZE] = {0};
-static int16_t                  wm8731_adc_buffer[2][CODEC_BUF_SIZE] = {0};
+static codec_sample_t           wm8731_audio_buffer[2][CODEC_BUF_SIZE] = {0};
 static volatile uint8_t         wm8731_active_buf = 1;
 static codec_data_ready_cb_t    wm8731_data_ready_cb = NULL;
 
@@ -135,10 +135,7 @@ void wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb) {
     SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, ENABLE);
     SPI_I2S_DMACmd(CODEC_I2S_EXT, SPI_I2S_DMAReq_Rx, ENABLE);
 
-    for(uint32_t i = 0; i < CODEC_BUF_SIZE; i++) {
-        wm8731_dac_buffer[0][i] = 0;
-        wm8731_dac_buffer[1][i] = 0;
-    }
+    memset(wm8731_audio_buffer, 0, sizeof(wm8731_audio_buffer));
     wm8731_active_buf = 1;
     if(reset_cb) {
         wm8731_data_ready_cb = NULL;
@@ -147,7 +144,7 @@ void wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb) {
     DMA_InitTypeDef dma;
     DMA_StructInit(&dma);
     dma.DMA_Priority = CODEC_DMA_PRIO;
-    dma.DMA_BufferSize = CODEC_BUF_SIZE * 2;
+    dma.DMA_BufferSize = sizeof(wm8731_audio_buffer) / 2;
     dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
     dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
     dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
@@ -156,14 +153,14 @@ void wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb) {
     dma.DMA_Channel = CODEC_I2S_TX_CHANNEL;
     dma.DMA_DIR = DMA_DIR_MemoryToPeripheral;
     dma.DMA_PeripheralBaseAddr = (uint32_t)&(CODEC_I2S->DR);
-    dma.DMA_Memory0BaseAddr = (uint32_t)wm8731_dac_buffer;
+    dma.DMA_Memory0BaseAddr = (uint32_t)wm8731_audio_buffer;
     DMA_Init(CODEC_I2S_TX_STREAM, &dma);
     DMA_Cmd(CODEC_I2S_TX_STREAM, ENABLE);
     /* ADC */
     dma.DMA_Channel = CODEC_I2S_RX_CHANNEL;
     dma.DMA_DIR = DMA_DIR_PeripheralToMemory;
     dma.DMA_PeripheralBaseAddr = (uint32_t)&(CODEC_I2S_EXT->DR);
-    dma.DMA_Memory0BaseAddr = (uint32_t)wm8731_adc_buffer;
+    dma.DMA_Memory0BaseAddr = (uint32_t)wm8731_audio_buffer;
     DMA_Init(CODEC_I2S_RX_STREAM, &dma);
     DMA_Cmd(CODEC_I2S_RX_STREAM, ENABLE);
 
@@ -236,12 +233,7 @@ void wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_data_ready_cb = adc_data_ready;
 }
 
-const int16_t * wm8731_i2s_get_input_buf(void) {
+codec_sample_t * wm8731_i2s_get_audio_buf(void) {
 
-    return wm8731_adc_buffer[wm8731_active_buf];
-}
-
-int16_t * wm8731_i2s_get_output_buf(void) {
-
-    return wm8731_dac_buffer[wm8731_active_buf];
+    return wm8731_audio_buffer[wm8731_active_buf];
 }

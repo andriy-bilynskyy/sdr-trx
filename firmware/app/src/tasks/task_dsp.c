@@ -46,7 +46,7 @@ void task_dsp(void * param) {
             if(dsp_proc) {
                 dsp_proc(app_handdle);
             } else {
-                memset(codec_get_output_buf(), 0, codec_buf_elements * sizeof(uint16_t));
+                memset(codec_get_audio_buf(), 0, codec_buf_elements * sizeof(codec_sample_t));
             }
         }
     }

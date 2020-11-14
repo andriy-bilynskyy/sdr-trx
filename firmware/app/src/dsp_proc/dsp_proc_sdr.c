@@ -18,6 +18,5 @@
 void dsp_proc_sdr(app_handle_t * app_handle) {
 
     (void)app_handle;
-    // FFT and inverse FFT
-    //memcpy(codec_get_output_buf(), codec_get_input_buf(), codec_buf_elements * sizeof(uint16_t));
+    /* TODO: FFT and inverse FFT */
 }
