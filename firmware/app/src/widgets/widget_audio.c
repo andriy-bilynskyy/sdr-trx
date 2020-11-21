@@ -43,8 +43,8 @@ void widget_audio(app_handle_t * app_handle) {
 
     hwctl_ext_mic(app_handle->settings->hwctl_ext_mic);
 
+    dsp_proc_set(app_handle, dsp_proc_copy_routine, NULL, NULL);
     if(codec_start(app_handle->settings->codec_samplerate, false)) {
-        dsp_proc = dsp_proc_copy;
         (void)codec_set_speaker_volume(app_handle->settings->codec_spk_volume);
         (void)codec_set_headphone_volume(app_handle->settings->codec_hp_volume);
         (void)codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensivity);
@@ -184,5 +184,5 @@ void widget_audio(app_handle_t * app_handle) {
     codec_stop();
     hwctl_ext_mic(false);
     trxctl_transmit(false);
-    dsp_proc = NULL;
+    dsp_proc_set(app_handle, NULL, NULL, NULL);
 }

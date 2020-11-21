@@ -33,7 +33,7 @@ static struct {
 
     .header   = {
         .marker                 = 0xAD0CC0DE,
-        .version                = 2                     /* !!! <- Increment on each app_settings_t modification */
+        .version                = 3                     /* !!! <- Increment on each app_settings_t modification */
     },
     /**************************************************************************
      * Default application settings
@@ -49,7 +49,12 @@ static struct {
         .dco_frequency              = 10000000,
         .rf_amp_bias                = RF_AMP_VAL(3.3f),
         .codec_tx_inp_src           = CODEC_INP_MIC,
-        .system_ptt_button          = APP_SETTINGS_PTT_SW
+        .system_ptt_button          = APP_SETTINGS_PTT_SW,
+        .sdr_modulation             = APP_SETTINGS_MODULATION_LSB,
+        .sdr_bpf_lsb                = {.low_hz = 100, .high_hz = 3500},
+        .sdr_bpf_usb                = {.low_hz = 100, .high_hz = 3500},
+        .sdr_bpf_am                 = {.low_hz = 100, .high_hz = 3500},
+        .sdr_bpf_nfm                = {.low_hz = 100, .high_hz = 3500}
     }
 
 };

@@ -27,6 +27,24 @@ typedef enum {
 } ptt_button_t;
 
 /******************************************************************************
+ * SDR modulation types
+ ******************************************************************************/
+typedef enum {
+    APP_SETTINGS_MODULATION_LSB,
+    APP_SETTINGS_MODULATION_USB,
+    APP_SETTINGS_MODULATION_AM,
+    APP_SETTINGS_MODULATION_NFM
+} sdr_modulation_t;
+
+/******************************************************************************
+ * SDR BPF type
+ ******************************************************************************/
+typedef struct {
+    uint16_t    low_hz;
+    uint16_t    high_hz;
+} sdr_bpf_t;
+
+/******************************************************************************
  * Application settings data
  * !!! if you make any changes inside of this structure
  * !!! also increment app_settings.header.version
@@ -50,6 +68,11 @@ typedef struct {
     uint8_t             rf_amp_bias;
     codec_inp_src_t     codec_tx_inp_src;
     ptt_button_t        system_ptt_button;
+    sdr_modulation_t    sdr_modulation;
+    sdr_bpf_t           sdr_bpf_lsb;
+    sdr_bpf_t           sdr_bpf_usb;
+    sdr_bpf_t           sdr_bpf_am;
+    sdr_bpf_t           sdr_bpf_nfm;
 } app_settings_t;
 
 /******************************************************************************

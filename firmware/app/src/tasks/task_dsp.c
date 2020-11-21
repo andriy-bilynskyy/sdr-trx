@@ -24,7 +24,6 @@
 #define TASK_DSP_PERIOD_MS       600    /* Timeout based on fulfill half audio buffer at lowest samplerate */
 
 
-dsp_proc_t dsp_proc = NULL;
 static SemaphoreHandle_t task_audio_sync_sem = NULL;
 
 
@@ -33,21 +32,17 @@ static void task_dsp_data_ready(void);
 
 void task_dsp(void * param) {
 
-    app_handle_t * app_handdle = (app_handle_t *)param;
-    (void)Atomic_Increment_u32(&app_handdle->running_tasks_cnt);
+    app_handle_t * app_handle = (app_handle_t *)param;
+    (void)Atomic_Increment_u32(&app_handle->running_tasks_cnt);
     DBG_OUT("audio task started");
 
     task_audio_sync_sem = xSemaphoreCreateBinary();
     codec_set_callback(task_dsp_data_ready);
 
-    for(; app_handdle->system_ctive;) {
+    for(; app_handle->system_ctive;) {
 
         if(xSemaphoreTake(task_audio_sync_sem, TASK_DSP_PERIOD_MS) == pdTRUE) {
-            if(dsp_proc) {
-                dsp_proc(app_handdle);
-            } else {
-                memset(codec_get_audio_buf(), 0, codec_buf_elements * sizeof(codec_sample_t));
-            }
+            dsp_proc_exec(app_handle);
         }
     }
 
@@ -56,7 +51,7 @@ void task_dsp(void * param) {
     task_audio_sync_sem = NULL;
 
     DBG_OUT("audio task stopped");
-    (void)Atomic_Decrement_u32(&app_handdle->running_tasks_cnt);
+    (void)Atomic_Decrement_u32(&app_handle->running_tasks_cnt);
 
     vTaskDelete(NULL);
 }

@@ -17,7 +17,7 @@
 #include "app_data_types.h"
 
 
-void dsp_proc_copy(app_handle_t * app_handle);
+void dsp_proc_copy_routine(app_handle_t * app_handle);
 
 
 #endif

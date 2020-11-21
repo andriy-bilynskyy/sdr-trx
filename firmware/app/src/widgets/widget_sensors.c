@@ -34,7 +34,7 @@ void widget_sensors(app_handle_t * app_handle) {
     bool init = true;
     bool touched = false;
 
-    dsp_proc = NULL;
+    dsp_proc_set(app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
     (void)widget_sensors_show_errors(app_handle, rf_unit_start(app_handle));
 
     for(; app_handle->system_ctive;) {
@@ -125,6 +125,7 @@ void widget_sensors(app_handle_t * app_handle) {
         }
     }
     rf_unit_stop(app_handle);
+    dsp_proc_set(app_handle, NULL, NULL, NULL);
 }
 
 static bool widget_sensors_show_errors(app_handle_t * app_handle, rf_unit_state_t state) {

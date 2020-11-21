@@ -10,11 +10,11 @@
 */
 
 
-#include "dsp_proc_copy.h"
+#include "dsp_proc.h"
 #include "codec.h"
 
 
-void dsp_proc_copy(app_handle_t * app_handle) {
+void dsp_proc_copy_routine(app_handle_t * app_handle) {
 
     (void)app_handle;
     codec_sample_t * buf = codec_get_audio_buf();

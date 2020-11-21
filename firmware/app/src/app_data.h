@@ -14,7 +14,6 @@
 
 
 #include "app_data_types.h"
-#include <stdbool.h>
 
 
 extern volatile app_handle_t app_handle;
