@@ -62,3 +62,14 @@ void arm_cmplx_mag_f32(const float32_t * pSrc, float32_t * pDst, uint32_t numSam
         pDst[i] = sqrtf(pSrc[2 * i] * pSrc[2 * i] + pSrc[2 * i + 1] * pSrc[2 * i + 1]);
     }
 }
+
+arm_status arm_sqrt_f32(float32_t in, float32_t * pOut) {
+
+    arm_status result = ARM_MATH_ARGUMENT_ERROR;
+
+    if(in >= 0) {
+        *pOut = sqrtf(in);
+        result = ARM_MATH_SUCCESS;
+    }
+    return result;
+}

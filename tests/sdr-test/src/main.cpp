@@ -26,12 +26,13 @@ extern "C" {
 #define TEST_RX_TX_MODE         0
 #define TEST_RX_CH_MODULATIN    1
 #define TEST_TX_CH_MODULATIN    2
+#define TEST_SPECTRUM           3
 
 
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_TX_CH_MODULATIN
+#define ACTIVE_TEST             TEST_SPECTRUM
 
 
 #define SIGNAL_HZ               400
@@ -47,6 +48,7 @@ int main(void) {
         plot.set_title("SDR process");
         plot.set_color(0xFF0000,    "output L");
         plot.set_color(0x00,        "output R");
+        plot.set_color(0x0000FF,    "spectrum");
 
 #if(ACTIVE_TEST == TEST_RX_TX_MODE)
 
@@ -116,6 +118,28 @@ int main(void) {
             } else {
                 app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_LSB;
             }
+        }
+
+#elif(ACTIVE_TEST == TEST_SPECTRUM)
+
+        app_handle.ctl_state->transmission = false;
+
+        for(uint8_t b_cnt = 0; b_cnt < 4; b_cnt++) {
+
+            codec_mk_signal(&app_handle, SIGNAL_HZ);
+            dsp_proc_exec(&app_handle);
+        }
+
+        if(app_handle.ctl_state->spectrum.valid && app_handle.ctl_state->spectrum.data) {
+            app_handle.ctl_state->spectrum.data[0] /= 2;
+            app_handle.ctl_state->spectrum.data[app_handle.ctl_state->spectrum.elements >> 1] /= 2;
+            for(uint16_t i = app_handle.ctl_state->spectrum.elements - 1; i > app_handle.ctl_state->spectrum.elements >> 1; i--) {
+                plot.add_point(app_handle.ctl_state->spectrum.elements - i, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
+            }
+            for(uint16_t i = 0; i <= app_handle.ctl_state->spectrum.elements >> 1; i++) {
+                plot.add_point(-(int)i, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
+            }
+            app_handle.ctl_state->spectrum.valid = false;
         }
 
 #endif

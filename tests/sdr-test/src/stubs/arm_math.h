@@ -43,6 +43,6 @@ typedef float float32_t;
 arm_status  arm_cfft_init_f32(arm_cfft_instance_f32 * S, uint16_t fftLen);
 void        arm_cfft_f32(const arm_cfft_instance_f32 * S, float32_t * p1, uint8_t ifftFlag, uint8_t bitReverseFlag);
 void        arm_cmplx_mag_f32(const float32_t * pSrc, float32_t * pDst, uint32_t numSamples);
-
+arm_status  arm_sqrt_f32(float32_t in, float32_t * pOut);
 
 #endif

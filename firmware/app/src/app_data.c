@@ -61,7 +61,13 @@ static struct {
 
 static app_ctl_state_t app_ctl_state = {
     .transmission                   = false,                           /* PTT pressed */
-    .codec_rx_line_sensivity        = {.mute = false, .volume = 0x17}  /* adjustment during reception DSP process */
+    .codec_rx_line_sensivity        = {.mute = false, .volume = 0x17}, /* adjustment during reception DSP process */
+    .spectrum                       = {
+        .valid = false,
+        .iterarions = 0,
+        .elements = 0,
+        .data = NULL
+    }
 };
 
 

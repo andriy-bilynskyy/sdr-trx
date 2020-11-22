@@ -33,6 +33,7 @@ static struct {
     codec_sample_t *        out_buf;
     float32_t *             window;
     float32_t *             magnitude;
+    uint16_t                magnitude_iterations;
     arm_cfft_instance_f32   cfft;
     enum {
         DSP_PROC_SDR_START,
@@ -41,6 +42,7 @@ static struct {
     }                       state;
     bool                    transmission;
     sdr_modulation_t        modulation;
+    uint32_t                dco_frequency;
 } dsp_proc_sdr = {
     .fft_buf = NULL,
     .inp_buf = NULL,
@@ -68,17 +70,30 @@ void dsp_proc_sdr_set(app_handle_t * app_handle) {
     dsp_proc_sdr.window = dsp_proc_sdr_hann_window(codec_buf_elements << 1);
 
     dsp_proc_sdr.magnitude = malloc(sizeof(float32_t) * (codec_buf_elements << 1));
+    memset(dsp_proc_sdr.magnitude, 0, sizeof(float32_t) * (codec_buf_elements << 1));
+    dsp_proc_sdr.magnitude_iterations = 0;
+    app_handle->ctl_state->spectrum.data = malloc(sizeof(float32_t) * (codec_buf_elements << 1));
+    app_handle->ctl_state->spectrum.elements = codec_buf_elements << 1;
+    app_handle->ctl_state->spectrum.iterarions = 0;
+    app_handle->ctl_state->spectrum.valid = false;
 
     arm_cfft_init_f32(&dsp_proc_sdr.cfft, codec_buf_elements << 1);
     dsp_proc_sdr.state = DSP_PROC_SDR_END;
     dsp_proc_sdr.transmission = app_handle->ctl_state->transmission;
     dsp_proc_sdr.modulation = app_handle->settings->sdr_modulation;
+    dsp_proc_sdr.dco_frequency = app_handle->settings->dco_frequency;
 
 }
 
 void dsp_proc_sdr_unset(app_handle_t * app_handle) {
 
     DBG_OUT("deinit SDR process");
+
+    app_handle->ctl_state->spectrum.valid = false;
+    app_handle->ctl_state->spectrum.elements = 0;
+    if(app_handle->ctl_state->spectrum.data) {
+        free(app_handle->ctl_state->spectrum.data);
+    }
 
     if(dsp_proc_sdr.magnitude) {
         free(dsp_proc_sdr.magnitude);
@@ -116,6 +131,11 @@ void dsp_proc_sdr_routine(app_handle_t * app_handle) {
         }
         if(dsp_proc_sdr.modulation != app_handle->settings->sdr_modulation) {
             dsp_proc_sdr.state = DSP_PROC_SDR_END;
+        }
+        if(dsp_proc_sdr.dco_frequency != app_handle->settings->dco_frequency) {
+            dsp_proc_sdr.state = DSP_PROC_SDR_END;
+            memset(dsp_proc_sdr.magnitude, 0, sizeof(float32_t) * (codec_buf_elements << 1));
+            dsp_proc_sdr.magnitude_iterations = 0;
         }
 
         switch(dsp_proc_sdr.state) {
@@ -181,8 +201,23 @@ void dsp_proc_sdr_routine(app_handle_t * app_handle) {
 
             arm_cfft_f32(&dsp_proc_sdr.cfft, (float32_t *)dsp_proc_sdr.fft_buf, 0, 1);
 
-            // arm_cmplx_mag_f32((float32_t *)dsp_proc_sdr.fft_buf, dsp_proc_sdr.magnitude, codec_buf_elements * 2);
-            /* notify UI new spectrum */
+            if(dsp_proc_sdr.magnitude_iterations < (uint16_t)-1) {
+                for(uint16_t i = 0; i < codec_buf_elements << 1; i++) {
+                    float32_t tmp;
+                    (void)arm_sqrt_f32(dsp_proc_sdr.fft_buf[i].re * dsp_proc_sdr.fft_buf[i].re + dsp_proc_sdr.fft_buf[i].im * dsp_proc_sdr.fft_buf[i].im, &tmp);
+                    dsp_proc_sdr.magnitude[i] += tmp;
+                }
+                dsp_proc_sdr.magnitude_iterations++;
+            }
+
+            if(!app_handle->ctl_state->spectrum.valid && app_handle->ctl_state->spectrum.data) {
+                app_handle->ctl_state->spectrum.iterarions = dsp_proc_sdr.magnitude_iterations;
+                memcpy(app_handle->ctl_state->spectrum.data, dsp_proc_sdr.magnitude, sizeof(float32_t) * app_handle->ctl_state->spectrum.elements);
+                app_handle->ctl_state->spectrum.valid = true;
+
+                memset(dsp_proc_sdr.magnitude, 0, sizeof(float32_t) * (codec_buf_elements << 1));
+                dsp_proc_sdr.magnitude_iterations = 0;
+            }
 
             switch(dsp_proc_sdr.modulation) {
             case APP_SETTINGS_MODULATION_LSB: {
@@ -282,6 +317,7 @@ void dsp_proc_sdr_routine(app_handle_t * app_handle) {
 
         dsp_proc_sdr.transmission = app_handle->ctl_state->transmission;
         dsp_proc_sdr.modulation = app_handle->settings->sdr_modulation;
+        dsp_proc_sdr.dco_frequency = app_handle->settings->dco_frequency;
     }
 }
 

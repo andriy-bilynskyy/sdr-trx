@@ -15,6 +15,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "arm_math.h"
 #include "codec.h"
 
 
@@ -43,6 +44,16 @@ typedef struct {
     uint16_t    low_hz;
     uint16_t    high_hz;
 } sdr_bpf_t;
+
+/******************************************************************************
+ * SDR spectrum type
+ ******************************************************************************/
+typedef struct {
+    bool        valid;
+    uint16_t    iterarions;
+    uint16_t    elements;
+    float32_t * data;
+} sdr_spectrum_t;
 
 /******************************************************************************
  * Application settings data
@@ -81,6 +92,7 @@ typedef struct {
 typedef struct {
     bool                transmission;
     codec_volume_t      codec_rx_line_sensivity;
+    sdr_spectrum_t      spectrum;
 } app_ctl_state_t;
 
 /******************************************************************************

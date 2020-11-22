@@ -24,6 +24,8 @@
 #define WIDGET_TRX_TAG_MODULATION     54
 /* continue touch reporting after first touch */
 #define WIDGET_TRX_TOUCH_SKIP_CNT     5
+/* update spectrum counter */
+#define WIDGET_TRX_UPDATE_SPEXTRUM    4
 
 
 static bool widget_trx_show_errors(app_handle_t * app_handle, rf_unit_state_t state);
@@ -36,6 +38,7 @@ void widget_trx(app_handle_t * app_handle) {
     bool init = true;
     bool touched = false;
     uint8_t touched_cnt = WIDGET_TRX_TOUCH_SKIP_CNT;
+    uint8_t spectrum_cnt = WIDGET_TRX_UPDATE_SPEXTRUM;
 
     dsp_proc_set(app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
     (void)widget_trx_show_errors(app_handle, rf_unit_start(app_handle));
@@ -43,6 +46,16 @@ void widget_trx(app_handle_t * app_handle) {
     for(; app_handle->system_ctive;) {
 
         static const uint32_t f_grid[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000};
+
+        if(!spectrum_cnt) {
+            if(app_handle->ctl_state->spectrum.valid && app_handle->ctl_state->spectrum.data) {
+                /*TODO: process app_handle->ctl_state->spectrum.data */
+                app_handle->ctl_state->spectrum.valid = false;
+            }
+            spectrum_cnt = WIDGET_TRX_UPDATE_SPEXTRUM;
+        } else {
+            spectrum_cnt--;
+        }
 
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
