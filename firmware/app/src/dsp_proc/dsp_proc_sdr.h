@@ -17,9 +17,9 @@
 #include "app_data_types.h"
 
 
-void dsp_proc_sdr_set(app_handle_t * app_handle);
-void dsp_proc_sdr_unset(app_handle_t * app_handle);
-void dsp_proc_sdr_routine(app_handle_t * app_handle);
+void dsp_proc_sdr_set(volatile app_handle_t * app_handle);
+void dsp_proc_sdr_unset(volatile app_handle_t * app_handle);
+void dsp_proc_sdr_routine(volatile app_handle_t * app_handle);
 
 
 #endif

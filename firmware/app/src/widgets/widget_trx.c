@@ -28,10 +28,10 @@
 #define WIDGET_TRX_UPDATE_SPEXTRUM    4
 
 
-static bool widget_trx_show_errors(app_handle_t * app_handle, rf_unit_state_t state);
+static bool widget_trx_show_errors(volatile app_handle_t * app_handle, rf_unit_state_t state);
 
 
-void widget_trx(app_handle_t * app_handle) {
+void widget_trx(volatile app_handle_t * app_handle) {
 
     uint8_t  frequency_pos = 2;
 
@@ -158,7 +158,7 @@ void widget_trx(app_handle_t * app_handle) {
 }
 
 
-static bool widget_trx_show_errors(app_handle_t * app_handle, rf_unit_state_t state) {
+static bool widget_trx_show_errors(volatile app_handle_t * app_handle, rf_unit_state_t state) {
 
     bool result = false;
     switch(state) {

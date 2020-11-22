@@ -33,7 +33,7 @@
 
 void task_system(void * param) {
 
-    app_handle_t * app_handle = (app_handle_t *)param;
+    volatile app_handle_t * app_handle = (app_handle_t *)param;
     DBG_OUT("system task started");
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);

@@ -21,7 +21,7 @@
 #define WIDGET_SETTINGS_TAG_PTT_MODE       4
 
 
-void widget_settings(app_handle_t * app_handle) {
+void widget_settings(volatile app_handle_t * app_handle) {
     bool init = true;
     bool touched = false;
 

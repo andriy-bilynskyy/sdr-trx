@@ -17,8 +17,8 @@
 #include "app_data_types.h"
 
 
-void    codec_mk_signal(app_handle_t * app_handle, uint32_t f_signal);
-float   codec_get_buf_time(app_handle_t * app_handle, uint16_t idx);
+void    codec_mk_signal(volatile app_handle_t * app_handle, uint32_t f_signal);
+float   codec_get_buf_time(volatile app_handle_t * app_handle, uint16_t idx);
 
 
 #endif

@@ -65,7 +65,7 @@
 #define CODEC_I2S_IRQHandler    DMA1_Stream3_IRQHandler
 
 
-static codec_sample_t           wm8731_audio_buffer[2][CODEC_BUF_SIZE] = {0};
+static volatile codec_sample_t  wm8731_audio_buffer[2][CODEC_BUF_SIZE] = {0};
 static volatile uint8_t         wm8731_active_buf = 1;
 static codec_data_ready_cb_t    wm8731_data_ready_cb = NULL;
 
@@ -135,7 +135,7 @@ void wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb) {
     SPI_I2S_DMACmd(CODEC_I2S, SPI_I2S_DMAReq_Tx, ENABLE);
     SPI_I2S_DMACmd(CODEC_I2S_EXT, SPI_I2S_DMAReq_Rx, ENABLE);
 
-    memset(wm8731_audio_buffer, 0, sizeof(wm8731_audio_buffer));
+    memset((void *)wm8731_audio_buffer, 0, sizeof(wm8731_audio_buffer));
     wm8731_active_buf = 1;
     if(reset_cb) {
         wm8731_data_ready_cb = NULL;
@@ -233,7 +233,7 @@ void wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_data_ready_cb = adc_data_ready;
 }
 
-codec_sample_t * wm8731_i2s_get_audio_buf(void) {
+volatile codec_sample_t * const wm8731_i2s_get_audio_buf(void) {
 
     return wm8731_audio_buffer[wm8731_active_buf];
 }

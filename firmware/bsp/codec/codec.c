@@ -118,6 +118,6 @@ void codec_set_callback(codec_data_ready_cb_t adc_data_ready) {
     wm8731_i2s_set_callback(adc_data_ready);
 }
 
-codec_sample_t * codec_get_audio_buf(void) {
+volatile codec_sample_t * const codec_get_audio_buf(void) {
     return wm8731_i2s_get_audio_buf();
 }

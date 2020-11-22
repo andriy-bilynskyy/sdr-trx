@@ -20,7 +20,7 @@
 
 void task_rtc_start(void * param) {
 
-    app_handle_t * app_handle = (app_handle_t *)param;
+    volatile app_handle_t * app_handle = (app_handle_t *)param;
     (void)Atomic_Increment_u32(&app_handle->running_tasks_cnt);
     DBG_OUT("rtc startup task started");
 

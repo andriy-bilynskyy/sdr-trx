@@ -19,7 +19,7 @@
 #define WIDGET_UI_TAG_BRIGHTNESS     2
 
 
-void widget_ui(app_handle_t * app_handle) {
+void widget_ui(volatile app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;

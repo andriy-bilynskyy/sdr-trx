@@ -34,7 +34,7 @@
 #define WIDGET_AUDIO_TAG_SRC          11
 
 
-void widget_audio(app_handle_t * app_handle) {
+void widget_audio(volatile app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;

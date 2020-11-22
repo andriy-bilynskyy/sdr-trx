@@ -16,7 +16,7 @@
 #include "app_data_types.h"
 
 
-void widget_date_time(app_handle_t * app_handle);
+void widget_date_time(volatile app_handle_t * app_handle);
 
 
 #endif

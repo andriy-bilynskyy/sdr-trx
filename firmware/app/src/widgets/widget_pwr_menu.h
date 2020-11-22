@@ -16,7 +16,7 @@
 #include "app_data_types.h"
 
 
-void widget_pwr_menu(app_handle_t * app_handle);
+void widget_pwr_menu(volatile app_handle_t * app_handle);
 
 
 #endif

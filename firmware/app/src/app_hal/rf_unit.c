@@ -39,7 +39,7 @@ static struct {
 static bool rf_unit_filters_adjust(uint32_t frequency);
 
 
-rf_unit_state_t rf_unit_start(app_handle_t * app_handle) {
+rf_unit_state_t rf_unit_start(volatile app_handle_t * app_handle) {
 
     if(rf_unit.state != RF_UNIT_READY) {
         if(rf_unit.state != RF_UNIT_NOT_INITED) {
@@ -92,7 +92,7 @@ rf_unit_state_t rf_unit_start(app_handle_t * app_handle) {
     return rf_unit.state;
 }
 
-void rf_unit_stop(app_handle_t * app_handle) {
+void rf_unit_stop(volatile app_handle_t * app_handle) {
 
     (void)app_handle;
     rf_unit.state = RF_UNIT_NOT_INITED;
@@ -108,7 +108,7 @@ void rf_unit_stop(app_handle_t * app_handle) {
     hwctl_rx_power(false);
 }
 
-rf_unit_state_t rf_unit_update(app_handle_t * app_handle) {
+rf_unit_state_t rf_unit_update(volatile app_handle_t * app_handle) {
 
     if(rf_unit.state == RF_UNIT_READY) {
         if(rf_unit.frequency != app_handle->settings->dco_frequency) {

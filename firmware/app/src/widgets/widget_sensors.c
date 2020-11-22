@@ -26,10 +26,10 @@
 #define WIDGET_SENSORS_TAG_PAVAL      3
 
 
-static bool widget_sensors_show_errors(app_handle_t * app_handle, rf_unit_state_t state);
+static bool widget_sensors_show_errors(volatile app_handle_t * app_handle, rf_unit_state_t state);
 
 
-void widget_sensors(app_handle_t * app_handle) {
+void widget_sensors(volatile app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;
@@ -128,7 +128,7 @@ void widget_sensors(app_handle_t * app_handle) {
     dsp_proc_set(app_handle, NULL, NULL, NULL);
 }
 
-static bool widget_sensors_show_errors(app_handle_t * app_handle, rf_unit_state_t state) {
+static bool widget_sensors_show_errors(volatile app_handle_t * app_handle, rf_unit_state_t state) {
 
     bool result = false;
     switch(state) {

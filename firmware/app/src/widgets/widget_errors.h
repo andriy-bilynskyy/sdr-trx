@@ -16,14 +16,14 @@
 #include "app_data_types.h"
 
 
-void widget_error_codec(app_handle_t * app_handle);
-void widget_error_rtc(app_handle_t * app_handle);
-void widget_error_battery(app_handle_t * app_handle);
-void widget_error_overheat(app_handle_t * app_handle);
-void widget_error_storage(app_handle_t * app_handle);
-void widget_error_rf_amp(app_handle_t * app_handle);
-void widget_error_dco(app_handle_t * app_handle);
-void widget_error_filters(app_handle_t * app_handle);
+void widget_error_codec(volatile app_handle_t * app_handle);
+void widget_error_rtc(volatile app_handle_t * app_handle);
+void widget_error_battery(volatile app_handle_t * app_handle);
+void widget_error_overheat(volatile app_handle_t * app_handle);
+void widget_error_storage(volatile app_handle_t * app_handle);
+void widget_error_rf_amp(volatile app_handle_t * app_handle);
+void widget_error_dco(volatile app_handle_t * app_handle);
+void widget_error_filters(volatile app_handle_t * app_handle);
 
 
 #endif

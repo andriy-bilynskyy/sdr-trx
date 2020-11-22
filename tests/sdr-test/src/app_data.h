@@ -16,7 +16,7 @@
 #include "app_data_types.h"
 
 
-extern app_handle_t app_handle;
+extern volatile app_handle_t app_handle;
 
 
 #endif

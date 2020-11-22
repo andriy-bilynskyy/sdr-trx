@@ -20,7 +20,7 @@
 extern const uint16_t codec_buf_elements;
 
 
-codec_sample_t * codec_get_audio_buf(void);
+volatile codec_sample_t * const codec_get_audio_buf(void);
 
 
 #endif

@@ -54,7 +54,7 @@ static struct {
 static float32_t * dsp_proc_sdr_hann_window(uint16_t size);
 
 
-void dsp_proc_sdr_set(app_handle_t * app_handle) {
+void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
 
     DBG_OUT("init SDR process");
 
@@ -85,7 +85,7 @@ void dsp_proc_sdr_set(app_handle_t * app_handle) {
 
 }
 
-void dsp_proc_sdr_unset(app_handle_t * app_handle) {
+void dsp_proc_sdr_unset(volatile app_handle_t * app_handle) {
 
     DBG_OUT("deinit SDR process");
 
@@ -120,11 +120,11 @@ void dsp_proc_sdr_unset(app_handle_t * app_handle) {
     }
 }
 
-void dsp_proc_sdr_routine(app_handle_t * app_handle) {
+void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
 
     if(dsp_proc_sdr.fft_buf && dsp_proc_sdr.inp_buf && dsp_proc_sdr.out_buf && dsp_proc_sdr.window && dsp_proc_sdr.magnitude) {
 
-        codec_sample_t * buf = codec_get_audio_buf();
+        volatile codec_sample_t * const buf = codec_get_audio_buf();
 
         if(dsp_proc_sdr.transmission != app_handle->ctl_state->transmission) {
             dsp_proc_sdr.state = DSP_PROC_SDR_END;

@@ -32,7 +32,7 @@
 #define WIDGET_EVENT_PTT_CHANGE     (1<<6)
 
 
-bool widget_event(app_handle_t * app_handle, uint32_t event_flg);
+bool widget_event(volatile app_handle_t * app_handle, uint32_t event_flg);
 
 
 #endif

@@ -22,10 +22,10 @@
 const uint16_t codec_buf_elements = CODEC_BUF_SIZE;
 
 
-static codec_sample_t   audio_buffer[CODEC_BUF_SIZE] = {0};
+static volatile codec_sample_t   audio_buffer[CODEC_BUF_SIZE] = {0};
 
 
-codec_sample_t * codec_get_audio_buf(void) {
+volatile codec_sample_t * const codec_get_audio_buf(void) {
 
     return audio_buffer;
 }

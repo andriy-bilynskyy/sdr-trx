@@ -19,7 +19,7 @@
 #define WIDGET_SW_VERSION_TAG_EXIT           1
 
 
-void widget_sw_version(app_handle_t * app_handle) {
+void widget_sw_version(volatile app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;

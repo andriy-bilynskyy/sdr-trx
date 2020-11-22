@@ -22,7 +22,7 @@
 #define WIDGET_PWR_MENU_TAG_REBOOT      3
 
 
-void widget_pwr_menu(app_handle_t * app_handle) {
+void widget_pwr_menu(volatile app_handle_t * app_handle) {
 
     bool init = true;
     bool touched = false;

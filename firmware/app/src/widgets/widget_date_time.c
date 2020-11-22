@@ -30,7 +30,7 @@
 #define WIDGET_DATE_TIME_TOUCH_SKIP_CNT 5
 
 
-void widget_date_time(app_handle_t * app_handle) {
+void widget_date_time(volatile app_handle_t * app_handle) {
 
     bool    init = true;
     bool    touched = false;

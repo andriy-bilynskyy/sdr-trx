@@ -16,7 +16,7 @@
 #include "app_data_types.h"
 
 
-void widget_trx(app_handle_t * app_handle);
+void widget_trx(volatile app_handle_t * app_handle);
 
 
 #endif

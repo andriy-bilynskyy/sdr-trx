@@ -17,9 +17,9 @@
 #include "codec_types.h"
 
 
-void             wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb);
-void             wm8731_i2s_stop(void);
-void             wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready);
-codec_sample_t * wm8731_i2s_get_audio_buf(void);
+void                            wm8731_i2s_start(codec_sample_rate_t sr, bool reset_cb);
+void                            wm8731_i2s_stop(void);
+void                            wm8731_i2s_set_callback(codec_data_ready_cb_t adc_data_ready);
+volatile codec_sample_t * const wm8731_i2s_get_audio_buf(void);
 
 #endif

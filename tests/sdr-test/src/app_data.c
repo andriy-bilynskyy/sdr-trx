@@ -22,11 +22,11 @@
 static struct {
 
     const struct app_settings_header_t {
-        uint32_t            marker;
-        uint32_t            version;
-    }                   header;
+        uint32_t                      marker;
+        uint32_t                      version;
+    }                             header;
 
-    app_settings_t      settings;
+    volatile app_settings_t       settings;
 
 } app_settings = {
 
@@ -58,7 +58,7 @@ static struct {
 
 };
 
-static app_ctl_state_t app_ctl_state = {
+static volatile app_ctl_state_t app_ctl_state = {
     .transmission                   = false,                           /* PTT pressed */
     .codec_rx_line_sensivity        = {.mute = false, .volume = 0x17}, /* adjustment during reception DSP process */
     .spectrum                       = {
@@ -70,7 +70,7 @@ static app_ctl_state_t app_ctl_state = {
 };
 
 
-app_handle_t app_handle = {
+volatile app_handle_t app_handle = {
     .system_ctive = true,
     .running_tasks_cnt = 0,
     .settings = &app_settings.settings,

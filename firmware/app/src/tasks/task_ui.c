@@ -34,7 +34,7 @@ static void task_ui_hw_buttons_check(TimerHandle_t xTimer);
 
 void task_ui(void * param) {
 
-    app_handle_t * app_handle = (app_handle_t *)param;
+    volatile app_handle_t * app_handle = (app_handle_t *)param;
     (void)Atomic_Increment_u32(&app_handle->running_tasks_cnt);
     DBG_OUT("ui task started");
 

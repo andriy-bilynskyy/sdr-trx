@@ -23,11 +23,11 @@
 static struct {
 
     const struct app_settings_header_t {
-        uint32_t            marker;
-        uint32_t            version;
-    }                   header;
+        uint32_t                      marker;
+        uint32_t                      version;
+    }                             header;
 
-    app_settings_t      settings;
+    volatile app_settings_t       settings;
 
 } app_settings = {
 
@@ -59,7 +59,7 @@ static struct {
 
 };
 
-static app_ctl_state_t app_ctl_state = {
+static volatile app_ctl_state_t app_ctl_state = {
     .transmission                   = false,                           /* PTT pressed */
     .codec_rx_line_sensivity        = {.mute = false, .volume = 0x17}, /* adjustment during reception DSP process */
     .spectrum                       = {
@@ -86,7 +86,7 @@ bool app_settings_load(void) {
     if(mem24_read(APP_SETTINGS_NVRAM_OFFSET  + ((uint32_t)&app_settings.header - (uint32_t)&app_settings), &nvram_header, sizeof(nvram_header)) == sizeof(nvram_header)) {
         result = true;
         if(!memcmp(&nvram_header, &app_settings.header, sizeof(struct app_settings_header_t))) {
-            (void)mem24_read(APP_SETTINGS_NVRAM_OFFSET  + ((uint32_t)&app_settings.settings - (uint32_t)&app_settings), &app_settings.settings, sizeof(app_settings.settings));
+            (void)mem24_read(APP_SETTINGS_NVRAM_OFFSET  + ((uint32_t)&app_settings.settings - (uint32_t)&app_settings), (void *)&app_settings.settings, sizeof(app_settings.settings));
         } else {
             DBG_OUT("using default application settings");
         }

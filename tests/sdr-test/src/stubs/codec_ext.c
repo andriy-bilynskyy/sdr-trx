@@ -22,7 +22,7 @@ static float            time = 0;
 static const float      dt[] = {1.0f / 8000, 1.0f / 32000, 1.0f / 48000, 1.0f / 96000};
 
 
-void codec_mk_signal(app_handle_t * app_handle, uint32_t f_signal) {
+void codec_mk_signal(volatile app_handle_t * app_handle, uint32_t f_signal) {
 
     for(uint16_t i = 0; i < codec_buf_elements; i++) {
 
@@ -38,7 +38,7 @@ void codec_mk_signal(app_handle_t * app_handle, uint32_t f_signal) {
     }
 }
 
-float codec_get_buf_time(app_handle_t * app_handle, uint16_t idx) {
+float codec_get_buf_time(volatile app_handle_t * app_handle, uint16_t idx) {
 
     return time - dt[app_handle->settings->codec_samplerate] * codec_buf_elements + dt[app_handle->settings->codec_samplerate] * idx;
 }

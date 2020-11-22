@@ -27,7 +27,7 @@
 #define WIDGET_MAIN_TAG_SW_VERSION      7
 
 
-void widget_main(app_handle_t * app_handle) {
+void widget_main(volatile app_handle_t * app_handle) {
 
     bool init = true;
 

@@ -18,19 +18,19 @@
 #include <string.h>
 
 
-void widget_error_codec(app_handle_t * app_handle) {
+void widget_error_codec(volatile app_handle_t * app_handle) {
 
     const char * argv[] = {"Codec failed"};
     ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_rtc(app_handle_t * app_handle) {
+void widget_error_rtc(volatile app_handle_t * app_handle) {
 
     const char * argv[] = {"RTC failed"};
     ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_battery(app_handle_t * app_handle) {
+void widget_error_battery(volatile app_handle_t * app_handle) {
 
     char buf[20] = "V = ";
     gcvtf(adc_batt_voltage(), 2, &buf[4]);
@@ -44,7 +44,7 @@ void widget_error_battery(app_handle_t * app_handle) {
     ui_notify(4, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_overheat(app_handle_t * app_handle) {
+void widget_error_overheat(volatile app_handle_t * app_handle) {
 
     char buf1[20] = "T1 = ";
     char buf2[20] = "T2 = ";
@@ -65,24 +65,26 @@ void widget_error_overheat(app_handle_t * app_handle) {
     ui_notify(5, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_storage(app_handle_t * app_handle) {
+void widget_error_storage(volatile app_handle_t * app_handle) {
 
     const char * argv[] = {"Storage failed"};
     ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_rf_amp(app_handle_t * app_handle) {
+void widget_error_rf_amp(volatile app_handle_t * app_handle) {
 
     const char * argv[] = {"RF amplifier failed"};
     ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_dco(app_handle_t * app_handle) {
+void widget_error_dco(volatile app_handle_t * app_handle) {
 
     const char * argv[] = {"DCO failed"};
     ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }
 
-void widget_error_filters(app_handle_t * app_handle) {
+void widget_error_filters(volatile app_handle_t * app_handle) {
 
+    const char * argv[] = {"Filter error"};
+    ui_notify(1, argv, "Ok", &app_handle->system_ctive);
 }

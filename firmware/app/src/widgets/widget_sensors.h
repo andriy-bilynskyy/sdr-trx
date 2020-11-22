@@ -16,7 +16,7 @@
 #include "app_data_types.h"
 
 
-void widget_sensors(app_handle_t * app_handle);
+void widget_sensors(volatile app_handle_t * app_handle);
 
 
 #endif
