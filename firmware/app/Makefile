@@ -27,12 +27,12 @@ PROJECT ?= sdr-trx-app
 
 
 PROJECT_SRC := \
-  ${wildcard src/*.[c,cpp]} \
-  ${wildcard src/widgets/*.[c,cpp]} \
-  ${wildcard src/rtos_ext/*.[c,cpp]} \
-  ${wildcard src/tasks/*.[c,cpp]} \
-  ${wildcard src/dsp_proc/*.[c,cpp]} \
-  ${wildcard src/app_hal/*.[c,cpp]} \
+  ${wildcard src/*.c} ${wildcard src/*.cpp} \
+  ${wildcard src/widgets/*.c} ${wildcard src/widgets/*.cpp} \
+  ${wildcard src/rtos_ext/*.c} ${wildcard src/rtos_ext/*.cpp} \
+  ${wildcard src/tasks/*.c} ${wildcard src/tasks/*.cpp} \
+  ${wildcard src/dsp_proc/*.c} ${wildcard src/dsp_proc/*.cpp} \
+  ${wildcard src/app_hal/*.c} ${wildcard src/app_hal/*.cpp}\
 
 PROJECT_INC := \
   config \
@@ -45,12 +45,12 @@ PROJECT_INC := \
 PROJECT_LIB := \
 
 PROJECT_STYLE := \
-  ${wildcard src/*.[h,c,cpp]} \
-  ${wildcard src/widgets/*.[h,c,cpp]} \
-  ${wildcard src/rtos_ext/*.[c,cpp]} \
-  ${wildcard src/tasks/*.[h,c,cpp]} \
-  ${wildcard src/dsp_proc/*.[h,c,cpp]} \
-  ${wildcard src/app_hal/*.[h,c,cpp]} \
+  ${wildcard src/*.[hc]} ${wildcard src/*.cpp} \
+  ${wildcard src/widgets/*.[hc]} ${wildcard src/widgets/*.cpp} \
+  ${wildcard src/rtos_ext/*.[hc]} ${wildcard src/rtos_ext/*.cpp} \
+  ${wildcard src/tasks/*.[hc]} ${wildcard src/tasks/*.cpp} \
+  ${wildcard src/dsp_proc/*.[hc]} ${wildcard src/dsp_proc/*.cpp} \
+  ${wildcard src/app_hal/*.[hc]} ${wildcard src/app_hal/*.cpp} \
   ${wildcard config/*.h} \
 
 

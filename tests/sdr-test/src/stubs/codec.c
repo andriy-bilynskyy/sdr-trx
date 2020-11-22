@@ -14,6 +14,11 @@
 #include "codec_conf.h"
 
 
+#if(CODEC_BUF_SIZE & (CODEC_BUF_SIZE -1) != 0)
+#error CODEC_BUF_SIZE should be power of 2.
+#endif
+
+
 const uint16_t codec_buf_elements = CODEC_BUF_SIZE;
 
 
