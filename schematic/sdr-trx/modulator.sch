@@ -1008,7 +1008,7 @@ L sdr-trx:AD8604 U4
 U 5 1 5EB5A726
 P 6250 5300
 F 0 "U4" H 6208 5346 50  0001 L CNN
-F 1 "AD8604" H 6208 5255 50  0001 L CNN
+F 1 "AD8618" H 6208 5255 50  0001 L CNN
 F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6200 5400 50  0001 C CNN
 F 3 "https://www.analog.com/media/en/technical-documentation/data-sheets/AD8601_8602_8604.pdf" H 6300 5500 50  0001 C CNN
 	5    6250 5300
