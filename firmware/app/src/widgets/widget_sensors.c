@@ -93,6 +93,7 @@ void widget_sensors(volatile app_handle_t * app_handle) {
         if(widget_event(app_handle, event_flg)) {
             init = true;
         }
+        init = init || widget_sensors_show_errors(app_handle, rf_unit_update_rx_sensitivity(app_handle));
 
         ui_engine_touch_t touch = ui_engine_get_touch();
 

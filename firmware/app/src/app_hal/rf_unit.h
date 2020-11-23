@@ -33,6 +33,7 @@ typedef enum {
 rf_unit_state_t rf_unit_start(volatile app_handle_t * app_handle);
 void            rf_unit_stop(volatile app_handle_t * app_handle);
 rf_unit_state_t rf_unit_update(volatile app_handle_t * app_handle);
+rf_unit_state_t rf_unit_update_rx_sensitivity(volatile app_handle_t * app_handle);
 
 
 #endif

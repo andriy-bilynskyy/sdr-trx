@@ -27,12 +27,13 @@ extern "C" {
 #define TEST_RX_CH_MODULATIN    1
 #define TEST_TX_CH_MODULATIN    2
 #define TEST_SPECTRUM           3
+#define TEST_RX_AGC             5
 
 
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_SPECTRUM
+#define ACTIVE_TEST             TEST_RX_AGC
 
 
 #define SIGNAL_HZ               400
@@ -140,6 +141,17 @@ int main(void) {
                 plot.add_point(-(int)i, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
             }
             app_handle.ctl_state->spectrum.valid = false;
+        }
+
+#elif(ACTIVE_TEST == TEST_RX_AGC)
+
+        app_handle.ctl_state->transmission = false;
+
+        for(uint16_t b_cnt = 0; b_cnt < 800; b_cnt++) {
+
+            codec_mk_signal(&app_handle, SIGNAL_HZ);
+            dsp_proc_exec(&app_handle);
+            DBG_OUT("sensitivity: %u", app_handle.ctl_state->codec_rx_line_sensitivity.volume);
         }
 
 #endif

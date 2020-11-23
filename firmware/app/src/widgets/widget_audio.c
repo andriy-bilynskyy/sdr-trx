@@ -47,8 +47,8 @@ void widget_audio(volatile app_handle_t * app_handle) {
     if(codec_start(app_handle->settings->codec_samplerate, false)) {
         (void)codec_set_speaker_volume(app_handle->settings->codec_spk_volume);
         (void)codec_set_headphone_volume(app_handle->settings->codec_hp_volume);
-        (void)codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensivity);
-        (void)codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity);
+        (void)codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensitivity);
+        (void)codec_set_mic_sensivity(app_handle->settings->codec_mic_sensitivity);
     } else {
         widget_error_codec(app_handle);
     }
@@ -71,15 +71,15 @@ void widget_audio(volatile app_handle_t * app_handle) {
         ui_engine_toggle(WIDGET_AUDIO_TAG_HPON,    20,   120, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_hp_volume.mute, "On", "Off");
         ui_engine_slider(WIDGET_AUDIO_TAG_HPVOL,   110,  120, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->codec_hp_volume.volume) * 0xFFFF) / CODEC_OUTPUT_MAX_VOLUME);
         /* line input sensitivity */
-        app_handle->settings->codec_tx_line_sensivity = codec_get_line_sensivity();
+        app_handle->settings->codec_tx_line_sensitivity = codec_get_line_sensivity();
         ui_engine_text(  0,                        20,   145,         UI_ENGINE_FONT27, "Line input:", false);
-        ui_engine_toggle(WIDGET_AUDIO_TAG_LINEON,  20,   175, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_tx_line_sensivity.mute, "On", "Off");
-        ui_engine_slider(WIDGET_AUDIO_TAG_LINEVOL, 110,  175, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->codec_tx_line_sensivity.volume) * 0xFFFF) / CODEC_INPUT_MAX_VOLUME);
+        ui_engine_toggle(WIDGET_AUDIO_TAG_LINEON,  20,   175, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_tx_line_sensitivity.mute, "On", "Off");
+        ui_engine_slider(WIDGET_AUDIO_TAG_LINEVOL, 110,  175, ui_engine_xsize - 140, 15, ((uint32_t)(app_handle->settings->codec_tx_line_sensitivity.volume) * 0xFFFF) / CODEC_INPUT_MAX_VOLUME);
         /* microphone sensitivity */
-        app_handle->settings->codec_mic_sensivity = codec_get_mic_sensivity();
+        app_handle->settings->codec_mic_sensitivity = codec_get_mic_sensivity();
         ui_engine_text(  0,                        20,   200,         UI_ENGINE_FONT27, "Microphone:", false);
-        ui_engine_toggle(WIDGET_AUDIO_TAG_MICON,   20,   230, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_mic_sensivity.mute, "On", "Off");
-        ui_engine_toggle(WIDGET_AUDIO_TAG_MICVOL,  100,  230, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_mic_sensivity.volume, "Norm", "Boost");
+        ui_engine_toggle(WIDGET_AUDIO_TAG_MICON,   20,   230, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_mic_sensitivity.mute, "On", "Off");
+        ui_engine_toggle(WIDGET_AUDIO_TAG_MICVOL,  100,  230, 50,     UI_ENGINE_FONT27, app_handle->settings->codec_mic_sensitivity.volume, "Norm", "Boost");
         ui_engine_toggle(WIDGET_AUDIO_TAG_EXTMIC,  180,  230, 50,     UI_ENGINE_FONT27, app_handle->settings->hwctl_ext_mic, "Int.", "Ext.");
         /* source */
         codec_out_src_t src = codec_get_out_src();
@@ -125,22 +125,22 @@ void widget_audio(volatile app_handle_t * app_handle) {
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_LINEON) {
-                    app_handle->settings->codec_tx_line_sensivity.mute = !app_handle->settings->codec_tx_line_sensivity.mute;
-                    if(!codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensivity)) {
+                    app_handle->settings->codec_tx_line_sensitivity.mute = !app_handle->settings->codec_tx_line_sensitivity.mute;
+                    if(!codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensitivity)) {
                         widget_error_codec(app_handle);
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICON) {
-                    app_handle->settings->codec_mic_sensivity.mute = !app_handle->settings->codec_mic_sensivity.mute;
-                    if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity)) {
+                    app_handle->settings->codec_mic_sensitivity.mute = !app_handle->settings->codec_mic_sensitivity.mute;
+                    if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensitivity)) {
                         widget_error_codec(app_handle);
                         init = true;
                     }
                 }
                 if(touch.tag == WIDGET_AUDIO_TAG_MICVOL) {
-                    app_handle->settings->codec_mic_sensivity.volume = app_handle->settings->codec_mic_sensivity.volume ? 0 : CODEC_MIC_MAX_VOLUME;
-                    if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensivity)) {
+                    app_handle->settings->codec_mic_sensitivity.volume = app_handle->settings->codec_mic_sensitivity.volume ? 0 : CODEC_MIC_MAX_VOLUME;
+                    if(!codec_set_mic_sensivity(app_handle->settings->codec_mic_sensitivity)) {
                         widget_error_codec(app_handle);
                         init = true;
                     }
@@ -172,8 +172,8 @@ void widget_audio(volatile app_handle_t * app_handle) {
                 }
             }
             if(touch.tag == WIDGET_AUDIO_TAG_LINEVOL) {
-                app_handle->settings->codec_tx_line_sensivity.volume = ((uint32_t)touch.value  * CODEC_INPUT_MAX_VOLUME) / 0xFFFF;
-                if(!codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensivity)) {
+                app_handle->settings->codec_tx_line_sensitivity.volume = ((uint32_t)touch.value  * CODEC_INPUT_MAX_VOLUME) / 0xFFFF;
+                if(!codec_set_line_sensivity(app_handle->settings->codec_tx_line_sensitivity)) {
                     widget_error_codec(app_handle);
                     init = true;
                 }

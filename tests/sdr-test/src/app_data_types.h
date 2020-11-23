@@ -72,8 +72,8 @@ typedef struct {
     codec_sample_rate_t                 codec_samplerate;
     codec_volume_t                      codec_spk_volume;
     codec_volume_t                      codec_hp_volume;
-    codec_volume_t                      codec_tx_line_sensivity;
-    codec_volume_t                      codec_mic_sensivity;
+    codec_volume_t                      codec_tx_line_sensitivity;
+    codec_volume_t                      codec_mic_sensitivity;
     bool                                hwctl_ext_mic;
     uint32_t                            dco_frequency;
     uint8_t                             rf_amp_bias;
@@ -84,6 +84,7 @@ typedef struct {
     sdr_bpf_t                           sdr_bpf_usb;
     sdr_bpf_t                           sdr_bpf_am;
     sdr_bpf_t                           sdr_bpf_nfm;
+    uint16_t                            sdr_agc_tmieout_ms;
 } app_settings_t;
 
 /******************************************************************************
@@ -91,7 +92,7 @@ typedef struct {
  ******************************************************************************/
 typedef struct {
     bool                                transmission;
-    codec_volume_t                      codec_rx_line_sensivity;
+    codec_volume_t                      codec_rx_line_sensitivity;
     sdr_spectrum_t                      spectrum;
 } app_ctl_state_t;
 

@@ -91,8 +91,9 @@ void widget_trx(volatile app_handle_t * app_handle) {
             init = true;
         }
         if(event_flg & WIDGET_EVENT_PTT_CHANGE) {
-            init = widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
+            init = init || widget_trx_show_errors(app_handle, rf_unit_update(app_handle));
         }
+        init = init || widget_trx_show_errors(app_handle, rf_unit_update_rx_sensitivity(app_handle));
 
         ui_engine_touch_t touch = ui_engine_get_touch();
 
