@@ -489,6 +489,30 @@ void ui_engine_toggle(uint8_t tag, int16_t x, int16_t y, uint16_t width, ui_engi
     }
 }
 
+void ui_engine_bitmap_rgb565(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_t height, uint32_t addr) {
+
+    if(ui_engine_started) {
+        uint32_t data[] = {
+            TAG(tag),
+            BITMAP_SOURCE(addr),
+            BITMAP_LAYOUT(BFMT_RGB565, width << 1, height),
+            BITMAP_SIZE(0, 0, 0, width, height),
+            BEGIN(BITMAPS),
+            VERTEX2II(x, y, 0, 0),
+            END(),
+            TAG(0)
+        };
+        ui_engine_cmd_buf(data, sizeof(data));
+    }
+}
+
+uint32_t ui_engine_load_bitmap(uint32_t load_addr, const void * bitmap, uint32_t bitmap_size) {
+
+    uint32_t wr_byres = bitmap_size < RAM_G_SIZE - load_addr ? bitmap_size : RAM_G_SIZE - load_addr;
+    ft813_qspi_wr(RAM_G + load_addr, bitmap, wr_byres, ui_engine_qspi_4x);
+    return wr_byres;
+}
+
 
 /******************************************************************************
  * Private unit functions

@@ -80,6 +80,7 @@ void                ui_engine_scrollbar(uint8_t tag, int16_t x, int16_t y, uint1
 void                ui_engine_clock(uint8_t tag, int16_t x, int16_t y, uint16_t radius, time_t time);
 void                ui_engine_gauge(uint8_t tag, int16_t x, int16_t y, uint16_t radius, uint16_t value, uint16_t range);
 void                ui_engine_toggle(uint8_t tag, int16_t x, int16_t y, uint16_t width, ui_engine_font_t font, bool state, const char * l_off, const char * l_on);
-
+void                ui_engine_bitmap_rgb565(uint8_t tag, int16_t x, int16_t y, uint16_t width, uint16_t height, uint32_t addr);
+uint32_t            ui_engine_load_bitmap(uint32_t load_addr, const void * bitmap, uint32_t bitmap_size);
 
 #endif

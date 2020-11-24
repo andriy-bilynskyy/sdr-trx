@@ -32,7 +32,8 @@ PROJECT_SRC := \
   ${wildcard src/rtos_ext/*.c} ${wildcard src/rtos_ext/*.cpp} \
   ${wildcard src/tasks/*.c} ${wildcard src/tasks/*.cpp} \
   ${wildcard src/dsp_proc/*.c} ${wildcard src/dsp_proc/*.cpp} \
-  ${wildcard src/app_hal/*.c} ${wildcard src/app_hal/*.cpp}\
+  ${wildcard src/app_hal/*.c} ${wildcard src/app_hal/*.cpp} \
+  ${wildcard src/bitmaps/*.c} \
 
 PROJECT_INC := \
   config \
@@ -41,6 +42,7 @@ PROJECT_INC := \
   src/tasks \
   src/dsp_proc \
   src/app_hal \
+  src/bitmaps \
 
 PROJECT_LIB := \
 
@@ -52,6 +54,7 @@ PROJECT_STYLE := \
   ${wildcard src/dsp_proc/*.[hc]} ${wildcard src/dsp_proc/*.cpp} \
   ${wildcard src/app_hal/*.[hc]} ${wildcard src/app_hal/*.cpp} \
   ${wildcard config/*.h} \
+  ${wildcard src/bitmaps/*.[hc]} \
 
 
 include ../free_rtos/unit.mk
