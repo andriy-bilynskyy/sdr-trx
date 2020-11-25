@@ -72,11 +72,13 @@ void widget_trx(volatile app_handle_t * app_handle) {
             }
         }
         /* Frequency control buttons */
-        ui_engine_button(WIDGET_TRX_TAG_UP_F,       300,                   50,                   70, 30, UI_ENGINE_FONT28, "UP");
-        ui_engine_button(WIDGET_TRX_TAG_DOWN_F,     380,                   50,                   70, 30, UI_ENGINE_FONT28, "DOWN");
+        ui_engine_button(WIDGET_TRX_TAG_DOWN_F,     300,                   50,                   70, 30, UI_ENGINE_FONT28, "DOWN");
+        ui_engine_button(WIDGET_TRX_TAG_UP_F,       380,                   50,                   70, 30, UI_ENGINE_FONT28, "UP");
 
         if(!app_handle->ctl_state->transmission) {
             /* spectrum */
+            ui_engine_set_color(0, 0, 0);
+            ui_engine_line(ui_engine_xsize / 2, 90, ui_engine_xsize / 2, ui_engine_ysize, 1);
             ui_engine_set_color(255, 128, 0);
             ui_engine_bargraph(0,                   90, ui_engine_xsize / 2, ui_engine_ysize - 91, 0);
             ui_engine_bargraph(ui_engine_xsize / 2, 90, ui_engine_xsize / 2, ui_engine_ysize - 91, WIDGET_TRX_SPECTRUM_SIZE);
@@ -195,15 +197,30 @@ static bool widget_trx_show_errors(volatile app_handle_t * app_handle, rf_unit_s
 
 static void widget_trx_update_spectrum(const volatile sdr_spectrum_t * spectrum) {
 
-    uint8_t band[2][WIDGET_TRX_SPECTRUM_SIZE];
-    /* dummy implementation */
-    (void)spectrum;
-    /* cppcheck-suppress ignoredReturnValue */
-    extern int rand(void);
+    const uint8_t f_s = spectrum->elements / (WIDGET_TRX_SPECTRUM_SIZE * 2);
+    spectrum->data[0] /= 2;
+    spectrum->data[spectrum->elements >> 1] /= 2;
 
-    for(uint16_t i = 0; i < WIDGET_TRX_SPECTRUM_SIZE; i ++) {
-        band[0][i] = rand();
-        band[1][i] = rand();
+    float32_t tmp[2][WIDGET_TRX_SPECTRUM_SIZE], max = 0;
+    for(uint16_t i = 0; i < WIDGET_TRX_SPECTRUM_SIZE; i++) {
+
+        arm_mean_f32(&spectrum->data[(WIDGET_TRX_SPECTRUM_SIZE + i) * f_s], f_s, &tmp[0][i]);
+        if(tmp[0][i] > max) {
+            max = tmp[0][i];
+        }
+
+        arm_mean_f32(&spectrum->data[i * f_s], f_s, &tmp[1][i]);
+        if(tmp[1][i] > max) {
+            max = tmp[1][i];
+        }
     }
+
+    uint8_t band[2][WIDGET_TRX_SPECTRUM_SIZE];
+    for(uint16_t i = 0; i < WIDGET_TRX_SPECTRUM_SIZE; i++) {
+
+        band[0][i] = 255 - (tmp[0][i] / max) * 255;
+        band[1][i] = 255 - (tmp[1][i] / max) * 255;
+    }
+
     (void)ui_engine_load_bitmap(0, band, sizeof(band));
 }
