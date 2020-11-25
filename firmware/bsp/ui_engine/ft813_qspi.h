@@ -23,6 +23,6 @@ void ft813_qspi_stop(void);
 void ft813_qspi_cmd(uint8_t cmd, uint8_t arg, bool mode_4x);
 void ft813_qspi_wr(uint32_t addr, const void * data, uint32_t size, bool mode_4x);
 void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x);
-
+void ft813_qspi_wait(void);
 
 #endif

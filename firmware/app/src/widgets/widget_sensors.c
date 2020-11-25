@@ -45,6 +45,7 @@ void widget_sensors(volatile app_handle_t * app_handle) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
         ui_engine_set_fgcolor(31, 31, 255);
+        ui_engine_set_color(255, 255, 255);
         /* header */
         ui_engine_button(WIDGET_SENSORS_TAG_EXIT, 5,  5, 20, 20, UI_ENGINE_FONT26, "-");
         ui_engine_text(0,                         30, 0,         UI_ENGINE_FONT29, "Sensors", false);

@@ -14,6 +14,7 @@
 #include "ui_engine.h"
 #include "rf_unit.h"
 #include "dsp_proc.h"
+#include "misc_func.h"
 
 
 /* active widgets tags definitions */
@@ -24,11 +25,12 @@
 #define WIDGET_TRX_TAG_MODULATION     54
 /* continue touch reporting after first touch */
 #define WIDGET_TRX_TOUCH_SKIP_CNT     5
-/* update spectrum counter */
-#define WIDGET_TRX_UPDATE_SPEXTRUM    4
+/* spectrum data constants */
+#define WIDGET_TRX_SPECTRUM_SIZE      256
 
 
 static bool widget_trx_show_errors(volatile app_handle_t * app_handle, rf_unit_state_t state);
+static void widget_trx_update_spectrum(const volatile sdr_spectrum_t * spectrum);
 
 
 void widget_trx(volatile app_handle_t * app_handle) {
@@ -38,28 +40,22 @@ void widget_trx(volatile app_handle_t * app_handle) {
     bool init = true;
     bool touched = false;
     uint8_t touched_cnt = WIDGET_TRX_TOUCH_SKIP_CNT;
-    uint8_t spectrum_cnt = WIDGET_TRX_UPDATE_SPEXTRUM;
 
     dsp_proc_set(app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
     (void)widget_trx_show_errors(app_handle, rf_unit_start(app_handle));
 
     for(; app_handle->system_ctive;) {
-
         static const uint32_t f_grid[] = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000};
 
-        if(!spectrum_cnt) {
-            if(app_handle->ctl_state->spectrum.valid && app_handle->ctl_state->spectrum.data) {
-                /*TODO: process app_handle->ctl_state->spectrum.data */
-                app_handle->ctl_state->spectrum.valid = false;
-            }
-            spectrum_cnt = WIDGET_TRX_UPDATE_SPEXTRUM;
-        } else {
-            spectrum_cnt--;
+        if(app_handle->ctl_state->spectrum.valid && app_handle->ctl_state->spectrum.data) {
+            widget_trx_update_spectrum(&app_handle->ctl_state->spectrum);
+            app_handle->ctl_state->spectrum.valid = false;
         }
 
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
         ui_engine_set_fgcolor(31, 31, 255);
+        ui_engine_set_color(255, 255, 255);
         /* header */
         ui_engine_button(WIDGET_TRX_TAG_EXIT, 5,  5, 20, 20, UI_ENGINE_FONT26, "-");
         ui_engine_text(0,                     30, 0,         UI_ENGINE_FONT29, "Transceiver", false);
@@ -78,6 +74,18 @@ void widget_trx(volatile app_handle_t * app_handle) {
         /* Frequency control buttons */
         ui_engine_button(WIDGET_TRX_TAG_UP_F,       300,                   50,                   70, 30, UI_ENGINE_FONT28, "UP");
         ui_engine_button(WIDGET_TRX_TAG_DOWN_F,     380,                   50,                   70, 30, UI_ENGINE_FONT28, "DOWN");
+
+        if(!app_handle->ctl_state->transmission) {
+            /* spectrum */
+            ui_engine_set_color(255, 128, 0);
+            ui_engine_bargraph(0,                   90, ui_engine_xsize / 2, ui_engine_ysize - 91, 0);
+            ui_engine_bargraph(ui_engine_xsize / 2, 90, ui_engine_xsize / 2, ui_engine_ysize - 91, WIDGET_TRX_SPECTRUM_SIZE);
+            ui_engine_set_color(255, 255, 255);
+            /* rx level */
+            char buf[] = "RX: 00";
+            (void)utoa(CODEC_INPUT_MAX_VOLUME - app_handle->ctl_state->codec_rx_line_sensitivity.volume, &buf[4], 10);
+            ui_engine_text(0, 25, 110, UI_ENGINE_FONT28, buf, false);
+        }
         /* PTT button */
         ui_engine_button(WIDGET_TRX_TAG_PTT,        20,                    ui_engine_ysize - 50, 80, 30, UI_ENGINE_FONT27, app_handle->ctl_state->transmission ? "Transmit" : "Receive");
         /* Modulation button */
@@ -183,4 +191,19 @@ static bool widget_trx_show_errors(volatile app_handle_t * app_handle, rf_unit_s
         break;
     }
     return result;
+}
+
+static void widget_trx_update_spectrum(const volatile sdr_spectrum_t * spectrum) {
+
+    uint8_t band[2][WIDGET_TRX_SPECTRUM_SIZE];
+    /* dummy implementation */
+    (void)spectrum;
+    /* cppcheck-suppress ignoredReturnValue */
+    extern int rand(void);
+
+    for(uint16_t i = 0; i < WIDGET_TRX_SPECTRUM_SIZE; i ++) {
+        band[0][i] = rand();
+        band[1][i] = rand();
+    }
+    (void)ui_engine_load_bitmap(0, band, sizeof(band));
 }

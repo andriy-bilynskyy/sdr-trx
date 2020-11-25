@@ -35,6 +35,7 @@ void widget_main(volatile app_handle_t * app_handle) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
         ui_engine_set_fgcolor(31, 31, 255);
+        ui_engine_set_color(255, 255, 255);
         /* Time date */
         ui_engine_button(WIDGET_MAIN_TAG_DATE_TIME,  20,                    50,  180, 40, UI_ENGINE_FONT30, "Date Time");
         /* Sensors */

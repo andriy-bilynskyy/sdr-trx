@@ -263,11 +263,13 @@ void ui_engine_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t widt
 
     if(ui_engine_started) {
         uint32_t data[] = {
-            BEGIN(LINES),
+            SAVE_CONTEXT(),
             LINE_WIDTH((uint16_t)width << 4),
+            BEGIN(LINES),
             VERTEX2II(x1, y1, 0, 0),
             VERTEX2II(x2, y2, 0, 0),
-            END()
+            END(),
+            RESTORE_CONTEXT()
         };
         ui_engine_cmd_buf(data, sizeof(data));
     }
@@ -277,11 +279,13 @@ void ui_engine_rectangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t
 
     if(ui_engine_started) {
         uint32_t data[] = {
-            BEGIN(RECTS),
+            SAVE_CONTEXT(),
             LINE_WIDTH((uint16_t)coner << 4),
+            BEGIN(RECTS),
             VERTEX2II(x1, y1, 0, 0),
             VERTEX2II(x2, y2, 0, 0),
-            END()
+            END(),
+            RESTORE_CONTEXT()
         };
         ui_engine_cmd_buf(data, sizeof(data));
     }
@@ -291,10 +295,12 @@ void ui_engine_circle(int16_t x, int16_t y, uint16_t radius) {
 
     if(ui_engine_started) {
         uint32_t data[] = {
-            BEGIN(POINTS),
+            SAVE_CONTEXT(),
             POINT_SIZE((uint32_t)radius << 4),
+            BEGIN(POINTS),
             VERTEX2II(x, y, 0, 0),
-            END()
+            END(),
+            RESTORE_CONTEXT()
         };
         ui_engine_cmd_buf(data, sizeof(data));
     }
@@ -494,12 +500,14 @@ void ui_engine_bitmap_rgb565(uint8_t tag, int16_t x, int16_t y, uint16_t width, 
     if(ui_engine_started) {
         uint32_t data[] = {
             TAG(tag),
+            SAVE_CONTEXT(),
             BITMAP_SOURCE(addr),
             BITMAP_LAYOUT(BFMT_RGB565, width << 1, height),
             BITMAP_SIZE(0, 0, 0, width, height),
             BEGIN(BITMAPS),
             VERTEX2II(x, y, 0, 0),
             END(),
+            RESTORE_CONTEXT(),
             TAG(0)
         };
         ui_engine_cmd_buf(data, sizeof(data));
@@ -510,7 +518,27 @@ uint32_t ui_engine_load_bitmap(uint32_t load_addr, const void * bitmap, uint32_t
 
     uint32_t wr_byres = bitmap_size < RAM_G_SIZE - load_addr ? bitmap_size : RAM_G_SIZE - load_addr;
     ft813_qspi_wr(RAM_G + load_addr, bitmap, wr_byres, ui_engine_qspi_4x);
+    ft813_qspi_wait();
     return wr_byres;
+}
+
+void ui_engine_bargraph(int16_t x, int16_t y, uint16_t width, uint16_t height, uint32_t addr) {
+
+    if(ui_engine_started && width && height) {
+        uint32_t data[] = {
+            SAVE_CONTEXT(),
+            BITMAP_SOURCE(addr),
+            BITMAP_LAYOUT(BFMT_BARGRAPH, 0, 0),
+            BITMAP_SIZE(0, 0, 0, width, height),
+            BITMAP_TRANSFORM_A(0x10000 / width),
+            BITMAP_TRANSFORM_E(0x10000 / height),
+            BEGIN(BITMAPS),
+            VERTEX2II(x, y, 0, 0),
+            END(),
+            RESTORE_CONTEXT()
+        };
+        ui_engine_cmd_buf(data, sizeof(data));
+    }
 }
 
 

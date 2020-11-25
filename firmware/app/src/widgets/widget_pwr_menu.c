@@ -31,6 +31,7 @@ void widget_pwr_menu(volatile app_handle_t * app_handle) {
         ui_engine_draw_start(0, 0, 0);
         ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
         ui_engine_set_fgcolor(31, 31, 255);
+        ui_engine_set_color(255, 255, 255);
 
         ui_engine_button(WIDGET_PWR_MENU_TAG_REBOOT,   (ui_engine_xsize - 180) / 2, 50,  180, 40, UI_ENGINE_FONT30, "Reboot");
         ui_engine_button(WIDGET_PWR_MENU_TAG_SHUTDOWN, (ui_engine_xsize - 180) / 2, 120, 180, 40, UI_ENGINE_FONT30, "Shutdown");

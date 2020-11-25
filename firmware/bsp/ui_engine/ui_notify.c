@@ -24,6 +24,7 @@ void ui_notify(uint8_t argc, const char * argv[], const char * button, volatile 
             ui_engine_draw_start(0, 0, 0);
             ui_engine_set_gradient(0, 0, 0xFF, 0xFF, 0, 0);
             ui_engine_set_fgcolor(31, 31, 255);
+            ui_engine_set_color(255, 255, 255);
 
             ui_engine_text(0, ui_engine_xsize / 2, 20, UI_ENGINE_FONT29, argv[0], true);
 

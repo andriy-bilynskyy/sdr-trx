@@ -292,6 +292,11 @@ void ft813_qspi_rd(uint32_t addr, void * data, uint32_t size, bool mode_4x) {
     ft813_qspi_sync_set();
 }
 
+void ft813_qspi_wait(void) {
+    ft813_qspi_sync_wait();
+    ft813_qspi_sync_set();
+}
+
 void QUADSPI_IRQHandler(void) {
     if(QSPI_GetFlagStatus(QSPI_FLAG_TC) == SET) {
         QSPI_ClearITPendingBit(QSPI_IT_TC);
