@@ -136,7 +136,7 @@ void widget_trx(volatile app_handle_t * app_handle) {
                 }
                 if(touch.tag == WIDGET_TRX_TAG_DOWN_F) {
                     uint32_t new_frequency = app_handle->settings->dco_frequency;
-                    if(app_handle->settings->dco_frequency - f_grid[frequency_pos] >= DCO_MIN_FREQUENCY) {
+                    if(app_handle->settings->dco_frequency >= f_grid[frequency_pos] && app_handle->settings->dco_frequency - f_grid[frequency_pos] >= DCO_MIN_FREQUENCY) {
                         new_frequency -= f_grid[frequency_pos];
                     } else {
                         new_frequency = DCO_MIN_FREQUENCY;
