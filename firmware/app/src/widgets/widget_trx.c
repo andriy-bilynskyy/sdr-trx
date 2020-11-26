@@ -27,6 +27,11 @@
 #define WIDGET_TRX_TOUCH_SKIP_CNT     5
 /* spectrum data constants */
 #define WIDGET_TRX_SPECTRUM_SIZE      256
+/* frequency grid step */
+#define WIDGET_TRX_FGRID_STEP_HZ      (10*1000)
+
+
+static const uint32_t widget_trx_sdr_sr[] = {8000, 32000, 48000, 96000};
 
 
 static bool widget_trx_show_errors(volatile app_handle_t * app_handle, rf_unit_state_t state);
@@ -35,7 +40,7 @@ static void widget_trx_update_spectrum(const volatile sdr_spectrum_t * spectrum)
 
 void widget_trx(volatile app_handle_t * app_handle) {
 
-    uint8_t  frequency_pos = 2;
+    uint8_t  frequency_pos = 3;
 
     bool init = true;
     bool touched = false;
@@ -76,14 +81,21 @@ void widget_trx(volatile app_handle_t * app_handle) {
         ui_engine_button(WIDGET_TRX_TAG_UP_F,       380,                   50,                   70, 30, UI_ENGINE_FONT28, "UP");
 
         if(!app_handle->ctl_state->transmission) {
-            /* spectrum */
+            /* frequency grid */
             ui_engine_set_color(0, 0, 0);
-            ui_engine_line(ui_engine_xsize / 2, 90, ui_engine_xsize / 2, ui_engine_ysize, 1);
+            ui_engine_line(ui_engine_xsize >> 1, 90, ui_engine_xsize >> 1, ui_engine_ysize, 1);
+            ui_engine_set_color(96, 96, 96);
+            uint16_t dx = ((uint32_t)WIDGET_TRX_FGRID_STEP_HZ * ui_engine_xsize) / widget_trx_sdr_sr[app_handle->settings->codec_samplerate];
+            for(uint8_t i = 0; i < (ui_engine_xsize >> 1) / dx; i++) {
+                ui_engine_line((ui_engine_xsize >> 1) + dx * (i + 1), 90, (ui_engine_xsize >> 1) + dx * (i + 1), ui_engine_ysize, 1);
+                ui_engine_line((ui_engine_xsize >> 1) - dx * (i + 1), 90, (ui_engine_xsize >> 1) - dx * (i + 1), ui_engine_ysize, 1);
+            }
+            /* spectrum */
             ui_engine_set_color(255, 128, 0);
-            ui_engine_bargraph(0,                   90, ui_engine_xsize / 2, ui_engine_ysize - 91, 0);
-            ui_engine_bargraph(ui_engine_xsize / 2, 90, ui_engine_xsize / 2, ui_engine_ysize - 91, WIDGET_TRX_SPECTRUM_SIZE);
+            ui_engine_bargraph(0,                    90, ui_engine_xsize >> 1, ui_engine_ysize - 91, 0);
+            ui_engine_bargraph(ui_engine_xsize >> 1, 90, ui_engine_xsize >> 1, ui_engine_ysize - 91, WIDGET_TRX_SPECTRUM_SIZE);
             ui_engine_set_color(255, 255, 255);
-            /* rx level */
+            /* RX level */
             char buf[] = "RX: 00";
             (void)utoa(CODEC_INPUT_MAX_VOLUME - app_handle->ctl_state->codec_rx_line_sensitivity.volume, &buf[4], 10);
             ui_engine_text(0, 25, 110, UI_ENGINE_FONT28, buf, false);
@@ -124,7 +136,7 @@ void widget_trx(volatile app_handle_t * app_handle) {
                 }
                 if(touch.tag == WIDGET_TRX_TAG_UP_F) {
                     uint32_t new_frequency = app_handle->settings->dco_frequency;
-                    if(app_handle->settings->dco_frequency + f_grid[frequency_pos] <= DCO_MAX_FREQUENCY) {
+                    if(app_handle->settings->dco_frequency <= DCO_MAX_FREQUENCY - f_grid[frequency_pos]) {
                         new_frequency += f_grid[frequency_pos];
                     } else {
                         new_frequency = DCO_MAX_FREQUENCY;
@@ -136,7 +148,7 @@ void widget_trx(volatile app_handle_t * app_handle) {
                 }
                 if(touch.tag == WIDGET_TRX_TAG_DOWN_F) {
                     uint32_t new_frequency = app_handle->settings->dco_frequency;
-                    if(app_handle->settings->dco_frequency >= f_grid[frequency_pos] && app_handle->settings->dco_frequency - f_grid[frequency_pos] >= DCO_MIN_FREQUENCY) {
+                    if(app_handle->settings->dco_frequency  >= DCO_MIN_FREQUENCY + f_grid[frequency_pos]) {
                         new_frequency -= f_grid[frequency_pos];
                     } else {
                         new_frequency = DCO_MIN_FREQUENCY;
