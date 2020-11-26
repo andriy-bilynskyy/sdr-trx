@@ -201,25 +201,27 @@ static void widget_trx_update_spectrum(const volatile sdr_spectrum_t * spectrum)
     spectrum->data[0] /= 2;
     spectrum->data[spectrum->elements >> 1] /= 2;
 
-    float32_t tmp[2][WIDGET_TRX_SPECTRUM_SIZE], max = 0;
+    float32_t tmp, max = 0;
     for(uint16_t i = 0; i < WIDGET_TRX_SPECTRUM_SIZE; i++) {
 
-        arm_mean_f32(&spectrum->data[(WIDGET_TRX_SPECTRUM_SIZE + i) * f_s], f_s, &tmp[0][i]);
-        if(tmp[0][i] > max) {
-            max = tmp[0][i];
+        arm_mean_f32(&spectrum->data[(WIDGET_TRX_SPECTRUM_SIZE + i) * f_s], f_s, &tmp);
+        if(tmp > max) {
+            max = tmp;
         }
+        spectrum->data[(WIDGET_TRX_SPECTRUM_SIZE + i) * f_s] = tmp;
 
-        arm_mean_f32(&spectrum->data[i * f_s], f_s, &tmp[1][i]);
-        if(tmp[1][i] > max) {
-            max = tmp[1][i];
+        arm_mean_f32(&spectrum->data[i * f_s], f_s, &tmp);
+        if(tmp > max) {
+            max = tmp;
         }
+        spectrum->data[i * f_s] = tmp;
     }
 
     uint8_t band[2][WIDGET_TRX_SPECTRUM_SIZE];
     for(uint16_t i = 0; i < WIDGET_TRX_SPECTRUM_SIZE; i++) {
 
-        band[0][i] = 255 - (tmp[0][i] / max) * 255;
-        band[1][i] = 255 - (tmp[1][i] / max) * 255;
+        band[0][i] = 255 - (spectrum->data[(WIDGET_TRX_SPECTRUM_SIZE + i) * f_s] / max) * 255;
+        band[1][i] = 255 - (spectrum->data[i * f_s]                              / max) * 255;
     }
 
     (void)ui_engine_load_bitmap(0, band, sizeof(band));
