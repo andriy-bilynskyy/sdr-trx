@@ -264,7 +264,7 @@ void ui_engine_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t widt
     if(ui_engine_started) {
         uint32_t data[] = {
             SAVE_CONTEXT(),
-            LINE_WIDTH((uint16_t)width << 4),
+            LINE_WIDTH(width),
             BEGIN(LINES),
             VERTEX2II(x1, y1, 0, 0),
             VERTEX2II(x2, y2, 0, 0),

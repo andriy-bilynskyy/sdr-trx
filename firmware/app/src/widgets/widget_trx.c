@@ -83,12 +83,12 @@ void widget_trx(volatile app_handle_t * app_handle) {
         if(!app_handle->ctl_state->transmission) {
             /* frequency grid */
             ui_engine_set_color(0, 0, 0);
-            ui_engine_line(ui_engine_xsize >> 1, 90, ui_engine_xsize >> 1, ui_engine_ysize, 1);
+            ui_engine_line(ui_engine_xsize >> 1, 90, ui_engine_xsize >> 1, ui_engine_ysize, 10);
             ui_engine_set_color(96, 96, 96);
             uint16_t dx = ((uint32_t)WIDGET_TRX_FGRID_STEP_HZ * ui_engine_xsize) / widget_trx_sdr_sr[app_handle->settings->codec_samplerate];
             for(uint8_t i = 0; i < (ui_engine_xsize >> 1) / dx; i++) {
-                ui_engine_line((ui_engine_xsize >> 1) + dx * (i + 1), 90, (ui_engine_xsize >> 1) + dx * (i + 1), ui_engine_ysize, 1);
-                ui_engine_line((ui_engine_xsize >> 1) - dx * (i + 1), 90, (ui_engine_xsize >> 1) - dx * (i + 1), ui_engine_ysize, 1);
+                ui_engine_line((ui_engine_xsize >> 1) + dx * (i + 1), 90, (ui_engine_xsize >> 1) + dx * (i + 1), ui_engine_ysize, 10);
+                ui_engine_line((ui_engine_xsize >> 1) - dx * (i + 1), 90, (ui_engine_xsize >> 1) - dx * (i + 1), ui_engine_ysize, 10);
             }
             /* spectrum */
             ui_engine_set_color(255, 128, 0);
