@@ -313,10 +313,10 @@ static inline float32_t * dsp_proc_sdr_hann_window(uint16_t size) {
 static inline void dsp_proc_sdr_modem(volatile app_handle_t * app_handle) {
 
     switch(dsp_proc_sdr.modulation) {
-    case APP_SETTINGS_MODULATION_LSB: {
+    case APP_SETTINGS_MODULATION_USB: {
 
-        uint16_t index_lo = ((uint32_t)app_handle->settings->sdr_bpf_lsb.low_hz *  (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
-        uint16_t index_hi = ((uint32_t)app_handle->settings->sdr_bpf_lsb.high_hz * (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
+        uint16_t index_lo = ((uint32_t)app_handle->settings->sdr_bpf_usb.low_hz *  (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
+        uint16_t index_hi = ((uint32_t)app_handle->settings->sdr_bpf_usb.high_hz * (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
 
         dsp_proc_sdr.fft_buf[0].re = 0;
         dsp_proc_sdr.fft_buf[0].im = 0;
@@ -343,10 +343,10 @@ static inline void dsp_proc_sdr_modem(volatile app_handle_t * app_handle) {
     }
     break;
 
-    case APP_SETTINGS_MODULATION_USB: {
+    case APP_SETTINGS_MODULATION_LSB: {
 
-        uint16_t index_lo = ((uint32_t)app_handle->settings->sdr_bpf_usb.low_hz *  (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
-        uint16_t index_hi = ((uint32_t)app_handle->settings->sdr_bpf_usb.high_hz * (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
+        uint16_t index_lo = ((uint32_t)app_handle->settings->sdr_bpf_lsb.low_hz *  (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
+        uint16_t index_hi = ((uint32_t)app_handle->settings->sdr_bpf_lsb.high_hz * (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
 
         dsp_proc_sdr.fft_buf[0].re = 0;
         dsp_proc_sdr.fft_buf[0].im = 0;

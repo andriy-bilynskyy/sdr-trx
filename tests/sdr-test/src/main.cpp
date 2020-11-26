@@ -33,7 +33,7 @@ extern "C" {
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_RX_AGC
+#define ACTIVE_TEST             TEST_SPECTRUM
 
 
 #define SIGNAL_HZ               400
@@ -74,7 +74,7 @@ int main(void) {
 #elif(ACTIVE_TEST == TEST_RX_CH_MODULATIN)
 
         app_handle.ctl_state->transmission = false;
-        app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_LSB;
+        app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
 
         for(uint8_t m_cnt = 0; m_cnt < 3; m_cnt++) {
             for(uint8_t b_cnt = 0; b_cnt < 4; b_cnt++) {
@@ -134,11 +134,12 @@ int main(void) {
         if(app_handle.ctl_state->spectrum.valid && app_handle.ctl_state->spectrum.data) {
             app_handle.ctl_state->spectrum.data[0] /= 2;
             app_handle.ctl_state->spectrum.data[app_handle.ctl_state->spectrum.elements >> 1] /= 2;
-            for(uint16_t i = app_handle.ctl_state->spectrum.elements - 1; i > app_handle.ctl_state->spectrum.elements >> 1; i--) {
-                plot.add_point(app_handle.ctl_state->spectrum.elements - i, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
+
+            for(uint16_t i = 0; i < app_handle.ctl_state->spectrum.elements >> 1; i++) {
+                plot.add_point(i, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
             }
-            for(uint16_t i = 0; i <= app_handle.ctl_state->spectrum.elements >> 1; i++) {
-                plot.add_point(-(int)i, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
+            for(uint16_t i = app_handle.ctl_state->spectrum.elements >> 1; i < app_handle.ctl_state->spectrum.elements; i++) {
+                plot.add_point((int)i - app_handle.ctl_state->spectrum.elements, app_handle.ctl_state->spectrum.data[i] / app_handle.ctl_state->spectrum.iterarions,  "spectrum");
             }
             app_handle.ctl_state->spectrum.valid = false;
         }
