@@ -24,6 +24,10 @@
 #define CODEC_MIC_MAX_VOLUME        0x1
 
 
+#define CODEC_INPUT_GAIN_OFFSET     (-34.5f)
+#define CODEC_INPUT_GAIN_STEP       (1.5f)
+
+
 typedef struct {
     uint8_t volume;
     bool    mute;

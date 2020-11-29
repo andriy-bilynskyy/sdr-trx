@@ -11,6 +11,7 @@
 
 
 #include "dsp_proc.h"
+#include "dsp_agc.h"
 #include "codec.h"
 #include "arm_math.h"
 #include "debug.h"
@@ -27,7 +28,7 @@ typedef struct {
 
 static const uint32_t dsp_proc_sdr_sr[] = {8000, 32000, 48000, 96000};
 
-static const uint16_t dsp_proc_sdr_rx_inp_ref = (0.85f * INT16_MAX * 2);
+static const uint16_t dsp_proc_sdr_rx_inp_ref = (0.85f * INT16_MAX);
 
 static struct {
     complex_f32_t *         fft_buf;
@@ -45,12 +46,7 @@ static struct {
     bool                    transmission;
     sdr_modulation_t        modulation;
     uint32_t                dco_frequency;
-    struct {
-        uint16_t                num;
-        uint16_t                idx;
-        int16_t                 max;
-        int16_t                 min;
-    }                       agc;
+    dsp_agc_q15_t           agc_inp;
 } dsp_proc_sdr = {
     .fft_buf = NULL,
     .inp_buf = NULL,
@@ -61,8 +57,7 @@ static struct {
 
 static inline float32_t *   dsp_proc_sdr_hann_window(uint16_t size)                                             __attribute__((always_inline));
 static inline void          dsp_proc_sdr_modem(volatile app_handle_t * app_handle)                              __attribute__((always_inline));
-static inline void          dsp_proc_sdr_peak(codec_sample_t sample)                                            __attribute__((always_inline));
-static inline void          dsp_proc_sdr_rx_gain(volatile app_handle_t * app_handle, int16_t min, int16_t max)  __attribute__((always_inline));
+static inline void          dsp_proc_sdr_rx_gain(volatile app_handle_t * app_handle, float gain)                __attribute__((always_inline));
 
 
 void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
@@ -97,11 +92,8 @@ void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
     dsp_proc_sdr.modulation = app_handle->settings->sdr_modulation;
     dsp_proc_sdr.dco_frequency = app_handle->settings->dco_frequency;
 
-    dsp_proc_sdr.agc.num = ((uint64_t)dsp_proc_sdr_sr[app_handle->settings->codec_samplerate] * app_handle->settings->sdr_agc_tmieout_ms) /
-                           (1000UL * codec_buf_elements);
-    dsp_proc_sdr.agc.idx = 0;
-    dsp_proc_sdr.agc.min = 0;
-    dsp_proc_sdr.agc.max = 0;
+    uint16_t settle_down_it = ((uint64_t)dsp_proc_sdr_sr[app_handle->settings->codec_samplerate] * app_handle->settings->sdr_agc_tmieout_ms) / (1000UL * codec_buf_elements);
+    dsp_agc_q15_init(&dsp_proc_sdr.agc_inp, dsp_proc_sdr_rx_inp_ref, settle_down_it);
 }
 
 void dsp_proc_sdr_unset(volatile app_handle_t * app_handle) {
@@ -191,7 +183,7 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
                     buf[i].left  = dsp_proc_sdr.out_buf[i].left;
                     buf[i].right = dsp_proc_sdr.out_buf[i].left;
 
-                    dsp_proc_sdr_peak(sample);
+                    dsp_agc_q15_data(&dsp_proc_sdr.agc_inp, &sample);
                 }
 
                 dsp_proc_sdr.out_buf[i].left  = 0;
@@ -199,9 +191,6 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
 
                 dsp_proc_sdr.inp_buf[i].left = sample.left;
                 dsp_proc_sdr.inp_buf[i].right = sample.right;
-            }
-            if(!dsp_proc_sdr.transmission) {
-                dsp_proc_sdr.agc.idx++;
             }
             dsp_proc_sdr.state = DSP_PROC_SDR_CONTINUE;
 
@@ -219,7 +208,7 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
                     sample.left = buf[i].left;
                     sample.right = buf[i].right;
 
-                    dsp_proc_sdr_peak(sample);
+                    dsp_agc_q15_data(&dsp_proc_sdr.agc_inp, &sample);
                 }
 
                 dsp_proc_sdr.fft_buf[i].re = dsp_proc_sdr.window[i] * dsp_proc_sdr.inp_buf[i].left;
@@ -230,9 +219,6 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
 
                 dsp_proc_sdr.inp_buf[i].left = sample.left;
                 dsp_proc_sdr.inp_buf[i].right = sample.right;
-            }
-            if(!dsp_proc_sdr.transmission) {
-                dsp_proc_sdr.agc.idx++;
             }
 
             /* do FFT using input ADC data */
@@ -286,12 +272,7 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
         dsp_proc_sdr.modulation = app_handle->settings->sdr_modulation;
         dsp_proc_sdr.dco_frequency = app_handle->settings->dco_frequency;
 
-        if(dsp_proc_sdr.agc.idx >= dsp_proc_sdr.agc.num) {
-            dsp_proc_sdr_rx_gain(app_handle, dsp_proc_sdr.agc.min, dsp_proc_sdr.agc.max);
-            dsp_proc_sdr.agc.idx = 0;
-            dsp_proc_sdr.agc.min = 0;
-            dsp_proc_sdr.agc.max = 0;
-        }
+        dsp_proc_sdr_rx_gain(app_handle, dsp_agc_q15_gain(&dsp_proc_sdr.agc_inp));
     }
 }
 
@@ -391,31 +372,15 @@ static inline void dsp_proc_sdr_modem(volatile app_handle_t * app_handle) {
     }
 }
 
-static inline void dsp_proc_sdr_peak(codec_sample_t sample) {
+static inline void dsp_proc_sdr_rx_gain(volatile app_handle_t * app_handle, float gain) {
 
-    if(sample.left > dsp_proc_sdr.agc.max) {
-        dsp_proc_sdr.agc.max = sample.left;
-    }
-    if(sample.left < dsp_proc_sdr.agc.min) {
-        dsp_proc_sdr.agc.min = sample.left;
-    }
-    if(sample.right > dsp_proc_sdr.agc.max) {
-        dsp_proc_sdr.agc.max = sample.right;
-    }
-    if(sample.right < dsp_proc_sdr.agc.min) {
-        dsp_proc_sdr.agc.min = sample.right;
-    }
-}
+    float32_t g = (log10f(gain) * 20 - CODEC_INPUT_GAIN_OFFSET) / CODEC_INPUT_GAIN_STEP;
 
-static inline void dsp_proc_sdr_rx_gain(volatile app_handle_t * app_handle, int16_t min, int16_t max) {
-
-    float32_t gain = app_handle->ctl_state->codec_rx_line_sensitivity.volume;
-    gain -= (log10f(((float32_t)max - min) / dsp_proc_sdr_rx_inp_ref) * 20) / 1.5f;
-    if(gain <= 0) {
+    if(g <= 0) {
         app_handle->ctl_state->codec_rx_line_sensitivity.volume = 0;
-    } else if (gain >= CODEC_INPUT_MAX_VOLUME) {
+    } else if (g >= CODEC_INPUT_MAX_VOLUME) {
         app_handle->ctl_state->codec_rx_line_sensitivity.volume = CODEC_INPUT_MAX_VOLUME;
     } else {
-        app_handle->ctl_state->codec_rx_line_sensitivity.volume = (uint8_t)roundf(gain);
+        app_handle->ctl_state->codec_rx_line_sensitivity.volume = (uint8_t)roundf(g);
     }
 }

@@ -61,10 +61,8 @@ bool wm8731_ctl_start(codec_sample_rate_t sr) {
         result = (i2c_master_write(WM8731_I2C_ADDR, &out_l, sizeof(out_l)) == sizeof(out_l));
     }
     if(result) {
-        uint16_t inp_r = WM8731_RIGHT_LINEIN | WM8731_LINEIN_VOLUME(wm8731_ctl_data.inp.volume) | (wm8731_ctl_data.inp.mute ? WM8731_LINEIN_INMUTE : 0);
-        uint16_t inp_l = WM8731_LEFT_LINEIN | WM8731_LINEIN_VOLUME(wm8731_ctl_data.inp.volume) | (wm8731_ctl_data.inp.mute ? WM8731_LINEIN_INMUTE : 0);
-        result = (i2c_master_write(WM8731_I2C_ADDR, &inp_r, sizeof(inp_r)) == sizeof(inp_r) &&
-                  i2c_master_write(WM8731_I2C_ADDR, &inp_l, sizeof(inp_l)) == sizeof(inp_l));
+        uint16_t inp = WM8731_LEFT_LINEIN | WM8731_LINEIN_INBOTH | WM8731_LINEIN_VOLUME(wm8731_ctl_data.inp.volume) | (wm8731_ctl_data.inp.mute ? WM8731_LINEIN_INMUTE : 0);
+        result = (i2c_master_write(WM8731_I2C_ADDR, &inp, sizeof(inp)) == sizeof(inp));
     }
     if(result) {
         uint16_t src = WM8731_ANALOG_AUDIO_PATH |
@@ -182,11 +180,9 @@ bool wm8731_ctl_set_line_sensivity(codec_volume_t volume) {
     uint16_t pd = WM8731_PD_CTL | WM8731_PD_CTL_CLKOUTPD | WM8731_PD_CTL_OSCPD |
                   (wm8731_ctl_data.mic.mute ? WM8731_PD_CTL_MICPD : 0) |
                   (volume.mute ? WM8731_PD_CTL_LINEINPD : 0);
-    uint16_t inp_l = WM8731_RIGHT_LINEIN | WM8731_LINEIN_VOLUME(volume.volume) | (volume.mute ? WM8731_LINEIN_INMUTE : 0);
-    uint16_t inp_r = WM8731_LEFT_LINEIN | WM8731_LINEIN_VOLUME(volume.volume) | (volume.mute ? WM8731_LINEIN_INMUTE : 0);
+    uint16_t inp = WM8731_LEFT_LINEIN | WM8731_LINEIN_INBOTH | WM8731_LINEIN_VOLUME(volume.volume) | (volume.mute ? WM8731_LINEIN_INMUTE : 0);
 
-    bool result = (i2c_master_write(WM8731_I2C_ADDR, &inp_l, sizeof(inp_l)) == sizeof(inp_l) &&
-                   i2c_master_write(WM8731_I2C_ADDR, &inp_r, sizeof(inp_r)) == sizeof(inp_r) &&
+    bool result = (i2c_master_write(WM8731_I2C_ADDR, &inp, sizeof(inp)) == sizeof(inp) &&
                    i2c_master_write(WM8731_I2C_ADDR, &pd, sizeof(pd)) == sizeof(pd));
 
     if(result) {

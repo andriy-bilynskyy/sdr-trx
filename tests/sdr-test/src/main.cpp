@@ -33,7 +33,7 @@ extern "C" {
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_SPECTRUM
+#define ACTIVE_TEST             TEST_RX_AGC
 
 
 #define SIGNAL_HZ               400
