@@ -27,3 +27,8 @@
 - Low noise RF-receiver.
 - On-board audio amplifier to use cheap headsets for PC.
 - USB OTG and SD card interface.
+
+## Known HW issues rev v1.0
+
+See doc/hw_issues.odt
+
