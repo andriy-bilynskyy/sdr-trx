@@ -53,7 +53,7 @@ static struct {
         .sdr_modulation             = APP_SETTINGS_MODULATION_LSB,
         .sdr_bpf_lsb                = {.low_hz = 300, .high_hz = 3500},
         .sdr_bpf_usb                = {.low_hz = 300, .high_hz = 3500},
-        .sdr_bpf_am                 = {.low_hz = 300, .high_hz = 3500},
+        .sdr_bpf_am                 = {.low_hz = 0,   .high_hz = 5000},
         .sdr_bpf_nfm                = {.low_hz = 300, .high_hz = 3500},
         .sdr_agc_tmieout_ms         = 1500
     }

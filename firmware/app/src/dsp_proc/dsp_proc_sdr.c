@@ -355,7 +355,33 @@ static inline void dsp_proc_sdr_modem(volatile app_handle_t * app_handle) {
     break;
 
     case APP_SETTINGS_MODULATION_AM: {
-        memset(dsp_proc_sdr.fft_buf, 0, sizeof(complex_f32_t) * (codec_buf_elements << 1)); /* Not implemented */
+        if(dsp_proc_sdr.transmission) {
+            memset(dsp_proc_sdr.fft_buf, 0, sizeof(complex_f32_t) * (codec_buf_elements << 1));
+        } else {
+            uint16_t index_hi = ((uint32_t)app_handle->settings->sdr_bpf_am.high_hz * (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
+            for(uint16_t i = index_hi + 1; i < (codec_buf_elements << 1) - index_hi; i++) {
+                dsp_proc_sdr.fft_buf[i].re = 0;
+                dsp_proc_sdr.fft_buf[i].im = 0;
+            }
+            arm_cfft_f32(&dsp_proc_sdr.cfft, (float32_t *)dsp_proc_sdr.fft_buf, 1, 1);
+
+            float32_t max = 0, min = FLT_MAX;
+            for(uint16_t i = 0; i < (codec_buf_elements << 1); i++) {
+                float32_t tmp;
+                (void)arm_sqrt_f32(dsp_proc_sdr.fft_buf[i].re * dsp_proc_sdr.fft_buf[i].re + dsp_proc_sdr.fft_buf[i].im * dsp_proc_sdr.fft_buf[i].im, &tmp);
+                if(tmp > max) {
+                    max = tmp;
+                } else if(tmp < min) {
+                    min = tmp;
+                }
+                dsp_proc_sdr.fft_buf[i].re = tmp;
+            }
+            float32_t middle = (max + min) / 2;
+            for(uint16_t i = 0; i < (codec_buf_elements << 1); i++) {
+                dsp_proc_sdr.fft_buf[i].re -= middle;
+                dsp_proc_sdr.fft_buf[i].im = 0;
+            }
+        }
     }
     break;
 
