@@ -30,8 +30,8 @@ void codec_mk_signal(volatile app_handle_t * app_handle, uint32_t f_signal) {
             codec_get_audio_buf()[i].left    = sinf(2.0f * M_PI * f_signal * time + M_PI/4) * INT16_MAX;    /* microphone or line input */
             codec_get_audio_buf()[i].right   = sinf(2.0f * M_PI * f_signal * time + M_PI/4) * INT16_MAX;    /* data of both channels is more or less the same */
         } else {
-            codec_get_audio_buf()[i].left    = sinf(2.0f * M_PI * f_signal * time) * INT16_MAX;             /* detector output */
-            codec_get_audio_buf()[i].right   = cosf(2.0f * M_PI * f_signal * time) * INT16_MAX;             /* 90 degree phase shift between channels */
+            codec_get_audio_buf()[i].left    = 0.5 * sinf(2.0f * M_PI * f_signal * time) * INT16_MAX;             /* detector output */
+            codec_get_audio_buf()[i].right   = 0.5 * cosf(2.0f * M_PI * f_signal * time) * INT16_MAX;             /* 90 degree phase shift between channels */
         }
 
         time += dt[app_handle->settings->codec_samplerate];

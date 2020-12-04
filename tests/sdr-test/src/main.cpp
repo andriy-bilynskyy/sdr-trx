@@ -24,8 +24,8 @@ extern "C" {
 
 
 #define TEST_RX_TX_MODE         0
-#define TEST_RX_CH_MODULATIN    1
-#define TEST_TX_CH_MODULATIN    2
+#define TEST_RX_MODULATIN       1
+#define TEST_TX_MODULATIN       2
 #define TEST_SPECTRUM           3
 #define TEST_RX_AGC             5
 
@@ -33,7 +33,7 @@ extern "C" {
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_RX_AGC
+#define ACTIVE_TEST             TEST_RX_TX_MODE
 
 
 #define SIGNAL_HZ               400
@@ -54,6 +54,7 @@ int main(void) {
 #if(ACTIVE_TEST == TEST_RX_TX_MODE)
 
         app_handle.ctl_state->transmission = false;
+        app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
 
         for(uint8_t m_cnt = 0; m_cnt < 3; m_cnt++) {
             for(uint8_t b_cnt = 0; b_cnt < 4; b_cnt++) {
@@ -71,7 +72,7 @@ int main(void) {
             app_handle.ctl_state->transmission = !app_handle.ctl_state->transmission;
         }
 
-#elif(ACTIVE_TEST == TEST_RX_CH_MODULATIN)
+#elif(ACTIVE_TEST == TEST_RX_MODULATIN)
 
         app_handle.ctl_state->transmission = false;
         app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
@@ -96,7 +97,7 @@ int main(void) {
             }
         }
 
-#elif(ACTIVE_TEST == TEST_TX_CH_MODULATIN)
+#elif(ACTIVE_TEST == TEST_TX_MODULATIN)
 
         app_handle.ctl_state->transmission = true;
         app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_LSB;
@@ -147,12 +148,13 @@ int main(void) {
 #elif(ACTIVE_TEST == TEST_RX_AGC)
 
         app_handle.ctl_state->transmission = false;
+        app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
 
-        for(uint16_t b_cnt = 0; b_cnt < 800; b_cnt++) {
+        for(uint16_t b_cnt = 0; b_cnt < 100; b_cnt++) {
 
             codec_mk_signal(&app_handle, SIGNAL_HZ);
             dsp_proc_exec(&app_handle);
-            DBG_OUT("sensitivity: %u", app_handle.ctl_state->codec_rx_line_sensitivity.volume);
+            DBG_OUT("sensitivity[%u]: %u", b_cnt, app_handle.ctl_state->codec_rx_line_sensitivity.volume);
         }
 
 #endif

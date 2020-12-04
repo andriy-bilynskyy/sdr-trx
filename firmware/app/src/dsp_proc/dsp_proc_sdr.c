@@ -11,7 +11,6 @@
 
 
 #include "dsp_proc.h"
-#include "dsp_agc.h"
 #include "codec.h"
 #include "arm_math.h"
 #include "debug.h"
@@ -28,36 +27,48 @@ typedef struct {
 
 static const uint32_t dsp_proc_sdr_sr[] = {8000, 32000, 48000, 96000};
 
-static const uint16_t dsp_proc_sdr_rx_inp_ref = (0.85f * INT16_MAX);
+static const uint16_t dsp_proc_sdr_rx_inp_ref = ((1.0f / sqrtf(2.0f)) * INT16_MAX);
+static const uint16_t dsp_proc_sdr_rx_out_ref = ((1.0f / sqrtf(2.0f)) * INT16_MAX);
+
 
 static struct {
+    arm_cfft_instance_f32   cfft;
     complex_f32_t *         fft_buf;
     codec_sample_t *        inp_buf;
-    codec_sample_t *        out_buf;
+    complex_f32_t *         out_buf;
     float32_t *             window;
+
     float32_t *             magnitude;
     uint16_t                magnitude_iterations;
-    arm_cfft_instance_f32   cfft;
+
     enum {
         DSP_PROC_SDR_START,
         DSP_PROC_SDR_CONTINUE,
         DSP_PROC_SDR_END
     }                       state;
+
     bool                    transmission;
     sdr_modulation_t        modulation;
     uint32_t                dco_frequency;
-    dsp_agc_q15_t           agc_inp;
+
+    /*See https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average */
+    float32_t               ac_alpha;
+    float32_t               inp_rx_gain;
+    float32_t               out_rx_offset;
+    float32_t               out_rx_gain;
 } dsp_proc_sdr = {
-    .fft_buf = NULL,
-    .inp_buf = NULL,
-    .out_buf = NULL,
-    .window  = NULL,
+    .fft_buf   = NULL,
+    .inp_buf   = NULL,
+    .out_buf   = NULL,
+    .window    = NULL,
+    .magnitude = NULL
 };
 
 
 static inline float32_t *   dsp_proc_sdr_hann_window(uint16_t size)                                             __attribute__((always_inline));
 static inline void          dsp_proc_sdr_modem(volatile app_handle_t * app_handle)                              __attribute__((always_inline));
 static inline void          dsp_proc_sdr_rx_gain(volatile app_handle_t * app_handle, float gain)                __attribute__((always_inline));
+static inline int16_t       float32_to_int16(float32_t x)                                                       __attribute__((always_inline));
 
 
 void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
@@ -68,9 +79,9 @@ void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
 
     dsp_proc_sdr.inp_buf = malloc(sizeof(codec_sample_t) * codec_buf_elements);
 
-    dsp_proc_sdr.out_buf = malloc(sizeof(codec_sample_t) * codec_buf_elements);
+    dsp_proc_sdr.out_buf = malloc(sizeof(complex_f32_t) * codec_buf_elements);
     if(dsp_proc_sdr.out_buf) {
-        memset(dsp_proc_sdr.out_buf, 0, sizeof(codec_sample_t) * codec_buf_elements);
+        memset(dsp_proc_sdr.out_buf, 0, sizeof(complex_f32_t) * codec_buf_elements);
     }
 
     dsp_proc_sdr.window = dsp_proc_sdr_hann_window(codec_buf_elements << 1);
@@ -92,8 +103,11 @@ void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
     dsp_proc_sdr.modulation = app_handle->settings->sdr_modulation;
     dsp_proc_sdr.dco_frequency = app_handle->settings->dco_frequency;
 
-    uint16_t settle_down_it = ((uint64_t)dsp_proc_sdr_sr[app_handle->settings->codec_samplerate] * app_handle->settings->sdr_agc_tmieout_ms) / (1000UL * codec_buf_elements);
-    dsp_agc_q15_init(&dsp_proc_sdr.agc_inp, dsp_proc_sdr_rx_inp_ref, settle_down_it);
+    dsp_proc_sdr.ac_alpha = (2000.0f * codec_buf_elements) / ((float32_t)app_handle->settings->sdr_agc_tmieout_ms * dsp_proc_sdr_sr[app_handle->settings->codec_samplerate] + 1000.0f * codec_buf_elements);
+    dsp_proc_sdr.inp_rx_gain = 1.0f;
+    dsp_proc_sdr.out_rx_offset = 0.0f;
+    dsp_proc_sdr.out_rx_gain = 1.0f;
+
 }
 
 void dsp_proc_sdr_unset(volatile app_handle_t * app_handle) {
@@ -137,10 +151,10 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
 
         volatile codec_sample_t * const buf = codec_get_audio_buf();
 
-        if(dsp_proc_sdr.transmission != app_handle->ctl_state->transmission) {
+        if(dsp_proc_sdr.transmission  != app_handle->ctl_state->transmission) {
             dsp_proc_sdr.state = DSP_PROC_SDR_END;
         }
-        if(dsp_proc_sdr.modulation != app_handle->settings->sdr_modulation) {
+        if(dsp_proc_sdr.modulation    != app_handle->settings->sdr_modulation) {
             dsp_proc_sdr.state = DSP_PROC_SDR_END;
         }
         if(dsp_proc_sdr.dco_frequency != app_handle->settings->dco_frequency) {
@@ -149,130 +163,116 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
             dsp_proc_sdr.magnitude_iterations = 0;
         }
 
-        switch(dsp_proc_sdr.state) {
-        case DSP_PROC_SDR_END:
+        if(dsp_proc_sdr.state == DSP_PROC_SDR_END) {
 
-            for(uint16_t i = 0; i < codec_buf_elements; i++) {
-                if(dsp_proc_sdr.transmission) {
-                    buf[i].left  = dsp_proc_sdr.out_buf[i].left;
-                    buf[i].right = dsp_proc_sdr.out_buf[i].right;
-                } else {
-                    buf[i].left  = dsp_proc_sdr.out_buf[i].left;
-                    buf[i].right = dsp_proc_sdr.out_buf[i].left;
-                }
-
-                dsp_proc_sdr.out_buf[i].left  = 0;
-                dsp_proc_sdr.out_buf[i].right = 0;
-            }
+            /* reset FFT result*/
+            memset(dsp_proc_sdr.fft_buf, 0, sizeof(complex_f32_t) * (codec_buf_elements << 1));
             dsp_proc_sdr.state = DSP_PROC_SDR_START;
 
-            break;
-        case DSP_PROC_SDR_START:
+        } else {
 
+            /* prepare input ADC data */
+            complex_f32_t inp_rx_rms = {.re = 0, .im = 0};
             for(uint16_t i = 0; i < codec_buf_elements; i++) {
 
-                codec_sample_t sample;
-                if(dsp_proc_sdr.transmission) {
-                    sample.left = (buf[i].left >> 1) + (buf[i].right >> 1);
-                    sample.right = 0;
-                    buf[i].left  = dsp_proc_sdr.out_buf[i].left;
-                    buf[i].right = dsp_proc_sdr.out_buf[i].right;
-                } else {
-                    sample.left  = buf[i].left;
-                    sample.right = buf[i].right;
-                    buf[i].left  = dsp_proc_sdr.out_buf[i].left;
-                    buf[i].right = dsp_proc_sdr.out_buf[i].left;
+                codec_sample_t sample = {
+                    .left  = dsp_proc_sdr.transmission ? (buf[i].left >> 1) + (buf[i].right >> 1) : buf[i].left,
+                    .right = dsp_proc_sdr.transmission ? 0                                        : buf[i].right
+                };
 
-                    dsp_agc_q15_data(&dsp_proc_sdr.agc_inp, &sample);
+                if(!dsp_proc_sdr.transmission) {
+                    inp_rx_rms.re += (uint32_t)sample.left  * sample.left;
+                    inp_rx_rms.im += (uint32_t)sample.right * sample.right;
                 }
 
-                dsp_proc_sdr.out_buf[i].left  = 0;
-                dsp_proc_sdr.out_buf[i].right = 0;
+                if(dsp_proc_sdr.state == DSP_PROC_SDR_CONTINUE) {
 
-                dsp_proc_sdr.inp_buf[i].left = sample.left;
+                    dsp_proc_sdr.fft_buf[i].re = dsp_proc_sdr.window[i] * dsp_proc_sdr.inp_buf[i].left;
+                    dsp_proc_sdr.fft_buf[i].im = dsp_proc_sdr.window[i] * dsp_proc_sdr.inp_buf[i].right;
+
+                    dsp_proc_sdr.fft_buf[codec_buf_elements + i].re = dsp_proc_sdr.window[codec_buf_elements + i] * sample.left;
+                    dsp_proc_sdr.fft_buf[codec_buf_elements + i].im = dsp_proc_sdr.window[codec_buf_elements + i] * sample.right;
+
+                }
+
+                dsp_proc_sdr.inp_buf[i].left  = sample.left;
                 dsp_proc_sdr.inp_buf[i].right = sample.right;
+
             }
+
+            if(!dsp_proc_sdr.transmission) {
+                float32_t rx_gain = (float32_t)dsp_proc_sdr_rx_inp_ref / sqrtf(((inp_rx_rms.re > inp_rx_rms.im) ? inp_rx_rms.re : inp_rx_rms.im) / codec_buf_elements);
+                dsp_proc_sdr.inp_rx_gain = dsp_proc_sdr.ac_alpha * rx_gain + (1.0f - dsp_proc_sdr.ac_alpha) * dsp_proc_sdr.inp_rx_gain;
+                dsp_proc_sdr_rx_gain(app_handle, dsp_proc_sdr.inp_rx_gain);
+            }
+
+            if(dsp_proc_sdr.state == DSP_PROC_SDR_CONTINUE) {
+
+                /* do FFT using input ADC data */
+                arm_cfft_f32(&dsp_proc_sdr.cfft, (float32_t *)dsp_proc_sdr.fft_buf, 0, 1);
+
+                /* prepare waterfall data to UI */
+                if(!dsp_proc_sdr.transmission) {
+                    /* mean spectrum data */
+                    if(dsp_proc_sdr.magnitude_iterations < (uint16_t)-1) {
+                        for(uint16_t i = 0; i < codec_buf_elements << 1; i++) {
+                            float32_t tmp;
+                            (void)arm_sqrt_f32(dsp_proc_sdr.fft_buf[i].re * dsp_proc_sdr.fft_buf[i].re + dsp_proc_sdr.fft_buf[i].im * dsp_proc_sdr.fft_buf[i].im, &tmp);
+                            dsp_proc_sdr.magnitude[i] += tmp;
+                        }
+                        dsp_proc_sdr.magnitude_iterations++;
+                    }
+                    /* transmit spectrum data to UI if previous buffer processed by UI */
+                    if(!app_handle->ctl_state->spectrum.valid && app_handle->ctl_state->spectrum.data) {
+                        app_handle->ctl_state->spectrum.iterarions = dsp_proc_sdr.magnitude_iterations;
+                        memcpy(app_handle->ctl_state->spectrum.data, dsp_proc_sdr.magnitude, sizeof(float32_t) * app_handle->ctl_state->spectrum.elements);
+                        app_handle->ctl_state->spectrum.valid = true;
+
+                        memset(dsp_proc_sdr.magnitude, 0, sizeof(float32_t) * (codec_buf_elements << 1));
+                        dsp_proc_sdr.magnitude_iterations = 0;
+                    }
+                }
+
+                /* modem processing: spectrum -> samples */
+                dsp_proc_sdr_modem(app_handle);
+
+            }
+
             dsp_proc_sdr.state = DSP_PROC_SDR_CONTINUE;
 
-            break;
-        case DSP_PROC_SDR_CONTINUE:
-
-            /* prepare input ADC data to do FFT */
-            for(uint16_t i = 0; i < codec_buf_elements; i++) {
-
-                codec_sample_t sample;
-                if(dsp_proc_sdr.transmission) {
-                    sample.left = (buf[i].left >> 1) + (buf[i].right >> 1);
-                    sample.right = 0;
-                } else {
-                    sample.left = buf[i].left;
-                    sample.right = buf[i].right;
-
-                    dsp_agc_q15_data(&dsp_proc_sdr.agc_inp, &sample);
-                }
-
-                dsp_proc_sdr.fft_buf[i].re = dsp_proc_sdr.window[i] * dsp_proc_sdr.inp_buf[i].left;
-                dsp_proc_sdr.fft_buf[i].im = dsp_proc_sdr.window[i] * dsp_proc_sdr.inp_buf[i].right;
-
-                dsp_proc_sdr.fft_buf[codec_buf_elements + i].re = dsp_proc_sdr.window[codec_buf_elements + i] * sample.left;
-                dsp_proc_sdr.fft_buf[codec_buf_elements + i].im = dsp_proc_sdr.window[codec_buf_elements + i] * sample.right;
-
-                dsp_proc_sdr.inp_buf[i].left = sample.left;
-                dsp_proc_sdr.inp_buf[i].right = sample.right;
-            }
-
-            /* do FFT using input ADC data */
-            arm_cfft_f32(&dsp_proc_sdr.cfft, (float32_t *)dsp_proc_sdr.fft_buf, 0, 1);
-
-            /* prepare waterfall data to UI */
-            if(!dsp_proc_sdr.transmission) {
-                /* mean spectrum data */
-                if(dsp_proc_sdr.magnitude_iterations < (uint16_t)-1) {
-                    for(uint16_t i = 0; i < codec_buf_elements << 1; i++) {
-                        float32_t tmp;
-                        (void)arm_sqrt_f32(dsp_proc_sdr.fft_buf[i].re * dsp_proc_sdr.fft_buf[i].re + dsp_proc_sdr.fft_buf[i].im * dsp_proc_sdr.fft_buf[i].im, &tmp);
-                        dsp_proc_sdr.magnitude[i] += tmp;
-                    }
-                    dsp_proc_sdr.magnitude_iterations++;
-                }
-                /* transmit spectrum data to UI if previous buffer processed by UI */
-                if(!app_handle->ctl_state->spectrum.valid && app_handle->ctl_state->spectrum.data) {
-                    app_handle->ctl_state->spectrum.iterarions = dsp_proc_sdr.magnitude_iterations;
-                    memcpy(app_handle->ctl_state->spectrum.data, dsp_proc_sdr.magnitude, sizeof(float32_t) * app_handle->ctl_state->spectrum.elements);
-                    app_handle->ctl_state->spectrum.valid = true;
-
-                    memset(dsp_proc_sdr.magnitude, 0, sizeof(float32_t) * (codec_buf_elements << 1));
-                    dsp_proc_sdr.magnitude_iterations = 0;
-                }
-            }
-
-            /* modem processing: spectrum -> samples */
-            dsp_proc_sdr_modem(app_handle);
-
-            /* prepare output DAC data */
-            for(uint16_t i = 0; i < codec_buf_elements; i++) {
-
-                if(dsp_proc_sdr.transmission) {
-                    buf[i].left  = dsp_proc_sdr.out_buf[i].left  + (int16_t)dsp_proc_sdr.fft_buf[i].re;
-                    buf[i].right = dsp_proc_sdr.out_buf[i].right + (int16_t)dsp_proc_sdr.fft_buf[i].im;
-                } else {
-                    buf[i].left  = dsp_proc_sdr.out_buf[i].left + (int16_t)dsp_proc_sdr.fft_buf[i].re;
-                    buf[i].right = dsp_proc_sdr.out_buf[i].left + (int16_t)dsp_proc_sdr.fft_buf[i].re;
-                }
-                dsp_proc_sdr.out_buf[i].left = (int16_t)dsp_proc_sdr.fft_buf[codec_buf_elements + i].re;
-                dsp_proc_sdr.out_buf[i].right = (int16_t)dsp_proc_sdr.fft_buf[codec_buf_elements + i].im;
-            }
-
-            break;
-        default:
-            break;
         }
 
-        dsp_proc_sdr.transmission = app_handle->ctl_state->transmission;
-        dsp_proc_sdr.modulation = app_handle->settings->sdr_modulation;
+        /* prepare output DAC data */
+        float32_t out_rx_mean = 0, out_rx_rms = 0;
+        for(uint16_t i = 0; i < codec_buf_elements; i++) {
+
+            if(dsp_proc_sdr.transmission) {
+                buf[i].left  = float32_to_int16(dsp_proc_sdr.out_buf[i].re  + dsp_proc_sdr.fft_buf[i].re);
+                buf[i].right = float32_to_int16(dsp_proc_sdr.out_buf[i].im + dsp_proc_sdr.fft_buf[i].im);
+            } else {
+                float32_t sample = (dsp_proc_sdr.out_buf[i].re + dsp_proc_sdr.fft_buf[i].re) * dsp_proc_sdr.out_rx_gain - dsp_proc_sdr.out_rx_offset;
+                out_rx_mean += sample;
+                out_rx_rms += sample * sample;
+                buf[i].right = buf[i].left  = float32_to_int16(sample);
+            }
+            dsp_proc_sdr.out_buf[i].re = (int16_t)dsp_proc_sdr.fft_buf[codec_buf_elements + i].re;
+            dsp_proc_sdr.out_buf[i].im = (int16_t)dsp_proc_sdr.fft_buf[codec_buf_elements + i].im;
+        }
+
+        if(!dsp_proc_sdr.transmission) {
+            out_rx_mean /= codec_buf_elements;
+            dsp_proc_sdr.out_rx_offset = dsp_proc_sdr.ac_alpha * out_rx_mean + (1.0f - dsp_proc_sdr.ac_alpha) * dsp_proc_sdr.out_rx_offset;
+
+            float32_t rx_gain = (float32_t)dsp_proc_sdr_rx_out_ref / sqrtf(out_rx_rms / codec_buf_elements);
+            if(rx_gain < 10) {
+                dsp_proc_sdr.out_rx_gain = dsp_proc_sdr.ac_alpha * rx_gain + (1.0f - dsp_proc_sdr.ac_alpha) * dsp_proc_sdr.out_rx_gain;
+            }
+        }
+
+        dsp_proc_sdr.transmission  = app_handle->ctl_state->transmission;
+        dsp_proc_sdr.modulation    = app_handle->settings->sdr_modulation;
         dsp_proc_sdr.dco_frequency = app_handle->settings->dco_frequency;
 
-        dsp_proc_sdr_rx_gain(app_handle, dsp_agc_q15_gain(&dsp_proc_sdr.agc_inp));
     }
 }
 
@@ -358,8 +358,6 @@ static inline void dsp_proc_sdr_modem(volatile app_handle_t * app_handle) {
         if(dsp_proc_sdr.transmission) {
             memset(dsp_proc_sdr.fft_buf, 0, sizeof(complex_f32_t) * (codec_buf_elements << 1));
         } else {
-            static float32_t middle_value = 0;
-            float32_t middle_alpha = 2000.f / ((float)dsp_proc_sdr_sr[app_handle->settings->codec_samplerate] * app_handle->settings->sdr_agc_tmieout_ms + 1000);
 
             uint16_t index_hi = ((uint32_t)app_handle->settings->sdr_bpf_am.high_hz * (codec_buf_elements << 1)) / dsp_proc_sdr_sr[app_handle->settings->codec_samplerate];
             for(uint16_t i = index_hi + 1; i < (codec_buf_elements << 1) - index_hi; i++) {
@@ -371,14 +369,9 @@ static inline void dsp_proc_sdr_modem(volatile app_handle_t * app_handle) {
             for(uint16_t i = 0; i < (codec_buf_elements << 1); i++) {
                 float32_t tmp;
                 (void)arm_sqrt_f32(dsp_proc_sdr.fft_buf[i].re * dsp_proc_sdr.fft_buf[i].re + dsp_proc_sdr.fft_buf[i].im * dsp_proc_sdr.fft_buf[i].im, &tmp);
-                middle_value = middle_alpha * tmp + (1.0f - middle_alpha) * middle_value;
                 dsp_proc_sdr.fft_buf[i].re = tmp;
             }
 
-            for(uint16_t i = 0; i < (codec_buf_elements << 1); i++) {
-                dsp_proc_sdr.fft_buf[i].re -= middle_value;
-                dsp_proc_sdr.fft_buf[i].im = 0;
-            }
         }
     }
     break;
@@ -407,4 +400,17 @@ static inline void dsp_proc_sdr_rx_gain(volatile app_handle_t * app_handle, floa
     } else {
         app_handle->ctl_state->codec_rx_line_sensitivity.volume = (uint8_t)roundf(g);
     }
+}
+
+static inline int16_t float32_to_int16(float32_t x) {
+
+    int16_t result;
+    if(x >= INT16_MAX) {
+        result = INT16_MAX;
+    } else if (x <= INT16_MIN) {
+        result = INT16_MIN;
+    } else {
+        result = (int16_t)x;
+    }
+    return result;
 }
