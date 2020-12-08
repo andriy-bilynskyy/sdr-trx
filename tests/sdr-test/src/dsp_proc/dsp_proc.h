@@ -15,6 +15,7 @@
 
 
 #include <stddef.h>
+#include "dsp_proc_copy.h"
 #include "dsp_proc_sdr.h"
 #include "dsp_proc_test.h"
 

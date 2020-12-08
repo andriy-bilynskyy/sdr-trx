@@ -24,8 +24,8 @@ extern "C" {
 
 
 #define TEST_RX_TX_MODE         0
-#define TEST_RX_MODULATIN       1
-#define TEST_TX_MODULATIN       2
+#define TEST_RX_MODULATION      1
+#define TEST_TX_MODULATION      2
 #define TEST_SPECTRUM           3
 #define TEST_RX_AGC             5
 #define TEST_DSP_TEST           6
@@ -75,7 +75,7 @@ int main(void) {
 
         dsp_proc_unset(&app_handle);
 
-#elif(ACTIVE_TEST == TEST_RX_MODULATIN)
+#elif(ACTIVE_TEST == TEST_RX_MODULATION)
 
         dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
@@ -104,7 +104,7 @@ int main(void) {
 
         dsp_proc_unset(&app_handle);
 
-#elif(ACTIVE_TEST == TEST_TX_MODULATIN)
+#elif(ACTIVE_TEST == TEST_TX_MODULATION)
 
         dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
@@ -180,8 +180,7 @@ int main(void) {
 
         dsp_proc_set(&app_handle, dsp_proc_test_routine, dsp_proc_test_set, dsp_proc_test_unset);
 
-        app_handle.ctl_state->transmission = false;
-        app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
+        app_handle.ctl_state->transmission = true;
 
         for(uint8_t b_cnt = 0; b_cnt < 3; b_cnt++) {
 

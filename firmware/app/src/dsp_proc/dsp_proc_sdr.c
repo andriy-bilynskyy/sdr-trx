@@ -29,6 +29,7 @@ static const uint32_t dsp_proc_sdr_sr[] = {8000, 32000, 48000, 96000};
 
 static const uint16_t dsp_proc_sdr_rx_inp_ref = ((1.0f / sqrtf(2.0f)) * INT16_MAX);
 static const uint16_t dsp_proc_sdr_rx_out_ref = ((1.0f / sqrtf(2.0f)) * INT16_MAX);
+static const uint16_t dsp_proc_sdr_tx_out_ref = ((1.0f / sqrtf(2.0f)) * INT16_MAX);
 
 
 static struct {
@@ -56,6 +57,7 @@ static struct {
     float32_t               inp_rx_gain;
     float32_t               out_rx_offset;
     float32_t               out_rx_gain;
+    float32_t               out_tx_gain;
 } dsp_proc_sdr = {
     .fft_buf   = NULL,
     .inp_buf   = NULL,
@@ -107,6 +109,7 @@ void dsp_proc_sdr_set(volatile app_handle_t * app_handle) {
     dsp_proc_sdr.inp_rx_gain = 1.0f;
     dsp_proc_sdr.out_rx_offset = 0.0f;
     dsp_proc_sdr.out_rx_gain = 1.0f;
+    dsp_proc_sdr.out_tx_gain = 1.0f;
 
 }
 
@@ -244,11 +247,18 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
 
         /* prepare output DAC data */
         float32_t out_rx_mean = 0, out_rx_rms = 0;
+        complex_f32_t out_tx_rms = {.re = 0, .im = 0};
         for(uint16_t i = 0; i < codec_buf_elements; i++) {
 
             if(dsp_proc_sdr.transmission) {
-                buf[i].left  = float32_to_int16(dsp_proc_sdr.out_buf[i].re  + dsp_proc_sdr.fft_buf[i].re);
-                buf[i].right = float32_to_int16(dsp_proc_sdr.out_buf[i].im + dsp_proc_sdr.fft_buf[i].im);
+                complex_f32_t sample = {
+                    .re = (dsp_proc_sdr.out_buf[i].re + dsp_proc_sdr.fft_buf[i].re) * dsp_proc_sdr.out_tx_gain,
+                    .im = (dsp_proc_sdr.out_buf[i].im + dsp_proc_sdr.fft_buf[i].im) * dsp_proc_sdr.out_tx_gain
+                };
+                buf[i].left  = float32_to_int16(sample.re);
+                buf[i].right = float32_to_int16(sample.im);
+                out_tx_rms.re += sample.re * sample.re;
+                out_tx_rms.im += sample.im * sample.im;
             } else {
                 float32_t sample = (dsp_proc_sdr.out_buf[i].re + dsp_proc_sdr.fft_buf[i].re) * dsp_proc_sdr.out_rx_gain - dsp_proc_sdr.out_rx_offset;
                 out_rx_mean += sample;
@@ -259,7 +269,12 @@ void dsp_proc_sdr_routine(volatile app_handle_t * app_handle) {
             dsp_proc_sdr.out_buf[i].im = (int16_t)dsp_proc_sdr.fft_buf[codec_buf_elements + i].im;
         }
 
-        if(!dsp_proc_sdr.transmission) {
+        if(dsp_proc_sdr.transmission) {
+            float32_t tx_gain = (float32_t)dsp_proc_sdr_tx_out_ref / sqrtf(((out_tx_rms.re > out_tx_rms.im) ? out_tx_rms.re : out_tx_rms.im) / codec_buf_elements);
+            if(tx_gain < 10) {
+                dsp_proc_sdr.out_tx_gain = dsp_proc_sdr.ac_alpha * tx_gain + (1.0f - dsp_proc_sdr.ac_alpha) * dsp_proc_sdr.out_tx_gain;
+            }
+        } else {
             out_rx_mean /= codec_buf_elements;
             dsp_proc_sdr.out_rx_offset = dsp_proc_sdr.ac_alpha * out_rx_mean + (1.0f - dsp_proc_sdr.ac_alpha) * dsp_proc_sdr.out_rx_offset;
 
