@@ -227,6 +227,8 @@ static swr_meter_t adc_swr_meter(uint16_t adc_fwd, uint16_t adc_rev) {
     p_fwd = p_fwd < 0 ? 0 : p_fwd;
     p_rev = p_rev < 0 ? 0 : p_rev;
 
+    p_rev = p_rev > p_fwd ? p_fwd : p_rev;
+
     float d = sqrtf(p_rev / p_fwd);
 
     swr_meter_t result = {
