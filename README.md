@@ -1,5 +1,7 @@
 # SDR transceiver
 
+<img src="tests/Photos/Assembled_1.JPG" alt="Assembled device" width="600"/>
+
 ## General info
 
 - [SDR wiki](https://en.wikipedia.org/wiki/Software-defined_radio)
