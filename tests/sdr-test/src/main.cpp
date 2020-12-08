@@ -28,12 +28,13 @@ extern "C" {
 #define TEST_TX_MODULATIN       2
 #define TEST_SPECTRUM           3
 #define TEST_RX_AGC             5
+#define TEST_DSP_TEST           6
 
 
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_RX_TX_MODE
+#define ACTIVE_TEST             TEST_DSP_TEST
 
 
 #define SIGNAL_HZ               400
@@ -43,8 +44,6 @@ int main(void) {
 
     if(gnuplot2d_t::check_gnuplot()) {
 
-        dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
-
         gnuplot2d_t plot;
         plot.set_title("SDR process");
         plot.set_color(0xFF0000,    "output L");
@@ -52,6 +51,8 @@ int main(void) {
         plot.set_color(0x0000FF,    "spectrum");
 
 #if(ACTIVE_TEST == TEST_RX_TX_MODE)
+
+        dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
         app_handle.ctl_state->transmission = false;
         app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
@@ -72,7 +73,11 @@ int main(void) {
             app_handle.ctl_state->transmission = !app_handle.ctl_state->transmission;
         }
 
+        dsp_proc_unset(&app_handle);
+
 #elif(ACTIVE_TEST == TEST_RX_MODULATIN)
+
+        dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
         app_handle.ctl_state->transmission = false;
         app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
@@ -97,7 +102,11 @@ int main(void) {
             }
         }
 
+        dsp_proc_unset(&app_handle);
+
 #elif(ACTIVE_TEST == TEST_TX_MODULATIN)
+
+        dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
         app_handle.ctl_state->transmission = true;
         app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_LSB;
@@ -122,7 +131,11 @@ int main(void) {
             }
         }
 
+        dsp_proc_unset(&app_handle);
+
 #elif(ACTIVE_TEST == TEST_SPECTRUM)
+
+        dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
         app_handle.ctl_state->transmission = false;
 
@@ -145,7 +158,11 @@ int main(void) {
             app_handle.ctl_state->spectrum.valid = false;
         }
 
+        dsp_proc_unset(&app_handle);
+
 #elif(ACTIVE_TEST == TEST_RX_AGC)
+
+        dsp_proc_set(&app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
 
         app_handle.ctl_state->transmission = false;
         app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
@@ -157,9 +174,32 @@ int main(void) {
             DBG_OUT("sensitivity[%u]: %u", b_cnt, app_handle.ctl_state->codec_rx_line_sensitivity.volume);
         }
 
-#endif
+        dsp_proc_unset(&app_handle);
+
+#elif(ACTIVE_TEST == TEST_DSP_TEST)
+
+        dsp_proc_set(&app_handle, dsp_proc_test_routine, dsp_proc_test_set, dsp_proc_test_unset);
+
+        app_handle.ctl_state->transmission = false;
+        app_handle.settings->sdr_modulation = APP_SETTINGS_MODULATION_USB;
+
+        for(uint8_t b_cnt = 0; b_cnt < 3; b_cnt++) {
+
+            codec_mk_signal(&app_handle, SIGNAL_HZ);
+
+            dsp_proc_exec(&app_handle);
+
+            for(uint16_t i = 0; i < codec_buf_elements; i++) {
+                plot.add_point(codec_get_buf_time(&app_handle, i), codec_get_audio_buf()[i].left,  "output L");
+                plot.add_point(codec_get_buf_time(&app_handle, i), codec_get_audio_buf()[i].right, "output R");
+            }
+
+        }
+        app_handle.ctl_state->transmission = !app_handle.ctl_state->transmission;
 
         dsp_proc_unset(&app_handle);
+
+#endif
 
         plot.draw();
 

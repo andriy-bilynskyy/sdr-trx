@@ -34,7 +34,7 @@ void widget_sensors(volatile app_handle_t * app_handle) {
     bool init = true;
     bool touched = false;
 
-    dsp_proc_set(app_handle, dsp_proc_sdr_routine, dsp_proc_sdr_set, dsp_proc_sdr_unset);
+    dsp_proc_set(app_handle, dsp_proc_test_routine, dsp_proc_test_set, dsp_proc_test_unset);
     (void)widget_sensors_show_errors(app_handle, rf_unit_start(app_handle));
 
     for(; app_handle->system_ctive;) {

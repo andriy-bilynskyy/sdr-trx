@@ -17,6 +17,7 @@
 #include <stddef.h>
 #include "dsp_proc_copy.h"
 #include "dsp_proc_sdr.h"
+#include "dsp_proc_test.h"
 
 
 typedef void (*dsp_proc_routine_t)  (volatile app_handle_t * app_handle);
