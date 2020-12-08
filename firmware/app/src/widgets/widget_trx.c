@@ -15,6 +15,7 @@
 #include "rf_unit.h"
 #include "dsp_proc.h"
 #include "misc_func.h"
+#include "adc.h"
 
 
 /* active widgets tags definitions */
@@ -80,7 +81,20 @@ void widget_trx(volatile app_handle_t * app_handle) {
         ui_engine_button(WIDGET_TRX_TAG_DOWN_F,     300,                   50,                   70, 30, UI_ENGINE_FONT28, "DOWN");
         ui_engine_button(WIDGET_TRX_TAG_UP_F,       380,                   50,                   70, 30, UI_ENGINE_FONT28, "UP");
 
-        if(!app_handle->ctl_state->transmission) {
+        if(app_handle->ctl_state->transmission) {
+            /* output power & swr */
+            char buf[16] = "TX: ";
+            uint8_t pos;
+            swr_meter_t power_swr = adc_swr();
+            gcvtf(power_swr.power, 2, &buf[4]);
+            pos = strlen(buf);
+            buf[pos] = 'W';
+            buf[pos + 1] = '\0';
+            ui_engine_text(0, 25, 110, UI_ENGINE_FONT28, buf, false);
+            strcpy(buf, "SWR: ");
+            gcvtf(power_swr.swr, 2, &buf[5]);
+            ui_engine_text(0, 25, 140, UI_ENGINE_FONT28, buf, false);
+        } else {
             /* frequency grid */
             ui_engine_set_color(0, 0, 0);
             ui_engine_line(ui_engine_xsize >> 1, 90, ui_engine_xsize >> 1, ui_engine_ysize, 10);
