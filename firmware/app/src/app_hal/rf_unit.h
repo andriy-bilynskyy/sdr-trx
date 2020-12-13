@@ -34,6 +34,10 @@ rf_unit_state_t rf_unit_start(volatile app_handle_t * app_handle);
 void            rf_unit_stop(volatile app_handle_t * app_handle);
 rf_unit_state_t rf_unit_update(volatile app_handle_t * app_handle);
 rf_unit_state_t rf_unit_update_rx_sensitivity(volatile app_handle_t * app_handle);
+void            rf_unit_inc_bias_imbalance(volatile app_handle_t * app_handle);
+void            rf_unit_dec_bias_imbalance(volatile app_handle_t * app_handle);
+bool            rf_unit_get_amp_overtemp(void);
+void            rf_unit_set_amp_overtemp(volatile app_handle_t * app_handle, bool amp_overtemp);
 
 
 #endif

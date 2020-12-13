@@ -22,7 +22,7 @@
 #include "adc.h"
 #include "i2c_master.h"
 #include "app_data.h"
-#include "rf_amp.h"
+#include "rf_unit.h"
 
 
 #define TASK_SYSTEM_PERIOD_MS                     1000
@@ -65,8 +65,6 @@ void task_system(void * param) {
     bool       high_temperature_warn      = false;
     TickType_t high_temperature_warn_time = xTaskGetTickCount();
 
-    bool       temperature_protection = false;
-
     for(; app_handle->system_ctive;) {
 
         vTaskDelayUntil(&wake_time, TASK_SYSTEM_PERIOD_MS);
@@ -95,18 +93,21 @@ void task_system(void * param) {
         } else {
             high_temperature_warn = false;
         }
-        if(temperature_protection) {
+        if(rf_unit_get_amp_overtemp()) {
             if(adc_temperature1_value() > adc_temperature_high_back_value && adc_temperature2_value() > adc_temperature_high_back_value) {
-                temperature_protection = false;
-                (void)rf_amp_bias1(app_handle->settings->rf_amp_bias);
-                (void)rf_amp_bias2(app_handle->settings->rf_amp_bias);
+                rf_unit_set_amp_overtemp(app_handle, false);
                 DBG_OUT("RF amplifier on");
             }
         } else {
             if(adc_temperature1_value() < adc_temperature_high_max_value || adc_temperature2_value() < adc_temperature_high_max_value) {
-                temperature_protection = true;
-                (void)rf_amp_off();
+                rf_unit_set_amp_overtemp(app_handle, true);
                 DBG_OUT("RF amplifier off");
+            } else {
+                if(adc_temperature1_value() < adc_temperature2_value()) {
+                    rf_unit_inc_bias_imbalance(app_handle);
+                } else if (adc_temperature1_value() > adc_temperature2_value()) {
+                    rf_unit_dec_bias_imbalance(app_handle);
+                }
             }
         }
 

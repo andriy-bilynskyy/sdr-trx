@@ -18,10 +18,16 @@
 #include "trxctl.h"
 
 
+/* Maximum RF amp LDMOSes bias voltage imbalance in RDAC items */
+#define RF_UNIT_MAX_AMP_IMBALANCE       10
+
+
 static struct {
     rf_unit_state_t         state;
     uint32_t                frequency;
     uint8_t                 bias;
+    int8_t                  bias_imbalance;
+    bool                    amp_overtemp;
     bool                    transmission;
     codec_sample_rate_t     samplerate;
     codec_volume_t          spk_volume;
@@ -67,6 +73,8 @@ rf_unit_state_t rf_unit_start(volatile app_handle_t * app_handle) {
                         rf_unit.state               = RF_UNIT_READY;
                         rf_unit.frequency           = app_handle->settings->dco_frequency;
                         rf_unit.bias                = app_handle->settings->rf_amp_bias;
+                        rf_unit.bias_imbalance      = 0;
+                        rf_unit.amp_overtemp        = false;
                         rf_unit.transmission        = app_handle->ctl_state->transmission = false;
                         rf_unit.samplerate          = app_handle->settings->codec_samplerate;
                         rf_unit.spk_volume          = app_handle->settings->codec_spk_volume;
@@ -123,10 +131,15 @@ rf_unit_state_t rf_unit_update(volatile app_handle_t * app_handle) {
             }
         }
         if(rf_unit.bias != app_handle->settings->rf_amp_bias) {
-            if(rf_amp_bias1(app_handle->settings->rf_amp_bias) && rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
-                rf_unit.bias = app_handle->settings->rf_amp_bias;
+            if(!rf_unit.amp_overtemp && rf_unit.transmission) {
+                if(rf_amp_bias1(app_handle->settings->rf_amp_bias - rf_unit.bias_imbalance) &&
+                        rf_amp_bias2(app_handle->settings->rf_amp_bias + rf_unit.bias_imbalance)) {
+                    rf_unit.bias = app_handle->settings->rf_amp_bias;
+                } else {
+                    rf_unit.state = RF_UNIT_RF_AMP_ERROR;
+                }
             } else {
-                rf_unit.state = RF_UNIT_RF_AMP_ERROR;
+                rf_unit.bias = app_handle->settings->rf_amp_bias;
             }
         }
         if(rf_unit.transmission != app_handle->ctl_state->transmission) {
@@ -134,13 +147,21 @@ rf_unit_state_t rf_unit_update(volatile app_handle_t * app_handle) {
             if(codec_set_inp_src(app_handle->ctl_state->transmission ? rf_unit.tx_inp_src : CODEC_INP_LINE)) {
                 (void)codec_set_line_sensivity(app_handle->ctl_state->transmission ? rf_unit.tx_line_sensitivity : rf_unit.codec_rx_line_sensitivity);
                 if(app_handle->ctl_state->transmission) {
-                    if(rf_amp_bias1(app_handle->settings->rf_amp_bias) && rf_amp_bias2(app_handle->settings->rf_amp_bias)) {
+                    if(!rf_unit.amp_overtemp) {
+                        if(rf_amp_bias1(app_handle->settings->rf_amp_bias - rf_unit.bias_imbalance) &&
+                                rf_amp_bias2(app_handle->settings->rf_amp_bias + rf_unit.bias_imbalance)) {
+                            codec_volume_t volume_none = {.mute = true, .volume = 0};
+                            (void)codec_set_speaker_volume(volume_none);
+                            (void)codec_set_headphone_volume(volume_none);
+                            rf_unit.transmission = true;
+                        } else {
+                            rf_unit.state = RF_UNIT_RF_AMP_ERROR;
+                        }
+                    } else {
                         codec_volume_t volume_none = {.mute = true, .volume = 0};
                         (void)codec_set_speaker_volume(volume_none);
                         (void)codec_set_headphone_volume(volume_none);
                         rf_unit.transmission = true;
-                    } else {
-                        rf_unit.state = RF_UNIT_RF_AMP_ERROR;
                     }
                 } else {
                     if(rf_amp_off()) {
@@ -260,6 +281,48 @@ rf_unit_state_t rf_unit_update_rx_sensitivity(volatile app_handle_t * app_handle
         }
     }
     return rf_unit.state;
+}
+
+void rf_unit_inc_bias_imbalance(volatile app_handle_t * app_handle) {
+
+    if(rf_unit.bias_imbalance <= RF_UNIT_MAX_AMP_IMBALANCE) {
+        rf_unit.bias_imbalance ++;
+        if(!rf_unit.amp_overtemp && rf_unit.transmission) {
+            (void)rf_amp_bias1(app_handle->settings->rf_amp_bias - rf_unit.bias_imbalance);
+            (void)rf_amp_bias2(app_handle->settings->rf_amp_bias + rf_unit.bias_imbalance);
+        }
+    }
+}
+
+void rf_unit_dec_bias_imbalance(volatile app_handle_t * app_handle) {
+
+    if(rf_unit.bias_imbalance >= -RF_UNIT_MAX_AMP_IMBALANCE) {
+        rf_unit.bias_imbalance --;
+        if(!rf_unit.amp_overtemp && rf_unit.transmission) {
+            (void)rf_amp_bias1(app_handle->settings->rf_amp_bias - rf_unit.bias_imbalance);
+            (void)rf_amp_bias2(app_handle->settings->rf_amp_bias + rf_unit.bias_imbalance);
+        }
+    }
+}
+
+bool rf_unit_get_amp_overtemp(void) {
+
+    return rf_unit.amp_overtemp;
+}
+
+void rf_unit_set_amp_overtemp(volatile app_handle_t * app_handle, bool amp_overtemp) {
+
+    if(rf_unit.amp_overtemp != amp_overtemp) {
+        rf_unit.amp_overtemp = amp_overtemp;
+        if(rf_unit.transmission) {
+            if(rf_unit.amp_overtemp) {
+                rf_amp_off();
+            } else {
+                (void)rf_amp_bias1(app_handle->settings->rf_amp_bias - rf_unit.bias_imbalance);
+                (void)rf_amp_bias2(app_handle->settings->rf_amp_bias + rf_unit.bias_imbalance);
+            }
+        }
+    }
 }
 
 
