@@ -34,7 +34,7 @@ extern "C" {
 /******************************************************************************
  * Select test to execute
  ******************************************************************************/
-#define ACTIVE_TEST             TEST_DSP_TEST
+#define ACTIVE_TEST             TEST_RX_TX_MODE
 
 
 #define SIGNAL_HZ               400

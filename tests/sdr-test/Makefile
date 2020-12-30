@@ -31,7 +31,7 @@ INCLUDE_PATH := \
   ./src/gplot \
 
 LDLIBS := \
-  fftw \
+  fftw3 \
 
 PROJECT_STYLE := \
   ${wildcard src/*.[ch]} ${wildcard src/*.cpp} \
@@ -116,8 +116,8 @@ help:
 	${info make clean                    - remove generated files}
 	${info make run                      - run executable file}
 	${info make debug                    - start debugging session DDD (gdb)}
-	${info make astyle                   - format source files}
-	${info make cppcheck                 - perform static analysis}
+	${info make style                    - format source files}
+	${info make check                    - perform static analysis}
 	${info ---------------------------------------------------------------------}
 	${info Available build_type [DEBUG RELEASE], eg: make BUILD=RELEASE ...}
 	${info Default build_type DEBUG}
